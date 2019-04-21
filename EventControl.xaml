@@ -1,0 +1,38 @@
+﻿<UserControl
+    x:Class="TimtableFH.EventControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimtableFH"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:con="using:StdOttUwp.Converters"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    VerticalAlignment="Stretch"
+    HorizontalAlignment="Stretch">
+
+    <StackPanel Background="{Binding ElementName=mulColor,Path=Output}"
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}"
+                BorderThickness="2">
+        <con:MultipleInputs2Converter x:Name="mulTime" Input0="{Binding Begin}"
+                                      Input1="{Binding End}" Convert="MulTime_Convert"/>
+        <con:SingleValueConverter x:Name="svcName" Input="{Binding Name}" Convert="SvcName_Convert"/>
+        <con:SingleValueConverter x:Name="svcRoom" Input="{Binding Room}" Convert="SvcRoom_Convert"/>
+        <con:MultipleInputs2Converter x:Name="mulColor" Input0="{Binding Name}"
+                                      Input1="{Binding Group}" Convert="MulColor_Convert"/>
+        
+        <TextBlock Name="tblTime" HorizontalAlignment="Center" 
+                   TextWrapping="Wrap" Foreground="Black" TextAlignment="Center"
+                   Text="{Binding ElementName=mulTime,Path=Output}"/>
+        <TextBlock Name="tblName" HorizontalAlignment="Center" 
+                   TextWrapping="Wrap" Foreground="Black" TextAlignment="Center"
+                   Text="{Binding ElementName=svcName,Path=Output}"/>
+        <TextBlock Name="tblRoom" HorizontalAlignment="Center" 
+                   TextWrapping="Wrap" Foreground="Black" TextAlignment="Center"
+                   Text="{Binding ElementName=svcRoom,Path=Output}"/>
+        <TextBlock Name="tblGroup" HorizontalAlignment="Center" TextAlignment="Center"
+                   TextWrapping="Wrap" Foreground="Black" Text="{Binding Group}"/>
+    </StackPanel>
+</UserControl>
