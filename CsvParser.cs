@@ -11,15 +11,15 @@ namespace TimtableFH
 {
     static class CsvParser
     {
-        public async static Task<IEnumerable<Event>> GetEvents(StorageFile file)
+        public async static Task<IEnumerable<Event>> GetEvents(StorageFile file, ReplaceValues replaceValues)
         {
             Encoding encoding = Encoding.ASCII;
             byte[] fileData = await GetBytes(file);
             string data = Encoding.ASCII.GetString(fileData, 0, fileData.Length);
 
-            data = ReplaceQuestionMarks(data);
+            //data = ReplaceQuestionMarks(data);
 
-            return GetCsvLines( data).Select(Event.GetFromCSV);
+            return GetCsvLines(data, replaceValues).Select(Event.GetFromCSV);
         }
 
         private async static Task<byte[]> GetBytes(StorageFile file)
@@ -42,17 +42,17 @@ namespace TimtableFH
             }
         }
 
-        private static string ReplaceQuestionMarks(string input)
+        private static string Replace(string input, ReplaceValues replaceValues)
         {
-            return input.Replace("Heidemarie K?llinger", "Heidemarie Köllinger")
-                .Replace("H?rsaal", "Hörsaal")
-                .Replace("M?sl?m Atas", "Müslüm Atas")
-                .Replace("Stefan Gr?nwald", "Stefan Grünwald")
-                .Replace("Einf?hrung, Hausf?hrung", "Einführung, Hausführung")
-                .Replace("?KOGL", "ÖKOGL");
+            if (input.Contains('?') && !replaceValues.Examples.Contains(input))
+            {
+                replaceValues.Examples.Add(input);
+            }
+
+            return replaceValues.Replace(input);
         }
 
-        public static IEnumerable<Dictionary<string, string>> GetCsvLines(string data)
+        public static IEnumerable<Dictionary<string, string>> GetCsvLines(string data, ReplaceValues replaceValues)
         {
             string[] lines = data.Split('\n').Select(l => l.TrimEnd('\r')).ToArray();
             string[] headers = Split(lines[0]).ToArray();
@@ -64,7 +64,7 @@ namespace TimtableFH
 
                 foreach (string value in Split(lines[i]))
                 {
-                    dict.Add(headers[headerIndex++], value);
+                    dict.Add(headers[headerIndex++], Replace(value, replaceValues));
                 }
 
                 yield return dict;

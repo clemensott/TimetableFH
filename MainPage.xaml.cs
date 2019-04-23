@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x407 dokumentiert.
 
@@ -17,20 +17,20 @@ namespace TimtableFH
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private const string settingsFileName = "settings.xml", dataFileName = "data.csv";
+        private const string dataFileName = "data.csv";
 
         private ViewModel viewModel;
 
         public MainPage()
         {
             this.InitializeComponent();
-
-            DataContext = viewModel = new ViewModel();
         }
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            DataContext = viewModel = await ViewModel.Load(settingsFileName);
+            DataContext = viewModel = (ViewModel)e.Parameter;
+
+            base.OnNavigatedTo(e);
 
             try
             {
@@ -40,25 +40,13 @@ namespace TimtableFH
             }
             catch (Exception exc)
             {
-                await new MessageDialog(exc.ToString(), "Loaded_Page").ShowAsync();
+                await new MessageDialog(exc.ToString(), "OnNavigatedTo").ShowAsync();
             }
-
-            Application.Current.EnteredBackground += Application_EnteredBackground;
-        }
-
-        private void Page_Unloaded(object sender, RoutedEventArgs e)
-        {
-            Application.Current.EnteredBackground -= Application_EnteredBackground;
-        }
-
-        private async void Application_EnteredBackground(object sender, EnteredBackgroundEventArgs e)
-        {
-            await viewModel.Save(settingsFileName);
         }
 
         private async Task SetEventsFromFile(StorageFile file)
         {
-            viewModel.AllEvents = (await CsvParser.GetEvents(file)).ToArray();
+            viewModel.AllEvents = (await CsvParser.GetEvents(file, viewModel.ReplaceValues)).ToArray();
         }
 
         private void AbbPreviousWeek_Click(object sender, RoutedEventArgs e)
@@ -85,7 +73,7 @@ namespace TimtableFH
                 StorageFile srcFile = await EventRequestor.DownloadCsv();
                 await SetEventsFromFile(srcFile);
 
-                StorageFile destFile = await GetOrCreateFileAsync(ApplicationData.Current.LocalFolder, dataFileName);
+                StorageFile destFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(dataFileName, CreationCollisionOption.OpenIfExists);
                 await srcFile.MoveAndReplaceAsync(destFile);
 
                 await new MessageDialog("Updated data").ShowAsync();
@@ -111,7 +99,7 @@ namespace TimtableFH
                 StorageFile srcFile = await picker.PickSingleFileAsync();
                 await SetEventsFromFile(srcFile);
 
-                StorageFile destFile = await GetOrCreateFileAsync(ApplicationData.Current.LocalFolder, dataFileName);
+                StorageFile destFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(dataFileName, CreationCollisionOption.OpenIfExists);
                 await srcFile.CopyAndReplaceAsync(destFile);
             }
             catch (Exception exc)
@@ -120,15 +108,9 @@ namespace TimtableFH
             }
         }
 
-        private async Task<StorageFile> GetOrCreateFileAsync(StorageFolder folder, string fileName)
+        private void AbbSettings_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                return await folder.GetFileAsync(fileName);
-            }
-            catch { }
-
-            return await folder.CreateFileAsync(fileName);
+            Frame.Navigate(typeof(SettingsPage), viewModel);
         }
 
         private void AbbMoreTime_Click(object sender, RoutedEventArgs e)

@@ -302,6 +302,7 @@ namespace TimtableFH
             {
                 Text = GetDayOfWeekIn(dayOffset).ToString(),
                 HorizontalAlignment = HorizontalAlignment.Center,
+                TextAlignment = TextAlignment.Center,
                 TextWrapping = TextWrapping.Wrap
             };
 
@@ -330,10 +331,10 @@ namespace TimtableFH
         {
             DateTime day = ReferenceDate.AddDays(dayOffset);
 
-            return GetShortDayOfWeek(day.DayOfWeek) + ", " + day.GetDateTimeFormats()[6];
+            return string.Format("{0}, {1}. {2}", GetShortDayOfWeek(day.DayOfWeek), day.Day, GetShortMonth(day.Month));
         }
 
-        private string GetShortDayOfWeek(DayOfWeek day)
+        private static string GetShortDayOfWeek(DayOfWeek day)
         {
             switch (day)
             {
@@ -360,6 +361,50 @@ namespace TimtableFH
             }
 
             throw new ArgumentException("Value is not implemented", nameof(day));
+        }
+
+        private static string GetShortMonth(int month)
+        {
+            switch (month)
+            {
+                case 1:
+                    return "Jan.";
+            
+                case 2:
+                    return "Feb.";
+            
+                case 3:
+                    return "März";
+            
+                case 4:
+                    return "April";
+            
+                case 5:
+                    return "Mai";
+            
+                case 6:
+                    return "Juni";
+            
+                case 7:
+                    return "Juli";
+            
+                case 8:
+                    return "Aug.";
+            
+                case 9:
+                    return "Sep.";
+            
+                case 10:
+                    return "Okt.";
+            
+                case 11:
+                    return "Nov.";
+            
+                case 12:
+                    return "Dez.";
+            }
+
+            throw new ArgumentException("Value is not implemented", nameof(month));
         }
 
         private void UpdateHeaders()

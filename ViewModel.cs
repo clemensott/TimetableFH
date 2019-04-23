@@ -1,5 +1,6 @@
 ﻿using StdOttStandard;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -10,14 +11,19 @@ using Windows.Storage;
 
 namespace TimtableFH
 {
+    public enum CompareType { Equals, StartsWith, EndsWith, Contains, Ignore }
+
     public class ViewModel : INotifyPropertyChanged
     {
         private static readonly XmlSerializer serializer = new XmlSerializer(typeof(ViewModel));
+        private static ViewModel instance;
+
+        public static ViewModel Current => instance ?? new ViewModel();
 
         private bool viewGroupEvents;
         private DateTime refTime;
         private TimeSpan viewDuration;
-        private Event[] allEvents, myGroupEvents, myEvents;
+        private Event[] allEvents, groupEvents, admittedEvents;
         private int viewDaysCount;
 
         public bool ViewGroupEvents
@@ -82,44 +88,44 @@ namespace TimtableFH
                 allEvents = value;
                 OnPropertyChanged(nameof(AllEvents));
 
-                MyGroupEvents = AllEvents.Where(IsMyGroupEvent).ToArray();
+                GroupEvents = AllEvents.GetGroupEvents(Groups).ToArray();
             }
         }
 
         [XmlIgnore]
-        public Event[] MyGroupEvents
+        public Event[] GroupEvents
         {
-            get { return myGroupEvents; }
+            get { return groupEvents; }
             private set
             {
-                if (value.BothNullOrSequenceEqual(myGroupEvents)) return;
+                if (value.BothNullOrSequenceEqual(groupEvents)) return;
 
-                myGroupEvents = value;
-                OnPropertyChanged(nameof(MyGroupEvents));
+                groupEvents = value;
+                OnPropertyChanged(nameof(GroupEvents));
 
                 if (ViewGroupEvents) OnPropertyChanged(nameof(ViewEvents));
 
-                MyEvents = MyGroupEvents.Where(IsNotAdmittedEvent).ToArray();
+                AdmittedEvents = GroupEvents.GetAdmittedEvents(NotAdmittedClasses).ToArray();
             }
         }
 
         [XmlIgnore]
-        public Event[] MyEvents
+        public Event[] AdmittedEvents
         {
-            get { return myEvents; }
+            get { return admittedEvents; }
             private set
             {
-                if (value.BothNullOrSequenceEqual(myEvents)) return;
+                if (value.BothNullOrSequenceEqual(admittedEvents)) return;
 
-                myEvents = value;
-                OnPropertyChanged(nameof(MyEvents));
+                admittedEvents = value;
+                OnPropertyChanged(nameof(AdmittedEvents));
 
                 if (!ViewGroupEvents) OnPropertyChanged(nameof(ViewEvents));
             }
         }
 
         [XmlIgnore]
-        public Event[] ViewEvents => ViewGroupEvents ? MyGroupEvents : MyEvents;
+        public Event[] ViewEvents => ViewGroupEvents ? GroupEvents : AdmittedEvents;
 
         public int ViewDaysCount
         {
@@ -133,25 +139,34 @@ namespace TimtableFH
             }
         }
 
+        public EventClasses NotAdmittedClasses { get; set; }
+
+        public EventGroups Groups { get; set; }
+
+        public EventColors EventColors { get; set; }
+
+        public EventNames EventNames { get; set; }
+
+        public ReplaceValues ReplaceValues { get; set; }
+
+        [XmlIgnore]
+        public IEnumerable<string> Names => this.GetAllNames();
+
         public ViewModel()
         {
+            instance = this;
+
             AllEvents = new Event[0];
 
             RefTime = GetLastMondayMorning();
             ViewDuration = TimeSpan.FromHours(8);
             ViewDaysCount = 5;
-        }
 
-        private bool IsMyGroupEvent(Event fhEvent)
-        {
-            return fhEvent.Group != "B1" && fhEvent.Group != "B2" && fhEvent.Group != "M1";
-        }
-
-        private bool IsNotAdmittedEvent(Event fhEvent)
-        {
-            return !fhEvent.Name.StartsWith("PMuAR") &&
-                !fhEvent.Name.StartsWith("PROG2") &&
-                !fhEvent.Name.StartsWith("WEBTECH");
+            NotAdmittedClasses = new EventClasses();
+            Groups = new EventGroups();
+            EventColors = new EventColors();
+            EventNames = new EventNames();
+            ReplaceValues = new ReplaceValues();
         }
 
         public static DateTime GetLastMondayMorning()

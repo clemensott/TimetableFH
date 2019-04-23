@@ -11,7 +11,7 @@
     <AssemblyName>TimtableFH</AssemblyName>
     <DefaultLanguage>de-DE</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.15063.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -125,19 +125,57 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ColorPickerPage.xaml.cs">
+      <DependentUpon>ColorPickerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CompareTypeComboBox.cs" />
+    <Compile Include="CompareTypeConverter.cs" />
+    <Compile Include="CompareTypeIconConverter.cs" />
+    <Compile Include="CompareTypePicker.xaml.cs">
+      <DependentUpon>CompareTypePicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CsvParser.cs" />
     <Compile Include="Event.cs" />
+    <Compile Include="EventGroupEditPage.xaml.cs">
+      <DependentUpon>EventGroupEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NameCompare.cs" />
+    <Compile Include="EventClasses.cs" />
+    <Compile Include="EventColor.cs" />
+    <Compile Include="EventColorEditPage.xaml.cs">
+      <DependentUpon>EventColorEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EventColors.cs" />
     <Compile Include="EventControl.xaml.cs">
       <DependentUpon>EventControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EventName.cs" />
+    <Compile Include="EventNameEditPage.xaml.cs">
+      <DependentUpon>EventNameEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EventNames.cs" />
     <Compile Include="EventRequestor.cs" />
     <Compile Include="EventsView.xaml.cs">
       <DependentUpon>EventsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EventGroup.cs" />
+    <Compile Include="EventGroups.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NameCompareControl.xaml.cs">
+      <DependentUpon>NameCompareControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReplaceValue.cs" />
+    <Compile Include="ReplaceValueEditPage.xaml.cs">
+      <DependentUpon>ReplaceValueEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ReplaceValues.cs" />
+    <Compile Include="SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModelUtils.cs" />
     <Compile Include="ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -200,7 +238,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="ColorPickerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CompareTypePicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EventColorEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EventControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EventGroupEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EventNameEditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -212,10 +270,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="NameCompareControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReplaceValueEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.3</Version>
+      <Version>6.2.8</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

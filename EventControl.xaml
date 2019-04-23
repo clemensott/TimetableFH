@@ -18,8 +18,8 @@
                 BorderThickness="2">
         <con:MultipleInputs2Converter x:Name="mulTime" Input0="{Binding Begin}"
                                       Input1="{Binding End}" Convert="MulTime_Convert"/>
-        <con:SingleValueConverter x:Name="svcName" Input="{Binding Name}" Convert="SvcName_Convert"/>
-        <con:SingleValueConverter x:Name="svcRoom" Input="{Binding Room}" Convert="SvcRoom_Convert"/>
+        <con:SingleInputConverter x:Name="svcName" Input="{Binding Name}" Convert="SvcName_Convert"/>
+        <con:SingleInputConverter x:Name="svcRoom" Input="{Binding Room}" Convert="SvcRoom_Convert"/>
         <con:MultipleInputs2Converter x:Name="mulColor" Input0="{Binding Name}"
                                       Input1="{Binding Group}" Convert="MulColor_Convert"/>
         

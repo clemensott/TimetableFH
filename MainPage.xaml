@@ -6,9 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    Loaded="Page_Loaded"
-    Unloaded="Page_Unloaded">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
         <local:EventsView ReferenceDate="{Binding RefTime,Mode=TwoWay}" 
@@ -30,6 +28,7 @@
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Update" Icon="Refresh" Click="AbbDownloadFile_Click"/>
                 <AppBarButton Label="Open" Icon="OpenFile" Click="AbbOpenFile_Click"/>
+                <AppBarButton Label="Settings" Icon="Setting" Click="AbbSettings_Click"/>
                 <AppBarButton Label="Zoom In" Icon="ZoomIn" Click="AbbLessTime_Click"/>
                 <AppBarButton Label="Zoom Out" Icon="ZoomOut" Click="AbbMoreTime_Click"/>
                 <AppBarButton Label="Earlier" Icon="Download" Click="AbbRefUp_Click"/>
