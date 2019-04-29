@@ -1,0 +1,68 @@
+﻿<Page
+    x:Class="TimtableFH.EventGroupEditPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimtableFH"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:con="using:StdOttUwp.Converters"
+    xmlns:spi="using:StdOttUwp.Converters.Specialized"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <x:Int32 x:Key="zero">0</x:Int32>
+        <spi:VisibleCollapsedConverter x:Key="visNoEleCon" CompareValue="{StaticResource zero}"/>
+    </Page.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Name:"/>
+        <AutoSuggestBox Grid.Row="1" Text="{Binding EventGroup.Name,Mode=TwoWay}"
+                        ItemsSource="{Binding SuggestedGroups}" GotFocus="AutoSuggestBox_GotFocus"/>
+
+        <TextBlock Grid.Row="2" Text="Exclude Groups:" VerticalAlignment="Center"/>
+
+        <con:SingleInputConverter x:Name="sicGroups" Input="{Binding Groups}"/>
+        <ItemsControl Grid.Row="3" ItemsSource="{Binding EventGroup.Collection}">
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <local:NameCompareControl Margin="3" Value="{Binding}" Names="{Binding ElementName=sicGroups,Path=Input}"/>
+                        <SymbolIcon Grid.Column="4" Symbol="Remove" Margin="8,3" Tapped="SinRemoveGroup_Tapped"/>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <TextBlock Grid.Row="3" Text="No Groups" Margin="3"
+                   Visibility="{Binding EventGroup.Collection.Count,Converter={StaticResource visNoEleCon}}"/>
+
+        <Button Grid.Row="4" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddGroup_Tapped"/>
+    </Grid>
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Label="Back" Icon="Back" Tapped="AbbBack_Tapped"/>
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

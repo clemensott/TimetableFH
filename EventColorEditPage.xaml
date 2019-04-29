@@ -1,0 +1,47 @@
+﻿<Page
+    x:Class="TimtableFH.EventColorEditPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimtableFH"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <local:CompareTypeConverter x:Key="comCon"/>
+    </Page.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Group:"/>
+        <AutoSuggestBox Grid.Row="1" Text="{Binding EventColor.Group,Mode=TwoWay}" 
+                        ItemsSource="{Binding SuggestedGroups}" GotFocus="AutoSuggestBox_GotFocus"/>
+        <local:CompareTypePicker Grid.Row="2" CompareType="{Binding GroupCompareType,Mode=TwoWay}"/>
+
+        <TextBlock Grid.Row="3" Text="Name:"/>
+        <AutoSuggestBox Grid.Row="4" Text="{Binding EventColor.Name,Mode=TwoWay}" 
+                        ItemsSource="{Binding SuggestedNames}" GotFocus="AutoSuggestBox_GotFocus"/>
+        <local:CompareTypePicker Grid.Row="5" CompareType="{Binding NameCompareType,Mode=TwoWay}"/>
+
+        <Rectangle Grid.Row="6" Height="50" HorizontalAlignment="Stretch" Fill="{Binding EventColor.Brush}" Tapped="RectColor_Tapped"/>
+    </Grid>
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Label="Back" Icon="Back" Tapped="AbbBack_Tapped"/>
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>
