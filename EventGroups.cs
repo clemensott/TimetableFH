@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     public class EventGroups : INotifyPropertyChanged
     {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     class EventRequestor
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Windows.UI.Xaml.Media;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     static class ViewModelUtils
     {

@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Shapes;
 
 // Die Elementvorlage "Benutzersteuerelement" wird unter https://go.microsoft.com/fwlink/?LinkId=234236 dokumentiert.
 
-namespace TimtableFH
+namespace TimetableFH
 {
     public sealed partial class EventsView : UserControl
     {

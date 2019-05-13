@@ -1,6 +1,6 @@
 ﻿using StdOttUwp.Converters;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     class CompareTypeConverter : EnumConverter<CompareType>
     {

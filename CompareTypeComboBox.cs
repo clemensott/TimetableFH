@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     class CompareTypeComboBox : ComboBox
     {

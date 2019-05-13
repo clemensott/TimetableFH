@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 using Windows.Foundation;
 using Windows.Storage;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     public enum CompareType { Equals, StartsWith, EndsWith, Contains, Ignore }
 

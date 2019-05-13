@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     public class ReplaceValue : INotifyPropertyChanged
     {

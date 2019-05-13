@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml.Controls;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     class FocusableControl : Button
     {

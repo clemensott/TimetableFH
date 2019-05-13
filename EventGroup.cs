@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     public class EventGroup : INotifyPropertyChanged
     {

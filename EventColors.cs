@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     public class EventColors : INotifyPropertyChanged
     {

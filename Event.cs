@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using Windows.UI.Xaml.Media;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     public class Event : EventBase, INotifyPropertyChanged
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     public class EventRooms : ObservableCollection<ReplaceValue>
     {

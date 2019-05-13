@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     public class EventClasses : ObservableCollection<NameCompare>
     {

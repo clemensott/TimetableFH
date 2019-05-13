@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 
-namespace TimtableFH
+namespace TimetableFH
 {
     class CompareTypeIconConverter:IValueConverter
     {
