@@ -19,6 +19,8 @@ namespace TimtableFH
     {
         private readonly double blackToWhiteHeightFactor;
 
+        private bool isUpdatingR, isUpdatingG, isUpdatingB;
+        private int pointersPressedCount;
         private Color currentColor;
         private SetableValue<Color?> setableValue;
 
@@ -43,6 +45,10 @@ namespace TimtableFH
         {
             currentColor = color;
             rectCurrentColor.Fill = new SolidColorBrush(color);
+
+            SetValue(ref isUpdatingR, () => tbxR.Text = color.R.ToString());
+            SetValue(ref isUpdatingG, () => tbxG.Text = color.G.ToString());
+            SetValue(ref isUpdatingB, () => tbxB.Text = color.B.ToString());
         }
 
         private Color GetColor(double value, double brightness)
@@ -139,7 +145,19 @@ namespace TimtableFH
 
         private void GidColors_PointerMoved(object sender, PointerRoutedEventArgs e)
         {
+            if (pointersPressedCount > 0) SetCurrentColor(e.GetCurrentPoint(gidColors).Position);
+        }
+
+        private void GidColors_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            pointersPressedCount++;
+
             SetCurrentColor(e.GetCurrentPoint(gidColors).Position);
+        }
+
+        private void GidColors_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            pointersPressedCount--;
         }
 
         private void GidColors_Tapped(object sender, TappedRoutedEventArgs e)
@@ -171,6 +189,60 @@ namespace TimtableFH
         {
             setableValue.SetValue(null);
             Frame.GoBack();
+        }
+
+        private void TbxR_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SetValue(ref isUpdatingR, () =>
+            {
+                byte value;
+
+                if (!byte.TryParse(tbxR.Text, out value)) return;
+
+                Color newColor = currentColor;
+                newColor.R = value;
+
+                SetCurrentColor(newColor);
+            });
+        }
+
+        private void TbxG_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SetValue(ref isUpdatingG, () =>
+            {
+                byte value;
+
+                if (!byte.TryParse(tbxG.Text, out value)) return;
+
+                Color newColor = currentColor;
+                newColor.G = value;
+
+                SetCurrentColor(newColor);
+            });
+        }
+
+        private void TbxB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SetValue(ref isUpdatingB, () =>
+            {
+                byte value;
+
+                if (!byte.TryParse(tbxB.Text, out value)) return;
+
+                Color newColor = currentColor;
+                newColor.B = value;
+
+                SetCurrentColor(newColor);
+            });
+        }
+
+        private static void SetValue(ref bool isUpdating, Action seter)
+        {
+            if (isUpdating) return;
+
+            isUpdating = true;
+            seter();
+            isUpdating = false;
         }
     }
 }

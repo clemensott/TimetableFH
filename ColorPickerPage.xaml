@@ -10,14 +10,14 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Rectangle x:Name="rectCurrentColor" StrokeThickness="2"
-                   Stroke="{ThemeResource ApplicationForegroundThemeBrush}"/>
-
-        <Grid Grid.Row="1" x:Name="gidColors" PointerMoved="GidColors_PointerMoved" Tapped="GidColors_Tapped">
+        <Grid Grid.Row="0" x:Name="gidColors" PointerPressed="GidColors_PointerPressed" 
+              PointerReleased="GidColors_PointerReleased"
+              PointerMoved="GidColors_PointerMoved" Tapped="GidColors_Tapped">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -73,6 +73,30 @@
                 <Ellipse Stroke="Black" StrokeThickness="5" />
                 <Ellipse Stroke="White" StrokeThickness="3" Margin="1"/>
             </Grid>
+        </Grid>
+
+        <Rectangle Grid.Row="1" x:Name="rectCurrentColor" StrokeThickness="2"
+                   Stroke="{ThemeResource ApplicationForegroundThemeBrush}"/>
+
+        <Grid Grid.Row="2" Margin="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="R:" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Name="tbxR" Margin="3" 
+                     InputScope="Number" TextChanged="TbxR_TextChanged"/>
+            <TextBlock Grid.Column="2" Text="G:" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="3" Name="tbxG" Margin="3"
+                     InputScope="Number" TextChanged="TbxG_TextChanged"/>
+            <TextBlock Grid.Column="4" Text="B:" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="5" Name="tbxB" Margin="3"
+                     InputScope="Number" TextChanged="TbxB_TextChanged"/>
         </Grid>
     </Grid>
 
