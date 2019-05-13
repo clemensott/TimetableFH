@@ -1,4 +1,5 @@
-﻿using StdOttStandard;
+﻿using System.Collections.ObjectModel;
+using StdOttStandard;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -52,7 +53,7 @@ namespace TimtableFH
             Frame.Navigate(typeof(EventGroupEditPage), eventGroupViewModel);
         }
 
-        private void SinEditGroup_Tapped(object sender, TappedRoutedEventArgs e)
+        private void EleGroup_EditTapped(object sender, TappedRoutedEventArgs e)
         {
             EventGroup eventGroup = (EventGroup)((FrameworkElement)sender).DataContext;
             EventGroupEditPageViewModel eventGroupViewModel = new EventGroupEditPageViewModel(eventGroup, viewModel.GetAllGroups());
@@ -60,11 +61,25 @@ namespace TimtableFH
             Frame.Navigate(typeof(EventGroupEditPage), eventGroupViewModel);
         }
 
-        private void SinRemoveGroup_Tapped(object sender, TappedRoutedEventArgs e)
+        private void EleGroup_RemoveTapped(object sender, TappedRoutedEventArgs e)
         {
             EventGroup eventGroup = (EventGroup)((FrameworkElement)sender).DataContext;
 
             viewModel.Groups.Collection.Remove(eventGroup);
+        }
+
+        private void EleGroup_UpTapped(object sender, TappedRoutedEventArgs e)
+        {
+            EventGroup eventGroup = (EventGroup)((FrameworkElement)sender).DataContext;
+
+            Move(viewModel.Groups.Collection, eventGroup, -1);
+        }
+
+        private void EleGroup_DownTapped(object sender, TappedRoutedEventArgs e)
+        {
+            EventGroup eventGroup = (EventGroup)((FrameworkElement)sender).DataContext;
+
+            Move(viewModel.Groups.Collection, eventGroup, 1);
         }
 
         private void BtnAddColor_Tapped(object sender, TappedRoutedEventArgs e)
@@ -77,7 +92,7 @@ namespace TimtableFH
             Frame.Navigate(typeof(EventColorEditPage), eventColorViewModel);
         }
 
-        private void SinEditColor_Tapped(object sender, TappedRoutedEventArgs e)
+        private void EleColor_EditTapped(object sender, TappedRoutedEventArgs e)
         {
             EventColor eventColor = (EventColor)((FrameworkElement)sender).DataContext;
             EventColorEditPageViewModel eventColorViewModel = new EventColorEditPageViewModel(eventColor, viewModel.GetAllGroups(), viewModel.GetAllNames());
@@ -85,11 +100,25 @@ namespace TimtableFH
             Frame.Navigate(typeof(EventColorEditPage), eventColorViewModel);
         }
 
-        private void SinRemoveColor_Tapped(object sender, TappedRoutedEventArgs e)
+        private void EleColor_RemoveTapped(object sender, TappedRoutedEventArgs e)
         {
             EventColor eventColor = (EventColor)((FrameworkElement)sender).DataContext;
 
             viewModel.EventColors.Collection.Remove(eventColor);
+        }
+
+        private void EleColor_UpTapped(object sender, TappedRoutedEventArgs e)
+        {
+            EventColor eventGroup = (EventColor)((FrameworkElement)sender).DataContext;
+
+            Move(viewModel.EventColors.Collection, eventGroup, -1);
+        }
+
+        private void EleColor_DownTapped(object sender, TappedRoutedEventArgs e)
+        {
+            EventColor eventGroup = (EventColor)((FrameworkElement)sender).DataContext;
+
+            Move(viewModel.EventColors.Collection, eventGroup, 1);
         }
 
         private async void BtnChangeColor_Tapped(object sender, TappedRoutedEventArgs e)
@@ -113,7 +142,7 @@ namespace TimtableFH
             Frame.Navigate(typeof(EventNameEditPage), eventNameViewModel);
         }
 
-        private void SinEditName_Tapped(object sender, TappedRoutedEventArgs e)
+        private void EleName_EditTapped(object sender, TappedRoutedEventArgs e)
         {
             EventName eventName = (EventName)((FrameworkElement)sender).DataContext;
             EventNameEditPageViewModel eventNameViewModel = new EventNameEditPageViewModel(eventName, viewModel.GetAllNames());
@@ -121,36 +150,64 @@ namespace TimtableFH
             Frame.Navigate(typeof(EventNameEditPage), eventNameViewModel);
         }
 
-        private void SinRemoveName_Tapped(object sender, TappedRoutedEventArgs e)
+        private void EleName_RemoveTapped(object sender, TappedRoutedEventArgs e)
         {
             EventName eventName = (EventName)((FrameworkElement)sender).DataContext;
 
             viewModel.EventNames.Remove(eventName);
         }
 
-        private void BtnAddReplace_Tapped(object sender, TappedRoutedEventArgs e)
+        private void EleName_UpTapped(object sender, TappedRoutedEventArgs e)
+        {
+            EventName eventGroup = (EventName)((FrameworkElement)sender).DataContext;
+
+            Move(viewModel.EventNames, eventGroup, -1);
+        }
+
+        private void EleName_DownTapped(object sender, TappedRoutedEventArgs e)
+        {
+            EventName eventGroup = (EventName)((FrameworkElement)sender).DataContext;
+
+            Move(viewModel.EventNames, eventGroup, 1);
+        }
+
+        private void BtnAddRoom_Tapped(object sender, TappedRoutedEventArgs e)
         {
             ReplaceValue replaceValue = new ReplaceValue();
-            ReplaceValueEditPageViewModel replaceValueViewModel = new ReplaceValueEditPageViewModel(replaceValue, viewModel.ReplaceValues.Examples);
+            ReplaceValueEditPageViewModel replaceValueViewModel = new ReplaceValueEditPageViewModel(replaceValue, viewModel.Rooms.Examples);
 
-            viewModel.ReplaceValues.Add(replaceValue);
-
-            Frame.Navigate(typeof(ReplaceValueEditPage), replaceValueViewModel);
-        }
-
-        private void SinEditReplace_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
-            ReplaceValueEditPageViewModel replaceValueViewModel = new ReplaceValueEditPageViewModel(replaceValue, viewModel.ReplaceValues.Examples);
+            viewModel.Rooms.Add(replaceValue);
 
             Frame.Navigate(typeof(ReplaceValueEditPage), replaceValueViewModel);
         }
 
-        private void SinRemoveReplace_Tapped(object sender, TappedRoutedEventArgs e)
+        private void EleRoom_EditTapped(object sender, TappedRoutedEventArgs e)
+        {
+            ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
+            ReplaceValueEditPageViewModel replaceValueViewModel = new ReplaceValueEditPageViewModel(replaceValue, viewModel.Rooms.Examples);
+
+            Frame.Navigate(typeof(ReplaceValueEditPage), replaceValueViewModel);
+        }
+
+        private void EleRoom_RemoveTapped(object sender, TappedRoutedEventArgs e)
         {
             ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
 
-            viewModel.ReplaceValues.Remove(replaceValue);
+            viewModel.Rooms.Remove(replaceValue);
+        }
+
+        private void EleRoom_UpTapped(object sender, TappedRoutedEventArgs e)
+        {
+            ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
+
+            Move(viewModel.Rooms, replaceValue, -1);
+        }
+
+        private void EleRoom_DownTapped(object sender, TappedRoutedEventArgs e)
+        {
+            ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
+
+            Move(viewModel.Rooms, replaceValue, 1);
         }
 
         private void AbbBack_Tapped(object sender, TappedRoutedEventArgs e)
@@ -158,200 +215,15 @@ namespace TimtableFH
             Frame.GoBack();
         }
 
-        private void AbbDefault_Tapped(object sender, TappedRoutedEventArgs e)
+        private static void Move<T>(ObservableCollection<T> collection, T item, int offset)
         {
-            viewModel.EventColors.Collection.Add(new EventColor()
-            {
-                Group = "PA",
-                GroupCompareType = CompareType.Equals,
-                Name = "",
-                NameCompareType = CompareType.Ignore,
-                Color = Colors.Pink
-            });
+            int oldIndex = collection.IndexOf(item);
 
-            viewModel.EventColors.Collection.Add(new EventColor()
-            {
-                Group = "PAB",
-                GroupCompareType = CompareType.Equals,
-                Name = "",
-                NameCompareType = CompareType.Ignore,
-                Color = Colors.Pink
-            });
+            if (oldIndex == -1) return;
 
-            viewModel.EventColors.Collection.Add(new EventColor()
-            {
-                Group = "PAM",
-                GroupCompareType = CompareType.Equals,
-                Name = "",
-                NameCompareType = CompareType.Ignore,
-                Color = Colors.Pink
-            });
+            int newIndex = ((oldIndex + offset + collection.Count) % collection.Count + collection.Count) % collection.Count;
 
-            viewModel.EventColors.Collection.Add(new EventColor()
-            {
-                Group = "",
-                GroupCompareType = CompareType.Ignore,
-                Name = "DATSTR",
-                NameCompareType = CompareType.StartsWith,
-                Color = Colors.Orange
-            });
-
-            viewModel.EventColors.Collection.Add(new EventColor()
-            {
-                Group = "",
-                GroupCompareType = CompareType.Ignore,
-                Name = "DBDESIGN",
-                NameCompareType = CompareType.StartsWith,
-                Color = Colors.Aqua
-            });
-
-            viewModel.EventColors.Collection.Add(new EventColor()
-            {
-                Group = "",
-                GroupCompareType = CompareType.Ignore,
-                Name = "KONFIG",
-                NameCompareType = CompareType.StartsWith,
-                Color = Colors.LightBlue
-            });
-
-            viewModel.EventColors.Collection.Add(new EventColor()
-            {
-                Group = "",
-                GroupCompareType = CompareType.Ignore,
-                Name = "MATH2",
-                NameCompareType = CompareType.StartsWith,
-                Color = Colors.RosyBrown
-            });
-
-            viewModel.EventColors.Collection.Add(new EventColor()
-            {
-                Group = "",
-                GroupCompareType = CompareType.Ignore,
-                Name = "PMuAR",
-                NameCompareType = CompareType.StartsWith,
-                Color = Colors.LightGreen
-            });
-
-            viewModel.EventColors.Collection.Add(new EventColor()
-            {
-                Group = "",
-                GroupCompareType = CompareType.Ignore,
-                Name = "PROFENG",
-                NameCompareType = CompareType.StartsWith,
-                Color = Colors.Yellow
-            });
-
-            viewModel.EventColors.Collection.Add(new EventColor()
-            {
-                Group = "",
-                GroupCompareType = CompareType.Ignore,
-                Name = "PROG2",
-                NameCompareType = CompareType.StartsWith,
-                Color = Colors.YellowGreen
-            });
-
-            viewModel.EventColors.Collection.Add(new EventColor()
-            {
-                Group = "",
-                GroupCompareType = CompareType.Ignore,
-                Name = "WEBTECH",
-                NameCompareType = CompareType.StartsWith,
-                Color = Colors.LightSeaGreen
-            });
-
-
-            viewModel.EventNames.Add(new EventName()
-            {
-                Reference = "DATSTR",
-                CompareType = CompareType.StartsWith,
-                Short = "D&A"
-            });
-
-            viewModel.EventNames.Add(new EventName()
-            {
-                Reference = "DBDESIGN",
-                CompareType = CompareType.StartsWith,
-                Short = "DB"
-            });
-
-            viewModel.EventNames.Add(new EventName()
-            {
-                Reference = "KONFIG",
-                CompareType = CompareType.StartsWith,
-                Short = "Konf"
-            });
-
-            viewModel.EventNames.Add(new EventName()
-            {
-                Reference = "MATH2",
-                CompareType = CompareType.StartsWith,
-                Short = "Mathe"
-            });
-
-            viewModel.EventNames.Add(new EventName()
-            {
-                Reference = "PMuAR",
-                CompareType = CompareType.StartsWith,
-                Short = "WIR"
-            });
-
-            viewModel.EventNames.Add(new EventName()
-            {
-                Reference = "PROFENG",
-                CompareType = CompareType.StartsWith,
-                Short = "English"
-            });
-
-            viewModel.EventNames.Add(new EventName()
-            {
-                Reference = "PROG2",
-                CompareType = CompareType.StartsWith,
-                Short = "SwDev"
-            });
-
-            viewModel.EventNames.Add(new EventName()
-            {
-                Reference = "WEBTECH",
-                CompareType = CompareType.StartsWith,
-                Short = "Web"
-            });
-
-
-            viewModel.ReplaceValues.Add(new ReplaceValue()
-            {
-                Reference = "Heidemarie K??llinger",
-                Replacement = "Heidemarie Köllinger"
-            });
-
-            viewModel.ReplaceValues.Add(new ReplaceValue()
-            {
-                Reference = "H??rsaal",
-                Replacement = "Hörsaal"
-            });
-
-            viewModel.ReplaceValues.Add(new ReplaceValue()
-            {
-                Reference = "M??sl??m Atas",
-                Replacement = "Müslüm Atas"
-            });
-
-            viewModel.ReplaceValues.Add(new ReplaceValue()
-            {
-                Reference = "Stefan Gr??nwald",
-                Replacement = "Stefan Grünwald"
-            });
-
-            viewModel.ReplaceValues.Add(new ReplaceValue()
-            {
-                Reference = "Einf??hrung, Hausf??hrung",
-                Replacement = "Einführung, Hausführung"
-            });
-
-            viewModel.ReplaceValues.Add(new ReplaceValue()
-            {
-                Reference = "??KOGL",
-                Replacement = "ÖKOGL"
-            });
+            collection.Move(oldIndex, newIndex);
         }
     }
 }

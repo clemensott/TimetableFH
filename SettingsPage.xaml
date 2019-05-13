@@ -57,7 +57,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <local:NameCompareControl Margin="3" Value="{Binding}" Names="{Binding ElementName=sicNames,Path=Input}"/>
-                                <SymbolIcon Grid.Column="4" Symbol="Remove" Margin="8,3" Tapped="SinRemoveClass_Tapped"/>
+                                <SymbolIcon Grid.Column="1" Symbol="Cancel" Margin="8,3" Tapped="SinRemoveClass_Tapped"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -95,8 +95,11 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="3"/>
-                                <SymbolIcon Grid.Column="1" Symbol="Edit" Margin="8,3" Tapped="SinEditGroup_Tapped"/>
-                                <SymbolIcon Grid.Column="2" Symbol="Remove" Margin="8,3" Tapped="SinRemoveGroup_Tapped"/>
+
+                                <local:EditListElementControl Grid.Column="3"
+                                                              IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
+                                                              EditTapped="EleGroup_EditTapped" RemoveTapped="EleGroup_RemoveTapped"
+                                                              UpTapped="EleGroup_UpTapped" DownTapped="EleGroup_DownTapped"/>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -165,8 +168,11 @@
                                             Visibility="{Binding NameCompareType,Converter={StaticResource visIgnoreCon}}"/>
 
                                 <Rectangle Grid.Column="2" Fill="{Binding Brush}" Width="50" VerticalAlignment="Stretch" Margin="3"/>
-                                <SymbolIcon Grid.Column="3" Symbol="Edit" Margin="8,3" Tapped="SinEditColor_Tapped"/>
-                                <SymbolIcon Grid.Column="4" Symbol="Remove" Margin="8,3" Tapped="SinRemoveColor_Tapped"/>
+
+                                <local:EditListElementControl Grid.Column="3"
+                                                              IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
+                                                              EditTapped="EleColor_EditTapped" RemoveTapped="EleColor_RemoveTapped"
+                                                              UpTapped="EleColor_UpTapped" DownTapped="EleColor_DownTapped"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -207,8 +213,11 @@
                                 <TextBlock Grid.Column="0" Text="{Binding Reference}" Margin="3"/>
                                 <SymbolIcon Grid.Column="1" Symbol="{Binding CompareType,Converter={StaticResource comIcoCon}}" Margin="3"/>
                                 <TextBlock Grid.Column="2" Text="{Binding Short}" Margin="3"/>
-                                <SymbolIcon Grid.Column="3" Symbol="Edit" Margin="8,3" Tapped="SinEditName_Tapped"/>
-                                <SymbolIcon Grid.Column="4" Symbol="Remove" Margin="8,3" Tapped="SinRemoveName_Tapped"/>
+
+                                <local:EditListElementControl Grid.Column="3"
+                                                              IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
+                                                              EditTapped="EleName_EditTapped" RemoveTapped="EleName_RemoveTapped"
+                                                              UpTapped="EleName_UpTapped" DownTapped="EleName_DownTapped"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -220,14 +229,14 @@
                 <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddName_Tapped"/>
             </Grid>
 
-            <Grid Grid.Row="4" DataContext="{Binding ReplaceValues}" Margin="3,10,3,3">
+            <Grid Grid.Row="4" DataContext="{Binding Rooms}" Margin="3,10,3,3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Replacement:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
+                <TextBlock Text="Room Replacements:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
 
                 <ItemsControl Grid.Row="1" ItemsSource="{Binding}" Margin="3">
                     <ItemsControl.ItemContainerStyle>
@@ -242,13 +251,15 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Grid.Column="0" Text="{Binding Reference}" Margin="3"/>
                                 <TextBlock Grid.Column="1" Text="{Binding Replacement}" Margin="3"/>
-                                <SymbolIcon Grid.Column="2" Symbol="Edit" Margin="8,3" Tapped="SinEditReplace_Tapped"/>
-                                <SymbolIcon Grid.Column="3" Symbol="Remove" Margin="8,3" Tapped="SinRemoveReplace_Tapped"/>
+
+                                <local:EditListElementControl Grid.Column="2"
+                                                              IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
+                                                              EditTapped="EleRoom_EditTapped" RemoveTapped="EleRoom_RemoveTapped"
+                                                              UpTapped="EleRoom_UpTapped" DownTapped="EleRoom_DownTapped"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -257,7 +268,7 @@
                 <TextBlock Grid.Row="1" Text="No Replacements" Margin="3"
                            Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
 
-                <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Tapped="BtnAddReplace_Tapped" Margin="3"/>
+                <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Tapped="BtnAddRoom_Tapped" Margin="3"/>
             </Grid>
         </Grid>
     </ScrollViewer>
@@ -266,7 +277,7 @@
         <CommandBar>
             <CommandBar.PrimaryCommands>
                 <AppBarButton Label="Back" Icon="Back" Tapped="AbbBack_Tapped"/>
-                <AppBarButton Label="Default" Icon="Add" Tapped="AbbDefault_Tapped"/>
+                <AppBarToggleButton x:Name="atbMove" Label="Move" Icon="Sort"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

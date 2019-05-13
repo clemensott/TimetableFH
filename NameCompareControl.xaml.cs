@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -22,7 +23,7 @@ namespace TimtableFH
             if (oldValue != null) oldValue.PropertyChanged -= s.Value_PropertyChanged;
             if (newValue != null) newValue.PropertyChanged += s.Value_PropertyChanged;
 
-            s.SetSuggetions();
+            s.SetSuggestions();
         }
 
         public static readonly DependencyProperty NamesProperty =
@@ -31,7 +32,7 @@ namespace TimtableFH
 
         private static void OnNamesPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            ((NameCompareControl)sender).SetSuggetions();
+            ((NameCompareControl)sender).SetSuggestions();
         }
 
         public NameCompare Value
@@ -51,19 +52,14 @@ namespace TimtableFH
             this.InitializeComponent();
         }
 
-        private void Value_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Value_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Value.Name)) SetSuggetions();
+            if (e.PropertyName == nameof(Value.Name)) SetSuggestions();
         }
 
-        private void SetSuggetions()
+        private void SetSuggestions()
         {
             asbName.ItemsSource = Names.Filter(Value?.Name?.ToLower());
-        }
-
-        private void AutoSuggestBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            ((AutoSuggestBox)sender).IsSuggestionListOpen = true;
         }
     }
 }

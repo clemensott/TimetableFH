@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -26,7 +27,7 @@ namespace TimtableFH
             this.InitializeComponent();
         }
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             DataContext = viewModel = (ViewModel)e.Parameter;
 
@@ -42,11 +43,23 @@ namespace TimtableFH
             {
                 await new MessageDialog(exc.ToString(), "OnNavigatedTo").ShowAsync();
             }
+
+            try
+            {
+                await DownloadCsv();
+            }
+            catch (WebException)
+            {
+            }
+            catch (Exception exc)
+            {
+                await new MessageDialog(exc.ToString(), "AutoDownload").ShowAsync();
+            }
         }
 
         private async Task SetEventsFromFile(StorageFile file)
         {
-            viewModel.AllEvents = (await CsvParser.GetEvents(file, viewModel.ReplaceValues)).ToArray();
+            viewModel.AllEvents = (await CsvParser.GetEvents(file)).ToArray();
         }
 
         private void AbbPreviousWeek_Click(object sender, RoutedEventArgs e)
@@ -70,11 +83,7 @@ namespace TimtableFH
         {
             try
             {
-                StorageFile srcFile = await EventRequestor.DownloadCsv();
-                await SetEventsFromFile(srcFile);
-
-                StorageFile destFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(dataFileName, CreationCollisionOption.OpenIfExists);
-                await srcFile.MoveAndReplaceAsync(destFile);
+                await DownloadCsv();
 
                 await new MessageDialog("Updated data").ShowAsync();
             }
@@ -82,6 +91,16 @@ namespace TimtableFH
             {
                 await new MessageDialog(exc.ToString()).ShowAsync();
             }
+        }
+
+        private async Task DownloadCsv()
+        {
+            StorageFile srcFile = await EventRequestor.DownloadCsv();
+            await SetEventsFromFile(srcFile);
+
+            StorageFile destFile = await ApplicationData.Current.LocalFolder
+                .CreateFileAsync(dataFileName, CreationCollisionOption.OpenIfExists);
+            await srcFile.MoveAndReplaceAsync(destFile);
         }
 
         private async void AbbOpenFile_Click(object sender, RoutedEventArgs e)
@@ -99,7 +118,8 @@ namespace TimtableFH
                 StorageFile srcFile = await picker.PickSingleFileAsync();
                 await SetEventsFromFile(srcFile);
 
-                StorageFile destFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(dataFileName, CreationCollisionOption.OpenIfExists);
+                StorageFile destFile = await ApplicationData.Current.LocalFolder
+                    .CreateFileAsync(dataFileName, CreationCollisionOption.OpenIfExists);
                 await srcFile.CopyAndReplaceAsync(destFile);
             }
             catch (Exception exc)

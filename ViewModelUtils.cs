@@ -12,26 +12,24 @@ namespace TimtableFH
             return events.Where(e => !IsNotAdmittedEvent(notAdmittedClasses, e));
         }
 
-        private static bool IsNotAdmittedEvent(IEnumerable<NameCompare> notAdmittedClasses, Event fhEvent)
+        private static bool IsNotAdmittedEvent(this IEnumerable<NameCompare> notAdmittedClasses, Event fhEvent)
         {
             return notAdmittedClasses.Any(c => Compare(c.CompareType, fhEvent.Name, c.Name));
         }
 
         public static IEnumerable<Event> GetGroupEvents(this IEnumerable<Event> events, EventGroups groups)
         {
-            if (groups?.CurrentGroup == null) return events.Where(e => e.Group != "B1" && e.Group != "B2" && e.Group != "M1");
-
             EventGroup group = groups?.CurrentGroup;
 
-            return group == null ? events : events.Where(e => IsGroupEvent(e, group));
+            return group == null ? events : events.Where(e => IsGroupEvent(group, e));
         }
 
-        private static bool IsGroupEvent(Event fhEvent, EventGroup group)
+        private static bool IsGroupEvent(this EventGroup group, Event fhEvent)
         {
-            return group.Collection.All(n => !Compare(n.CompareType, fhEvent.Group, n.Name));
+            return group?.Collection?.All(n => !Compare(n.CompareType, fhEvent.Group, n.Name)) ?? false;
         }
 
-        public static Brush GetBrush(this EventColors eventColors, string group, string name)
+        private static Brush GetBrush(this EventColors eventColors, string group, string name)
         {
             foreach (EventColor eventColor in eventColors.Collection)
             {
@@ -41,12 +39,12 @@ namespace TimtableFH
             return eventColors.DefaultBrush;
         }
 
-        public static bool IsEvent(EventColor ec, string group, string name)
+        private static bool IsEvent(EventColor ec, string group, string name)
         {
             return Compare(ec.GroupCompareType, group, ec.Group) && Compare(ec.NameCompareType, name, ec.Name);
         }
 
-        public static string GetName(this IEnumerable<EventName> items, string name)
+        private static string GetName(this IEnumerable<EventName> items, string name)
         {
             foreach (EventName eventName in items)
             {
@@ -56,22 +54,84 @@ namespace TimtableFH
             return name;
         }
 
-        public static bool IsEvent(EventName en, string name)
+        private static bool IsEvent(EventName en, string name)
         {
             return Compare(en.CompareType, name, en.Reference);
         }
 
-        public static string Replace(this IEnumerable<ReplaceValue> items, string value)
+        private static string Replace(this IEnumerable<ReplaceValue> items, string value)
         {
             foreach (ReplaceValue replaceValue in items)
             {
+                if (string.IsNullOrEmpty(replaceValue.Reference)) continue;
+
                 value = value.Replace(replaceValue.Reference, replaceValue.Replacement);
             }
 
             return value;
         }
 
-        public static bool Compare(CompareType type, string value, string reference)
+        private static string GetShortRoomName(this IEnumerable<ReplaceValue> items, string rawRoom, out IEnumerable<string> types)
+        {
+            List<string> roomTypes = new List<string>();
+            
+            string completeShortName = string.Join("/", rawRoom.Split('/').Select(r =>
+            {
+                string type;
+                string shortName = items.GetShortRoomName(r, out type);
+                roomTypes.Add(type);
+
+                return shortName;
+            }));
+
+            types = roomTypes;
+
+            return completeShortName;
+        }
+
+        private static string GetShortRoomName(this IEnumerable<ReplaceValue> items, string rawRoom, out string type)
+        {
+            string location, building, roomNumber;
+
+            location = building = roomNumber = type = string.Empty;
+
+            IEnumerator<char> enumerator = ((IEnumerable<char>)rawRoom).GetEnumerator();
+
+            while (true)
+            {
+                if (!enumerator.MoveNext()) return rawRoom;
+                if (enumerator.Current == '.') break;
+
+                location += enumerator.Current;
+            }
+
+            while (true)
+            {
+                if (!enumerator.MoveNext()) return rawRoom;
+                if (enumerator.Current == '.') break;
+
+                building += enumerator.Current;
+            }
+
+            while (true)
+            {
+                if (!enumerator.MoveNext()) return rawRoom;
+                if (enumerator.Current == ' ') break;
+
+                roomNumber += enumerator.Current;
+            }
+
+            while (enumerator.MoveNext())
+            {
+                type += enumerator.Current;
+            }
+
+            enumerator.Dispose();
+
+            return Replace(items, type + roomNumber);
+        }
+
+        private static bool Compare(CompareType type, string value, string reference)
         {
             switch (type)
             {
@@ -121,6 +181,31 @@ namespace TimtableFH
             string lowerItem = item.ToLower();
 
             return lowerItem != lowerKey && lowerItem.Contains(lowerKey);
+        }
+
+        public static Event SetDetails(this ViewModel viewModel, Event fhEvent)
+        {
+            IEnumerable<string> roomTypes;
+
+            fhEvent.IsAdmittedClass = !viewModel.NotAdmittedClasses.IsNotAdmittedEvent(fhEvent);
+            fhEvent.IsCurrentGroup = viewModel.Groups.CurrentGroup.IsGroupEvent(fhEvent);
+            fhEvent.ShortName = viewModel.EventNames.GetName(fhEvent.Name);
+            fhEvent.ShortRoom = viewModel.Rooms.GetShortRoomName(fhEvent.Room, out roomTypes);
+            fhEvent.Brush = viewModel.EventColors.GetBrush(fhEvent.Group, fhEvent.Name);
+
+            foreach (string roomType in roomTypes)
+            {
+                CheckForRoomTypes(viewModel, roomType);
+            }
+
+            return fhEvent;
+        }
+
+        private static void CheckForRoomTypes(ViewModel viewModel, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value) || viewModel.Rooms.Examples.Contains(value)) return;
+
+            viewModel.Rooms.Examples.Add(value);
         }
     }
 }

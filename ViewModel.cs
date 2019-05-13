@@ -16,9 +16,6 @@ namespace TimtableFH
     public class ViewModel : INotifyPropertyChanged
     {
         private static readonly XmlSerializer serializer = new XmlSerializer(typeof(ViewModel));
-        private static ViewModel instance;
-
-        public static ViewModel Current => instance ?? new ViewModel();
 
         private bool viewGroupEvents;
         private DateTime refTime;
@@ -85,10 +82,16 @@ namespace TimtableFH
             {
                 if (value == allEvents) return;
 
+                Rooms?.Examples?.Clear();
+                foreach (Event fhEvent in value)
+                {
+                    this.SetDetails(fhEvent);
+                }
+
                 allEvents = value;
                 OnPropertyChanged(nameof(AllEvents));
 
-                GroupEvents = AllEvents.GetGroupEvents(Groups).ToArray();
+                GroupEvents = AllEvents.Where(e => e.IsCurrentGroup).ToArray();
             }
         }
 
@@ -105,7 +108,7 @@ namespace TimtableFH
 
                 if (ViewGroupEvents) OnPropertyChanged(nameof(ViewEvents));
 
-                AdmittedEvents = GroupEvents.GetAdmittedEvents(NotAdmittedClasses).ToArray();
+                AdmittedEvents = GroupEvents.Where(e => e.IsAdmittedClass).ToArray();
             }
         }
 
@@ -147,15 +150,13 @@ namespace TimtableFH
 
         public EventNames EventNames { get; set; }
 
-        public ReplaceValues ReplaceValues { get; set; }
+        public EventRooms Rooms { get; set; }
 
         [XmlIgnore]
         public IEnumerable<string> Names => this.GetAllNames();
 
         public ViewModel()
         {
-            instance = this;
-
             AllEvents = new Event[0];
 
             RefTime = GetLastMondayMorning();
@@ -166,7 +167,7 @@ namespace TimtableFH
             Groups = new EventGroups();
             EventColors = new EventColors();
             EventNames = new EventNames();
-            ReplaceValues = new ReplaceValues();
+            Rooms = new EventRooms();
         }
 
         public static DateTime GetLastMondayMorning()
@@ -183,7 +184,7 @@ namespace TimtableFH
             return date.AddHours(7);
         }
 
-        public async static Task<ViewModel> Load(string fileName)
+        public static async Task<ViewModel> Load(string fileName)
         {
             try
             {

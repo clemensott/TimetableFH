@@ -77,6 +77,13 @@ namespace TimtableFH
         [XmlIgnore]
         public Brush Brush { get; private set; }
 
+        public EventColor()
+        {
+            GroupCompareType = CompareType.Ignore;
+            NameCompareType = CompareType.Ignore;
+            Color = Colors.Gray;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string name)

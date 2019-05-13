@@ -9,14 +9,21 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+    <UserControl.Resources>
+        <x:Int32 x:Key="lockMillis">100</x:Int32>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <AutoSuggestBox Grid.Column="0" Name="asbName" Margin="3"
-                        Text="{Binding Name,Mode=TwoWay}" GotFocus="AutoSuggestBox_GotFocus"/>
-        <local:CompareTypeComboBox Grid.Column="1" SelectedItem="{Binding CompareType,Mode=TwoWay}" Margin="3"/>
+        <local:AutoSuggestBoxContainer Grid.Column="0" x:Name="asbName" Margin="3"
+                                       VerticalAlignment="Center" Text="{Binding Name,Mode=TwoWay}"
+                                       FocusLockMillis="{StaticResource lockMillis}"/>
+
+        <local:CompareTypeComboBox Grid.Column="1" Margin="3" VerticalAlignment="Center"
+                                   SelectedItem="{Binding CompareType,Mode=TwoWay}"/>
     </Grid>
 </UserControl>

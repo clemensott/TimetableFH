@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
@@ -33,11 +33,6 @@ namespace TimtableFH
         {
             Frame.GoBack();
         }
-
-        private void AutoSuggestBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            ((AutoSuggestBox)sender).IsSuggestionListOpen = true;
-        }
     }
 
     class ReplaceValueEditPageViewModel : INotifyPropertyChanged
@@ -62,7 +57,6 @@ namespace TimtableFH
                 OnPropertyChanged(nameof(ReplaceValue));
 
                 SetSuggestedExamples();
-                SetSuggestedReplacements();
             }
         }
 
@@ -73,22 +67,10 @@ namespace TimtableFH
             get { return suggestedExamples; }
             private set
             {
-                if (value == suggestedExamples) return;
+                if (Equals(value, suggestedExamples)) return;
 
                 suggestedExamples = value;
                 OnPropertyChanged(nameof(SuggestedExamples));
-            }
-        }
-
-        public IEnumerable<string> SuggestedReplacements
-        {
-            get { return suggestedReplacements; }
-            private set
-            {
-                if (value == suggestedReplacements) return;
-
-                suggestedReplacements = value;
-                OnPropertyChanged(nameof(SuggestedReplacements));
             }
         }
 
@@ -100,22 +82,12 @@ namespace TimtableFH
 
         private void ReplaceValue_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ReplaceValue.Reference))
-            {
-                SetSuggestedExamples();
-                SetSuggestedReplacements();
-            }
-            else if (e.PropertyName == nameof(ReplaceValue.Replacement)) SetSuggestedReplacements();
+            if (e.PropertyName == nameof(ReplaceValue.Reference)) SetSuggestedExamples();
         }
 
         private void SetSuggestedExamples()
         {
             SuggestedExamples = Examples.Filter(ReplaceValue?.Reference?.ToLower());
-        }
-
-        private void SetSuggestedReplacements()
-        {
-            SuggestedReplacements = GetReplaceSuggestions(ReplaceValue?.Reference, ReplaceValue?.Replacement);
         }
 
         private static IEnumerable<string> GetReplaceSuggestions(string reference, string replacement)
@@ -131,7 +103,7 @@ namespace TimtableFH
 
         private static IEnumerable<string> GetReplaceSuggestions(string reference)
         {
-            int index = reference.IndexOf(partToReplace);
+            int index = reference?.IndexOf(partToReplace) ?? -1;
 
             if (index == -1) return new string[] { reference };
 

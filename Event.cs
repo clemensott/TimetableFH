@@ -1,110 +1,72 @@
-﻿using StdOttStandard;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using Windows.UI;
+using Windows.UI.Xaml.Media;
 
 namespace TimtableFH
 {
-    public class Event : INotifyPropertyChanged
+    public class Event : EventBase, INotifyPropertyChanged
     {
-        /* Names: BETRGL, CommEng, DATSTR, DBDESIGN, DBDESIGN_G.AP147.BZ7, "Einf�hrung, Hausf�hrung",
-         *        INFO, KONFIG, KONFIG_Repetitorium, MATH1, MATH2, MATH2_A bis M, MATH2_G.AP147.BZ7, 
-         *        MATH2_N bis Z, Mentoring BSD, PMuAR, PROFENG, PROG1, PROG2_A bis M, PROG2_N bis Z, 
-         *        PROG2_objektorientierte Progr., PROG2_objektorientierte Program, "Recruiting Day, Audimax", 
-         *        RelDB, WEBTECH, WEBTECH_A bis M, WEBTECH_N bis Z, �KOGL
-         */
-        // Gropus: PA, PAM, B1, B2, M1, M2, VO, UE, SO, PAB
+        private bool isAdmittedClass, isCurrentGroup;
+        private string shortName, shortRoom;
+        private Brush brush;
 
-        private DateTime begin, end;
-        private string name, professor, room, group;
-
-        public long BeginTicks
+        public bool IsAdmittedClass
         {
-            get { return Begin.Ticks; }
-            set { Begin = new DateTime(value); }
-        }
-
-        [XmlIgnore]
-        public DateTime Begin
-        {
-            get { return begin; }
+            get => isAdmittedClass;
             set
             {
-                if (value == begin) return;
+                if (value == isAdmittedClass) return;
 
-                begin = value;
-                OnPropertyChanged(nameof(Begin));
+                isAdmittedClass = value;
+                OnPropertyChanged(nameof(IsAdmittedClass));
             }
         }
 
-        public long EndTicks
+        public string ShortName
         {
-            get { return End.Ticks; }
-            set { End = new DateTime(value); }
-        }
-
-        public DateTime End
-        {
-            get { return end; }
+            get => shortName;
             set
             {
-                if (value == end) return;
+                if (value == shortName) return;
 
-                end = value;
-                OnPropertyChanged(nameof(End));
+                shortName = value;
+                OnPropertyChanged(nameof(ShortName));
             }
         }
 
-        public string Name
+        public string ShortRoom
         {
-            get { return name; }
+            get => shortRoom;
             set
             {
-                if (value == name) return;
+                if (value == shortRoom) return;
 
-                name = value;
-                OnPropertyChanged(nameof(Name));
+                shortRoom = value;
+                OnPropertyChanged(nameof(ShortRoom));
             }
         }
 
-        public string Professor
+        public bool IsCurrentGroup
         {
-            get { return professor; }
+            get => isCurrentGroup;
             set
             {
-                if (value == professor) return;
+                if (value == isCurrentGroup) return;
 
-                professor = value;
-                OnPropertyChanged(nameof(Professor));
+                isCurrentGroup = value;
+                OnPropertyChanged(nameof(IsCurrentGroup));
             }
         }
 
-        public string Room
+        public Brush Brush
         {
-            get { return room; }
+            get => brush;
             set
             {
-                if (value == room) return;
+                if (value == brush) return;
 
-                room = value;
-                OnPropertyChanged(nameof(Room));
-            }
-        }
-
-        public string Group
-        {
-            get { return group; }
-            set
-            {
-                if (value == group) return;
-
-                group = value;
-                OnPropertyChanged(nameof(Group));
+                brush = value;
+                OnPropertyChanged(nameof(Brush));
             }
         }
 
@@ -112,33 +74,8 @@ namespace TimtableFH
         {
         }
 
-        public static Event GetFromCSV(Dictionary<string, string> dict)
+        public Event(Dictionary<string, string> dict) : base(dict)
         {
-            string[] betreffs = dict["Betreff"].Split(" / ").Select(p => p.Trim()).ToArray();
-            DateTime beginDate = DateTime.Parse(dict["Beginnt am"]);
-            TimeSpan beginTime = TimeSpan.Parse(dict["Beginnt um"]);
-            DateTime endDate = DateTime.Parse(dict["Endet am"]);
-            TimeSpan endTime = TimeSpan.Parse(dict["Endet um"]);
-            string room = dict["Ort"];
-
-            Event output = new Event
-            {
-                Begin = beginDate.Add(beginTime),
-                End = endDate.Add(endTime),
-                Name = betreffs[0],
-                Professor = betreffs[1],
-                Group = betreffs[2],
-                Room = room
-            };
-
-            return output;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string name)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

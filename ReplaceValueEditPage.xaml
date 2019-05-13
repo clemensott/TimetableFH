@@ -8,6 +8,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <x:Int32 x:Key="lockMillis">100</x:Int32>
+    </Page.Resources>
+
     <Grid Margin="3">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -17,13 +21,16 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <local:FocusableControl/>
+
         <TextBlock Grid.Row="0" Text="Reference:" Margin="3"/>
-        <AutoSuggestBox Grid.Row="1" Margin="3" Text="{Binding ReplaceValue.Reference,Mode=TwoWay}"
-                        ItemsSource="{Binding SuggestedExamples}" GotFocus="AutoSuggestBox_GotFocus"/>
+        <local:AutoSuggestBoxContainer Grid.Row="1" Name="asbRef" Margin="3"
+                                       FocusLockMillis="{StaticResource lockMillis}"
+                                       Text="{Binding ReplaceValue.Reference,Mode=TwoWay}"
+                                       ItemsSource="{Binding SuggestedExamples}"/>
 
         <TextBlock Grid.Row="2" Text="Replacement:" Margin="3"/>
-        <AutoSuggestBox Grid.Row="3" Margin="3" Text="{Binding ReplaceValue.Replacement,Mode=TwoWay}"
-                        ItemsSource="{Binding SuggestedReplacements}" GotFocus="AutoSuggestBox_GotFocus"/>
+        <TextBox Grid.Row="3" Margin="3" Text="{Binding ReplaceValue.Replacement,Mode=TwoWay}"/>
     </Grid>
 
     <Page.BottomAppBar>

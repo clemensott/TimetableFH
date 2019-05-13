@@ -13,6 +13,8 @@
     <Page.Resources>
         <x:Int32 x:Key="zero">0</x:Int32>
         <spi:VisibleCollapsedConverter x:Key="visNoEleCon" CompareValue="{StaticResource zero}"/>
+
+        <x:Int32 x:Key="lockMillis">100</x:Int32>
     </Page.Resources>
     
     <Grid>
@@ -25,8 +27,9 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Text="Name:"/>
-        <AutoSuggestBox Grid.Row="1" Text="{Binding EventGroup.Name,Mode=TwoWay}"
-                        ItemsSource="{Binding SuggestedGroups}" GotFocus="AutoSuggestBox_GotFocus"/>
+        <local:AutoSuggestBoxContainer Grid.Row="1" Text="{Binding EventGroup.Name,Mode=TwoWay}"
+                                       ItemsSource="{Binding SuggestedGroups}"
+                                       FocusLockMillis="{StaticResource lockMillis}"/>
 
         <TextBlock Grid.Row="2" Text="Exclude Groups:" VerticalAlignment="Center"/>
 
@@ -45,7 +48,8 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <local:NameCompareControl Margin="3" Value="{Binding}" Names="{Binding ElementName=sicGroups,Path=Input}"/>
+                        <local:NameCompareControl Margin="3" Value="{Binding}" 
+                                                  Names="{Binding ElementName=sicGroups,Path=Input}"/>
                         <SymbolIcon Grid.Column="4" Symbol="Remove" Margin="8,3" Tapped="SinRemoveGroup_Tapped"/>
                     </Grid>
                 </DataTemplate>

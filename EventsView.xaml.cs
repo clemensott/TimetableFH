@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -69,6 +68,7 @@ namespace TimtableFH
         }
 
         private Event[] events;
+        private Dictionary<Event, EventControl> eventControls;
 
         public DateTime ReferenceDate
         {
@@ -99,6 +99,8 @@ namespace TimtableFH
         public EventsView()
         {
             this.InitializeComponent();
+
+            eventControls = new Dictionary<Event, EventControl>();
 
             UpdateColumnsCount();
             UpdateHeaders();
@@ -147,15 +149,19 @@ namespace TimtableFH
 
         private void AddOrUpdateControl(Event fhEvent)
         {
-            bool view = ViewEvents.Contains(fhEvent);
             EventControl control = GetEventControl(fhEvent);
 
-            if (control != null) SetSizeAndPosition(fhEvent, control);
+            if (control != null)
+            {
+                SetSizeAndPosition(fhEvent, control);
+                control.Visibility = Visibility.Visible;
+            }
             else
             {
                 control = new EventControl();
                 SetSizeAndPosition(fhEvent, control);
 
+                eventControls.Add(fhEvent, control);
                 grdEvents.Children.Add(control);
             }
         }
@@ -164,21 +170,15 @@ namespace TimtableFH
         {
             EventControl control = GetEventControl(fhEvent);
 
-            if (control != null) grdEvents.Children.Remove(control);
-        }
-
-        private void Clear()
-        {
-            foreach (EventControl control in grdEvents.Children)
-            {
-                Event fhEvent = (Event)control.DataContext;
-
-                fhEvent.PropertyChanged -= FhEvent_PropertyChanged;
-            }
+            if (control != null) control.Visibility = Visibility.Collapsed;
         }
 
         private EventControl GetEventControl(Event fhEvent)
         {
+            EventControl control;
+
+            return eventControls.TryGetValue(fhEvent, out control) ? control : null;
+
             return grdEvents.Children.OfType<EventControl>().FirstOrDefault(c => c.DataContext == fhEvent);
         }
 
@@ -300,7 +300,7 @@ namespace TimtableFH
         {
             TextBlock tbl = new TextBlock()
             {
-                Text = GetDayOfWeekIn(dayOffset).ToString(),
+                Text = GetDayOfWeekIn(dayOffset),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 TextAlignment = TextAlignment.Center,
                 TextWrapping = TextWrapping.Wrap
@@ -369,37 +369,37 @@ namespace TimtableFH
             {
                 case 1:
                     return "Jan.";
-            
+
                 case 2:
                     return "Feb.";
-            
+
                 case 3:
                     return "März";
-            
+
                 case 4:
                     return "April";
-            
+
                 case 5:
                     return "Mai";
-            
+
                 case 6:
                     return "Juni";
-            
+
                 case 7:
                     return "Juli";
-            
+
                 case 8:
                     return "Aug.";
-            
+
                 case 9:
                     return "Sep.";
-            
+
                 case 10:
                     return "Okt.";
-            
+
                 case 11:
                     return "Nov.";
-            
+
                 case 12:
                     return "Dez.";
             }

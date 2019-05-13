@@ -12,26 +12,22 @@
     VerticalAlignment="Stretch"
     HorizontalAlignment="Stretch">
 
-    <StackPanel Background="{Binding ElementName=mulColor,Path=Output}"
+    <StackPanel Background="{Binding Brush}"
                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                 BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}"
                 BorderThickness="2">
         <con:MultipleInputs2Converter x:Name="mulTime" Input0="{Binding Begin}"
                                       Input1="{Binding End}" Convert="MulTime_Convert"/>
-        <con:SingleInputConverter x:Name="svcName" Input="{Binding Name}" Convert="SvcName_Convert"/>
-        <con:SingleInputConverter x:Name="svcRoom" Input="{Binding Room}" Convert="SvcRoom_Convert"/>
-        <con:MultipleInputs2Converter x:Name="mulColor" Input0="{Binding Name}"
-                                      Input1="{Binding Group}" Convert="MulColor_Convert"/>
         
         <TextBlock Name="tblTime" HorizontalAlignment="Center" 
                    TextWrapping="Wrap" Foreground="Black" TextAlignment="Center"
                    Text="{Binding ElementName=mulTime,Path=Output}"/>
         <TextBlock Name="tblName" HorizontalAlignment="Center" 
                    TextWrapping="Wrap" Foreground="Black" TextAlignment="Center"
-                   Text="{Binding ElementName=svcName,Path=Output}"/>
+                   Text="{Binding ShortName}"/>
         <TextBlock Name="tblRoom" HorizontalAlignment="Center" 
                    TextWrapping="Wrap" Foreground="Black" TextAlignment="Center"
-                   Text="{Binding ElementName=svcRoom,Path=Output}"/>
+                   Text="{Binding ShortRoom}"/>
         <TextBlock Name="tblGroup" HorizontalAlignment="Center" TextAlignment="Center"
                    TextWrapping="Wrap" Foreground="Black" Text="{Binding Group}"/>
     </StackPanel>
