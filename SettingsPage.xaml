@@ -22,18 +22,10 @@
     </Page.Resources>
 
     <ScrollViewer>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
+        <StackPanel>
             <con:SingleInputConverter x:Name="sicNames" Input="{Binding Names}"/>
-            
-            <Grid Grid.Row="0" DataContext="{Binding NotAdmittedClasses}" Margin="3,3,3,10">
+
+            <Grid DataContext="{Binding NotAdmittedClasses}" Margin="3,3,3,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -69,7 +61,7 @@
                 <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddClasses_Tapped"/>
             </Grid>
 
-            <Grid Grid.Row="1" DataContext="{Binding Groups}" Margin="3">
+            <Grid DataContext="{Binding Groups}" Margin="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -111,7 +103,7 @@
                 <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddGroup_Tapped"/>
             </Grid>
 
-            <Grid Grid.Row="2" DataContext="{Binding EventColors}" Margin="3,10">
+            <Grid DataContext="{Binding EventColors}" Margin="3,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -184,7 +176,7 @@
                 <Button Grid.Row="3" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddColor_Tapped"/>
             </Grid>
 
-            <Grid Grid.Row="3" DataContext="{Binding EventNames}" Margin="3,10">
+            <Grid DataContext="{Binding EventNames}" Margin="3,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -229,7 +221,7 @@
                 <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddName_Tapped"/>
             </Grid>
 
-            <Grid Grid.Row="4" DataContext="{Binding Rooms}" Margin="3,10,3,3">
+            <Grid DataContext="{Binding Rooms}" Margin="3,10,3,3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -270,7 +262,12 @@
 
                 <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Tapped="BtnAddRoom_Tapped" Margin="3"/>
             </Grid>
-        </Grid>
+
+            <StackPanel Orientation="Horizontal" Margin="3">
+                <TextBlock Text="Events: " Margin="3"/>
+                <TextBlock Text="{Binding AllEvents.Length}" Margin="3"/>
+            </StackPanel>
+        </StackPanel>
     </ScrollViewer>
 
     <Page.BottomAppBar>

@@ -17,50 +17,44 @@
         <x:Int32 x:Key="lockMillis">100</x:Int32>
     </Page.Resources>
     
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <ScrollViewer>
+        <StackPanel>
+            <TextBlock Text="Name:"/>
+            <local:AutoSuggestBoxContainer Text="{Binding EventGroup.Name,Mode=TwoWay}"
+                                           ItemsSource="{Binding SuggestedGroups}"
+                                           FocusLockMillis="{StaticResource lockMillis}"/>
 
-        <TextBlock Grid.Row="0" Text="Name:"/>
-        <local:AutoSuggestBoxContainer Grid.Row="1" Text="{Binding EventGroup.Name,Mode=TwoWay}"
-                                       ItemsSource="{Binding SuggestedGroups}"
-                                       FocusLockMillis="{StaticResource lockMillis}"/>
+            <TextBlock Grid.Row="2" Text="Exclude Groups:" VerticalAlignment="Center"/>
 
-        <TextBlock Grid.Row="2" Text="Exclude Groups:" VerticalAlignment="Center"/>
+            <con:SingleInputConverter x:Name="sicGroups" Input="{Binding Groups}"/>
+            <ItemsControl ItemsSource="{Binding EventGroup.Collection}">
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-        <con:SingleInputConverter x:Name="sicGroups" Input="{Binding Groups}"/>
-        <ItemsControl Grid.Row="3" ItemsSource="{Binding EventGroup.Collection}">
-            <ItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                            <local:NameCompareControl Margin="3" Value="{Binding}" 
+                                                      Names="{Binding ElementName=sicGroups,Path=Input}"/>
+                            <SymbolIcon Grid.Column="4" Symbol="Remove" Margin="8,3" Tapped="SinRemoveGroup_Tapped"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
-                        <local:NameCompareControl Margin="3" Value="{Binding}" 
-                                                  Names="{Binding ElementName=sicGroups,Path=Input}"/>
-                        <SymbolIcon Grid.Column="4" Symbol="Remove" Margin="8,3" Tapped="SinRemoveGroup_Tapped"/>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+            <TextBlock Text="No Groups" Margin="3"
+                       Visibility="{Binding EventGroup.Collection.Count,Converter={StaticResource visNoEleCon}}"/>
 
-        <TextBlock Grid.Row="3" Text="No Groups" Margin="3"
-                   Visibility="{Binding EventGroup.Collection.Count,Converter={StaticResource visNoEleCon}}"/>
-
-        <Button Grid.Row="4" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddGroup_Tapped"/>
-    </Grid>
+            <Button Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddGroup_Tapped"/>
+        </StackPanel>
+    </ScrollViewer>
 
     <Page.BottomAppBar>
         <CommandBar>
