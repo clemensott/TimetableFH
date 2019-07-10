@@ -181,6 +181,18 @@ namespace TimetableFH
             Frame.Navigate(typeof(ReplaceValueEditPage), replaceValueViewModel);
         }
 
+        private void SinRemovePostData_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            StringKeyValuePair pair = (StringKeyValuePair) ((FrameworkElement) sender).DataContext;
+
+            viewModel.PostDataPairs.Remove(pair);
+        }
+
+        private void BtnAddPostData_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            viewModel.PostDataPairs.Add(new StringKeyValuePair());
+        }
+
         private void EleRoom_EditTapped(object sender, TappedRoutedEventArgs e)
         {
             ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;

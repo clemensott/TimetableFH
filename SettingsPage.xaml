@@ -263,6 +263,53 @@
                 <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Tapped="BtnAddRoom_Tapped" Margin="3"/>
             </Grid>
 
+            <Grid DataContext="{Binding PostDataPairs}" Margin="3,10,3,3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Post Data:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
+
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding}" Margin="3">
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox Grid.Column="0" Text="{Binding Key}" Margin="3"/>
+                                <TextBox Grid.Column="1" Text="{Binding Value}" Margin="3"/>
+
+                                <SymbolIcon Grid.Column="2" Symbol="Cancel" Margin="3" 
+                                            Tapped="SinRemovePostData_Tapped"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock Grid.Row="1" Text="No Post Data" Margin="3"
+                           Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
+
+                <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Tapped="BtnAddPostData_Tapped" Margin="3"/>
+            </Grid>
+
+            <StackPanel Margin="3">
+                <TextBlock Text="Base Url:" Margin="3"/>
+                <TextBox Margin="3" Text="{Binding BaseUrl,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Url Addition:" Margin="3"/>
+                <TextBox Margin="3" Text="{Binding RequestUrlAddition,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+
             <StackPanel Orientation="Horizontal" Margin="3">
                 <TextBlock Text="Events: " Margin="3"/>
                 <TextBlock Text="{Binding AllEvents.Length}" Margin="3"/>

@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace TimetableFH
@@ -40,11 +32,18 @@ namespace TimetableFH
         /// werden z. B. verwendet, wenn die Anwendung gestartet wird, um eine bestimmte Datei zu öffnen.
         /// </summary>
         /// <param name="e">Details über Startanforderung und -prozess.</param>
-        protected async override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
-            viewModel = await ViewModel.Load(settingsFileName);
+            try
+            {
+                viewModel = await ViewModelUtils.Load(settingsFileName);
+            }
+            catch
+            {
+                viewModel = new ViewModel();
+            }
 
             // App-Initialisierung nicht wiederholen, wenn das Fenster bereits Inhalte enthält.
             // Nur sicherstellen, dass das Fenster aktiv ist.
@@ -99,9 +98,18 @@ namespace TimetableFH
         {
             var deferral = e.SuspendingOperation.GetDeferral();
 
-            await viewModel.Save(settingsFileName);
+            try
+            {
+                await viewModel.Save(settingsFileName);
+            }
+            catch { }
 
             deferral.Complete();
+        }
+
+        public async Task<ViewModel> ImportViewModel(StorageFile file)
+        {
+            return viewModel = await ViewModelUtils.Load(file);
         }
     }
 }

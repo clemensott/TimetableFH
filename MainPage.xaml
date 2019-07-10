@@ -28,7 +28,11 @@
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Update" Icon="Refresh" Click="AbbDownloadFile_Click"/>
                 <AppBarButton Label="Open" Icon="OpenFile" Click="AbbOpenFile_Click"/>
-                <AppBarButton Label="Settings" Icon="Setting" Click="AbbSettings_Click"/>
+                <AppBarSeparator />
+                <AppBarButton Label="Open Settings" Icon="Setting" Click="AbbSettings_Click"/>
+                <AppBarButton Label="Export Settings" Icon="Save" Click="AbbExportSettings_Click"/>
+                <AppBarButton Label="Import Settings" Icon="Find" Click="AbbImportSettings_Click"/>
+                <AppBarSeparator />
                 <AppBarButton Label="Zoom In" Icon="ZoomIn" Click="AbbLessTime_Click"/>
                 <AppBarButton Label="Zoom Out" Icon="ZoomOut" Click="AbbMoreTime_Click"/>
                 <AppBarButton Label="Earlier" Icon="Download" Click="AbbRefUp_Click"/>

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Popups;
@@ -95,7 +96,11 @@ namespace TimetableFH
 
         private async Task DownloadCsv()
         {
-            StorageFile srcFile = await EventRequestor.DownloadCsv();
+            string baseUrl = viewModel.BaseUrl;
+            string urlAddition = viewModel.RequestUrlAddition;
+            string postData = viewModel.PostDataPairs.ToPostData();
+            StorageFile srcFile = await EventRequester.DownloadCsv(baseUrl, urlAddition, postData);
+
             await SetEventsFromFile(srcFile);
 
             StorageFile destFile = await ApplicationData.Current.LocalFolder
@@ -131,6 +136,45 @@ namespace TimetableFH
         private void AbbSettings_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(SettingsPage), viewModel);
+        }
+
+        private async void AbbExportSettings_Click(object sender, RoutedEventArgs e)
+        {
+            const string fileName = "TimetableFhSettings.xml";
+            const CreationCollisionOption option = CreationCollisionOption.GenerateUniqueName;
+            StorageFolder folder = KnownFolders.DocumentsLibrary;
+            IAsyncOperation<StorageFile> fileOperation = folder.CreateFileAsync(fileName, option);
+
+            try
+            {
+                await viewModel.Save(fileOperation);
+            }
+            catch (Exception exc)
+            {
+                await new MessageDialog(exc.ToString(), "ExportSettings").ShowAsync();
+            }
+        }
+
+        private async void AbbImportSettings_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                FileOpenPicker picker = new FileOpenPicker()
+                {
+                    SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+                    ViewMode = PickerViewMode.List
+                };
+
+                picker.FileTypeFilter.Add(".xml");
+
+                StorageFile srcFile = await picker.PickSingleFileAsync();
+
+                DataContext = viewModel = await ((App)Application.Current).ImportViewModel(srcFile);
+            }
+            catch (Exception exc)
+            {
+                await new MessageDialog(exc.ToString(), "ImportSettings").ShowAsync();
+            }
         }
 
         private void AbbMoreTime_Click(object sender, RoutedEventArgs e)

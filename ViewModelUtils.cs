@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+using Windows.Foundation;
+using Windows.Storage;
 using Windows.UI.Xaml.Media;
 
 namespace TimetableFH
 {
     static class ViewModelUtils
     {
+        private static readonly XmlSerializer serializer = new XmlSerializer(typeof(ViewModel));
+
         public static IEnumerable<Event> GetAdmittedEvents(this IEnumerable<Event> events, IEnumerable<NameCompare> notAdmittedClasses)
         {
             return events.Where(e => !IsNotAdmittedEvent(notAdmittedClasses, e));
@@ -74,7 +81,7 @@ namespace TimetableFH
         private static string GetShortRoomName(this IEnumerable<ReplaceValue> items, string rawRoom, out IEnumerable<string> types)
         {
             List<string> roomTypes = new List<string>();
-            
+
             string completeShortName = string.Join("/", rawRoom.Split('/').Select(r =>
             {
                 string type;
@@ -206,6 +213,41 @@ namespace TimetableFH
             if (string.IsNullOrWhiteSpace(value) || viewModel.Rooms.Examples.Contains(value)) return;
 
             viewModel.Rooms.Examples.Add(value);
+        }
+
+        public static string ToPostData(this IEnumerable<StringKeyValuePair> pairs)
+        {
+            return string.Join("&", pairs.Select(p => p.Key + "=" + p.Value));
+        }
+
+        public static async Task<ViewModel> Load(string fileName)
+        {
+            StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
+
+            return await Load(file);
+        }
+
+        public static async Task<ViewModel> Load(StorageFile file)
+        {
+            string xmlText = await FileIO.ReadTextAsync(file);
+
+            return (ViewModel)serializer.Deserialize(new StringReader(xmlText));
+        }
+
+        public static Task Save(this ViewModel viewModel, string fileName)
+        {
+            IAsyncOperation<StorageFile> fileOperation = ApplicationData.Current.LocalFolder
+                .CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
+
+            return Save(viewModel, fileOperation);
+        }
+
+        public static async Task Save(this ViewModel viewModel, IAsyncOperation<StorageFile> fileOperation)
+        {
+            StringWriter writer = new StringWriter();
+            serializer.Serialize(writer, viewModel);
+
+            await FileIO.WriteTextAsync(await fileOperation, writer.ToString());
         }
     }
 }

@@ -162,7 +162,7 @@
       <DependentUpon>EventNameEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="EventNames.cs" />
-    <Compile Include="EventRequestor.cs" />
+    <Compile Include="EventRequester.cs" />
     <Compile Include="EventsView.xaml.cs">
       <DependentUpon>EventsView.xaml</DependentUpon>
     </Compile>
@@ -183,6 +183,8 @@
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StringKeyValuePair.cs" />
+    <Compile Include="StringKeyValuePairs.cs" />
     <Compile Include="ViewModelUtils.cs" />
     <Compile Include="ViewModel.cs" />
   </ItemGroup>

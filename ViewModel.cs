@@ -2,12 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Windows.Foundation;
-using Windows.Storage;
 
 namespace TimetableFH
 {
@@ -15,13 +11,12 @@ namespace TimetableFH
 
     public class ViewModel : INotifyPropertyChanged
     {
-        private static readonly XmlSerializer serializer = new XmlSerializer(typeof(ViewModel));
-
         private bool viewGroupEvents;
         private DateTime refTime;
         private TimeSpan viewDuration;
         private Event[] allEvents, groupEvents, admittedEvents;
         private int viewDaysCount;
+        private string baseUrl, requestUrlAddition;
 
         public bool ViewGroupEvents
         {
@@ -142,6 +137,30 @@ namespace TimetableFH
             }
         }
 
+        public string BaseUrl
+        {
+            get => baseUrl;
+            set
+            {
+                if (value == baseUrl) return;
+
+                baseUrl = value;
+                OnPropertyChanged(nameof(BaseUrl));
+            }
+        }
+
+        public string RequestUrlAddition
+        {
+            get => requestUrlAddition;
+            set
+            {
+                if (value == requestUrlAddition) return;
+
+                requestUrlAddition = value;
+                OnPropertyChanged(nameof(RequestUrlAddition));
+            }
+        }
+
         public EventClasses NotAdmittedClasses { get; set; }
 
         public EventGroups Groups { get; set; }
@@ -151,6 +170,8 @@ namespace TimetableFH
         public EventNames EventNames { get; set; }
 
         public EventRooms Rooms { get; set; }
+
+        public StringKeyValuePairs PostDataPairs { get; set; }
 
         [XmlIgnore]
         public IEnumerable<string> Names => this.GetAllNames();
@@ -162,12 +183,15 @@ namespace TimetableFH
             RefTime = GetLastMondayMorning();
             ViewDuration = TimeSpan.FromHours(8);
             ViewDaysCount = 5;
+            BaseUrl = "http://stundenplan.fh-joanneum.at/";
+            RequestUrlAddition = "?new_stg=MSD&new_jg=2018&new_date=1569830400&new_viewmode=matrix_vertical";
 
             NotAdmittedClasses = new EventClasses();
             Groups = new EventGroups();
             EventColors = new EventColors();
             EventNames = new EventNames();
             Rooms = new EventRooms();
+            PostDataPairs = new StringKeyValuePairs();
         }
 
         public static DateTime GetLastMondayMorning()
@@ -182,41 +206,6 @@ namespace TimetableFH
             while (date.DayOfWeek != DayOfWeek.Monday) date = date.AddDays(-1);
 
             return date.AddHours(7);
-        }
-
-        public static async Task<ViewModel> Load(string fileName)
-        {
-            try
-            {
-                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
-                string xmlText = await FileIO.ReadTextAsync(file);
-
-                return (ViewModel)serializer.Deserialize(new StringReader(xmlText));
-            }
-            catch (Exception exc)
-            {
-                return new ViewModel();
-            }
-        }
-
-        public async Task Save(string fileName)
-        {
-            await Save(fileName, this);
-        }
-
-        public async static Task Save(string fileName, ViewModel viewModel)
-        {
-            try
-            {
-                IAsyncOperation<StorageFile> fileOperation = ApplicationData.Current.LocalFolder
-                    .CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
-
-                StringWriter writer = new StringWriter();
-                serializer.Serialize(writer, viewModel);
-
-                await FileIO.WriteTextAsync(await fileOperation, writer.ToString());
-            }
-            catch { }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
