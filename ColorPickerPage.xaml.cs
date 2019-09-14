@@ -1,11 +1,7 @@
-﻿using StdOttStandard;
-using System;
-using Windows.Foundation;
+﻿using StdOttStandard.AsyncResult;
 using Windows.UI;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=234238 dokumentiert.
@@ -17,7 +13,7 @@ namespace TimetableFH
     /// </summary>
     public sealed partial class ColorPickerPage : Page
     {
-        private SetableValue<Color?> setableValue;
+        private AsyncResult<Color?, Color> setableValue;
 
         public ColorPickerPage()
         {
@@ -26,10 +22,9 @@ namespace TimetableFH
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            (Color color, SetableValue<Color?> value) = ((Color, SetableValue<Color?>))e.Parameter;
+            setableValue = (AsyncResult<Color?, Color>)e.Parameter;
 
-            setableValue = value;
-            colorPicker.SelectedColor = color;
+            colorPicker.SelectedColor = setableValue.Input;
 
             base.OnNavigatedTo(e);
         }

@@ -1,8 +1,7 @@
-﻿using StdOttStandard;
+﻿using StdOttStandard.AsyncResult;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -33,9 +32,9 @@ namespace TimetableFH
 
         private async void RectColor_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            SetableValue<Color?> setableValue = new SetableValue<Color?>();
+            AsyncResult<Color?, Color> setableValue = new AsyncResult<Color?, Color>(viewModel.EventColor.Color);
 
-            Frame.Navigate(typeof(ColorPickerPage), (viewModel.EventColor.Color, setableValue));
+            Frame.Navigate(typeof(ColorPickerPage), setableValue);
 
             Color? color = await setableValue.Task;
 

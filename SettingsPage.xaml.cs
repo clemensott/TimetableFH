@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using StdOttStandard;
+using StdOttStandard.AsyncResult;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -123,9 +123,9 @@ namespace TimetableFH
 
         private async void BtnChangeColor_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            SetableValue<Color?> setableValue = new SetableValue<Color?>();
+            AsyncResult<Color?, Color> setableValue = new AsyncResult<Color?, Color>(viewModel.EventColors.DefaultColor);
 
-            Frame.Navigate(typeof(ColorPickerPage), (viewModel.EventColors.DefaultColor, setableValue));
+            Frame.Navigate(typeof(ColorPickerPage), setableValue);
 
             Color? color = await setableValue.Task;
 
