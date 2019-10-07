@@ -39,13 +39,23 @@ namespace TimetableFH
             s.UpdateRowsHeight();
         }
 
-        public static readonly DependencyProperty ViewDaysCountProperty =
-            DependencyProperty.Register("ViewDaysCount", typeof(int), typeof(EventsView),
-                new PropertyMetadata(5, new PropertyChangedCallback(OnViewDaysCountPropertyChanged)));
+        public static readonly DependencyProperty IsSingleDayProperty =
+            DependencyProperty.Register("IsSingleDay", typeof(bool), typeof(EventsView),
+                new PropertyMetadata(default(bool), OnIsSingleDayPropertyChanged));
 
-        private static void OnViewDaysCountPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void OnIsSingleDayPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var s = (EventsView)sender;
+            EventsView s = (EventsView)sender;
+            bool value = (bool)e.NewValue;
+        }
+
+        public static readonly DependencyProperty DaysOfWeekProperty =
+            DependencyProperty.Register("DaysOfWeek", typeof(DaysOfWeek), typeof(EventsView),
+                new PropertyMetadata(default(DayOfWeek), OnDaysOfWeekPropertyChanged));
+
+        private static void OnDaysOfWeekPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            EventsView s = (EventsView)sender;
 
             s.UpdateColumnsCount();
             s.UpdateViewEvents();
@@ -62,13 +72,13 @@ namespace TimetableFH
 
             s.Unsubscribe(s.events);
             s.events = value.ToArray();
-            s.Subscribe(value);
+            s.Subscribe(s.events);
 
             s.UpdateViewEvents();
         }
 
         private Event[] events;
-        private Dictionary<Event, EventControl> eventControls;
+        private readonly Dictionary<Event, EventControl> eventControls;
 
         public DateTime ReferenceDate
         {
@@ -82,10 +92,16 @@ namespace TimetableFH
             set { SetValue(ViewDurationProperty, value); }
         }
 
-        public int ViewDaysCount
+        public bool IsSingleDay
         {
-            get { return (int)GetValue(ViewDaysCountProperty); }
-            set { SetValue(ViewDaysCountProperty, value); }
+            get => (bool)GetValue(IsSingleDayProperty);
+            set => SetValue(IsSingleDayProperty, value);
+        }
+
+        public DaysOfWeek DaysOfWeek
+        {
+            get => (DaysOfWeek)GetValue(DaysOfWeekProperty);
+            set => SetValue(DaysOfWeekProperty, value);
         }
 
         public IEnumerable<Event> AllEvents
@@ -106,6 +122,21 @@ namespace TimetableFH
             UpdateHeaders();
             UpdateRowsHeight();
             UpdateViewEvents();
+        }
+
+        private int GetViewDaysCount()
+        {
+            int no = (int)DaysOfWeek;
+            int count = 0;
+
+            while (no > 0)
+            {
+                if ((no & 1) > 0) count++;
+
+                no = no >> 1;
+            }
+
+            return count;
         }
 
         private void Subscribe(IEnumerable<Event> events)
@@ -178,13 +209,11 @@ namespace TimetableFH
             EventControl control;
 
             return eventControls.TryGetValue(fhEvent, out control) ? control : null;
-
-            return grdEvents.Children.OfType<EventControl>().FirstOrDefault(c => c.DataContext == fhEvent);
         }
 
         private void SetSizeAndPosition(Event fhEvent, EventControl control)
         {
-            int deltaDays = (fhEvent.Begin.Date - ReferenceDate.Date).Days;
+            int columnIndex = GetColumnIndex(fhEvent.Begin.DayOfWeek);
 
             TimeSpan offset = fhEvent.Begin.TimeOfDay - ReferenceDate.TimeOfDay;
             int offsetRows = (int)Math.Floor(offset.TotalDays / grdRowDuration.TotalDays);
@@ -193,16 +222,43 @@ namespace TimetableFH
             int durationRows = (int)Math.Ceiling(duration.TotalDays / grdRowDuration.TotalDays);
 
             control.DataContext = fhEvent;
-            control.SetValue(Grid.ColumnProperty, deltaDays);
+            control.SetValue(Grid.ColumnProperty, columnIndex);
             control.SetValue(Grid.RowProperty, offsetRows);
             control.SetValue(Grid.RowSpanProperty, durationRows);
+        }
+
+        private int GetColumnIndex(DayOfWeek day)
+        {
+            DateTime date = ReferenceDate;
+            int index = 0;
+
+            while (date.DayOfWeek != day)
+            {
+                if (DaysOfWeek.Contains(date.DayOfWeek)) index++;
+
+                date = date.AddDays(1);
+            }
+
+            return index;
+        }
+
+        private DateTime GetDate(int columnIndex)
+        {
+            DateTime date = ReferenceDate;
+
+            while (true)
+            {
+                if (!DaysOfWeek.Contains(date.DayOfWeek)) date = date.Date.AddDays(1);
+                else if (columnIndex > 0) columnIndex--;
+                else return date;
+            }
         }
 
         private bool ViewEvent(Event fhEvent)
         {
             int deltaDays = (fhEvent.Begin.Date - ReferenceDate.Date).Days;
 
-            return deltaDays >= 0 && deltaDays < ViewDaysCount;
+            return deltaDays >= 0 && deltaDays < 7 && DaysOfWeek.Contains(fhEvent.Begin.Date.DayOfWeek);
         }
 
         private void UpdateViewEvents()
@@ -220,12 +276,12 @@ namespace TimetableFH
 
         private void UpdateColumnsCount()
         {
-            while (grdEvents.ColumnDefinitions.Count < ViewDaysCount)
+            while (grdEvents.ColumnDefinitions.Count < GetViewDaysCount())
             {
                 AddDay();
             }
 
-            while (grdEvents.ColumnDefinitions.Count > ViewDaysCount)
+            while (grdEvents.ColumnDefinitions.Count > GetViewDaysCount())
             {
                 RemoveDay();
             }
@@ -271,17 +327,17 @@ namespace TimetableFH
             rectHori.SetValue(Grid.ColumnSpanProperty, span);
         }
 
-        private ColumnDefinition GetStarColumnDefinition()
+        private static ColumnDefinition GetStarColumnDefinition()
         {
             return new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) };
         }
 
-        private ColumnDefinition GetColumnDefinition(double width)
+        private static ColumnDefinition GetColumnDefinition(double width)
         {
             return new ColumnDefinition() { Width = new GridLength(width) };
         }
 
-        private Rectangle GetVerticalLine(int day)
+        private static Rectangle GetVerticalLine(int day)
         {
             Rectangle rect = new Rectangle()
             {
@@ -314,24 +370,35 @@ namespace TimetableFH
 
         private void TblHeader_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (ViewDaysCount == 1)
+            if (IsSingleDay)
             {
-                ReferenceDate = ViewModel.GetMondayMorningBefore(ReferenceDate);
-                ViewDaysCount = 5;
+                IsSingleDay = false;
+                ReferenceDate = Settings.GetMondayMorningBefore(ReferenceDate);
             }
             else
             {
                 int index = (int)((UIElement)sender).GetValue(Grid.ColumnProperty);
-                ReferenceDate = ReferenceDate.AddDays(index / 2);
-                ViewDaysCount = 1;
+                ReferenceDate = GetDate(index);
+                IsSingleDay = true;
             }
         }
 
         private string GetDayOfWeekIn(int dayOffset)
         {
-            DateTime day = ReferenceDate.AddDays(dayOffset);
+            DateTime date = ReferenceDate;
 
-            return string.Format("{0}, {1}. {2}", GetShortDayOfWeek(day.DayOfWeek), day.Day, GetShortMonth(day.Month));
+            while (true)
+            {
+                if (!DaysOfWeek.Contains(date.DayOfWeek)) date = date.AddDays(1);
+                else if (dayOffset > 0)
+                {
+                    dayOffset--;
+                    date = date.AddDays(1);
+                }
+                else break;
+            }
+
+            return string.Format("{0}, {1}. {2}", GetShortDayOfWeek(date.DayOfWeek), date.Day, GetShortMonth(date.Month));
         }
 
         private static string GetShortDayOfWeek(DayOfWeek day)
@@ -412,7 +479,7 @@ namespace TimetableFH
             int i = 0;
             foreach (TextBlock tbl in grdHeaders.Children.OfType<TextBlock>())
             {
-                tbl.Text = GetDayOfWeekIn(i++).ToString();
+                tbl.Text = GetDayOfWeekIn(i++);
             }
         }
 

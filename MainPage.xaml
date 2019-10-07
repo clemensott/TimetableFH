@@ -9,10 +9,10 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <local:EventsView ReferenceDate="{Binding RefTime,Mode=TwoWay}" 
+        <local:EventsView ReferenceDate="{Binding Settings.RefTime,Mode=TwoWay}" 
                           AllEvents="{Binding ViewEvents}" 
-                          ViewDaysCount="{Binding ViewDaysCount,Mode=TwoWay}"
-                          ViewDuration="{Binding ViewDuration,Mode=TwoWay}"/>
+                          DaysOfWeek="{Binding Settings.DaysOfWeek,Mode=TwoWay}"
+                          ViewDuration="{Binding Settings.ViewDuration,Mode=TwoWay}"/>
     </Grid>
 
     <Page.BottomAppBar>
@@ -22,7 +22,7 @@
                 <AppBarButton Label="Now" Icon="GoToToday" Click="AbbThisWeek_Click"/>
                 <AppBarButton Label="Next" Icon="Next" Click="AbbNextWeek_Click"/>
                 <AppBarToggleButton Label="ViewGroup" Icon="ViewAll"
-                                    IsChecked="{Binding ViewGroupEvents,Mode=TwoWay}"/>
+                                    IsChecked="{Binding Settings.ViewGroupEvents,Mode=TwoWay}"/>
             </CommandBar.PrimaryCommands>
 
             <CommandBar.SecondaryCommands>

@@ -15,7 +15,7 @@ namespace TimetableFH
     sealed partial class App : Application
     {
         private const string settingsFileName = "settings.xml";
-        private ViewModel viewModel;
+        private readonly ViewModel viewModel;
 
         /// <summary>
         /// Initialisiert das Singletonanwendungsobjekt. Dies ist die erste Zeile von erstelltem Code
@@ -25,6 +25,8 @@ namespace TimetableFH
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            viewModel = new ViewModel();
         }
 
         /// <summary>
@@ -32,18 +34,11 @@ namespace TimetableFH
         /// werden z. B. verwendet, wenn die Anwendung gestartet wird, um eine bestimmte Datei zu öffnen.
         /// </summary>
         /// <param name="e">Details über Startanforderung und -prozess.</param>
-        protected override async void OnLaunched(LaunchActivatedEventArgs e)
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
+            LoadSettings();
 
-            try
-            {
-                viewModel = await ViewModelUtils.Load(settingsFileName);
-            }
-            catch
-            {
-                viewModel = new ViewModel();
-            }
+            Frame rootFrame = Window.Current.Content as Frame;
 
             // App-Initialisierung nicht wiederholen, wenn das Fenster bereits Inhalte enthält.
             // Nur sicherstellen, dass das Fenster aktiv ist.
@@ -100,16 +95,24 @@ namespace TimetableFH
 
             try
             {
-                await viewModel.Save(settingsFileName);
+                await viewModel.Settings.Save(settingsFileName);
             }
             catch { }
 
             deferral.Complete();
         }
 
-        public async Task<ViewModel> ImportViewModel(StorageFile file)
+        private async void LoadSettings()
         {
-            return viewModel = await ViewModelUtils.Load(file);
+
+            try
+            {
+                viewModel.Settings = await ViewModelUtils.Load(settingsFileName);
+            }
+            catch
+            {
+                viewModel.Settings = new Settings();
+            }
         }
     }
 }

@@ -138,6 +138,10 @@
       <DependentUpon>CompareTypePicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="CsvParser.cs" />
+    <Compile Include="DaysOfWeek.cs" />
+    <Compile Include="DaysOfWeekSelector.xaml.cs">
+      <DependentUpon>DaysOfWeekSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EditListElementControl.xaml.cs">
       <DependentUpon>EditListElementControl.xaml</DependentUpon>
     </Compile>
@@ -180,6 +184,7 @@
       <DependentUpon>ReplaceValueEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="EventRooms.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -257,6 +262,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CompareTypePicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DaysOfWeekSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -65,19 +65,17 @@ namespace TimetableFH
 
         private void AbbPreviousWeek_Click(object sender, RoutedEventArgs e)
         {
-            if (viewModel.ViewDaysCount == 1) viewModel.RefTime = viewModel.RefTime.AddDays(-1);
-            else viewModel.RefTime = viewModel.RefTime.AddDays(-7);
+            viewModel.Settings.RefTime = viewModel.Settings.RefTime.AddDays(viewModel.Settings.IsSingleDay ? -1 : -7);
         }
 
         private void AbbThisWeek_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.RefTime = ViewModel.GetLastMondayMorning();
+            viewModel.Settings.RefTime = Settings.GetLastMondayMorning();
         }
 
         private void AbbNextWeek_Click(object sender, RoutedEventArgs e)
         {
-            if (viewModel.ViewDaysCount == 1) viewModel.RefTime = viewModel.RefTime.AddDays(1);
-            else viewModel.RefTime = viewModel.RefTime.AddDays(7);
+            viewModel.Settings.RefTime = viewModel.Settings.RefTime.AddDays(viewModel.Settings.IsSingleDay ? 1 : 7);
         }
 
         private async void AbbDownloadFile_Click(object sender, RoutedEventArgs e)
@@ -96,9 +94,9 @@ namespace TimetableFH
 
         private async Task DownloadCsv()
         {
-            string baseUrl = viewModel.BaseUrl;
-            string urlAddition = viewModel.RequestUrlAddition;
-            string postData = viewModel.PostDataPairs.ToPostData();
+            string baseUrl = viewModel.Settings.BaseUrl;
+            string urlAddition = viewModel.Settings.RequestUrlAddition;
+            string postData = viewModel.Settings.PostDataPairs.ToPostData();
             StorageFile srcFile = await EventRequester.DownloadCsv(baseUrl, urlAddition, postData);
 
             await SetEventsFromFile(srcFile);
@@ -142,12 +140,13 @@ namespace TimetableFH
         {
             const string fileName = "TimetableFhSettings.xml";
             const CreationCollisionOption option = CreationCollisionOption.GenerateUniqueName;
-            StorageFolder folder = KnownFolders.DocumentsLibrary;
-            IAsyncOperation<StorageFile> fileOperation = folder.CreateFileAsync(fileName, option);
 
             try
             {
-                await viewModel.Save(fileOperation);
+                StorageFolder folder = KnownFolders.DocumentsLibrary;
+                IAsyncOperation<StorageFile> fileOperation = folder.CreateFileAsync(fileName, option);
+
+                await viewModel.Settings.Save(fileOperation);
             }
             catch (Exception exc)
             {
@@ -169,7 +168,7 @@ namespace TimetableFH
 
                 StorageFile srcFile = await picker.PickSingleFileAsync();
 
-                DataContext = viewModel = await ((App)Application.Current).ImportViewModel(srcFile);
+                viewModel.Settings = await ViewModelUtils.Load(srcFile);
             }
             catch (Exception exc)
             {
@@ -179,32 +178,32 @@ namespace TimetableFH
 
         private void AbbMoreTime_Click(object sender, RoutedEventArgs e)
         {
-            TimeSpan newDuration = viewModel.ViewDuration.Add(TimeSpan.FromHours(1));
-            DateTime refTime = viewModel.RefTime;
+            TimeSpan newDuration = viewModel.Settings.ViewDuration.Add(TimeSpan.FromHours(1));
+            DateTime refTime = viewModel.Settings.RefTime;
 
-            if (refTime.Add(newDuration).Date == refTime.Date) viewModel.ViewDuration = newDuration;
+            if (refTime.Add(newDuration).Date == refTime.Date) viewModel.Settings.ViewDuration = newDuration;
         }
 
         private void AbbLessTime_Click(object sender, RoutedEventArgs e)
         {
-            TimeSpan newDuration = viewModel.ViewDuration.Add(TimeSpan.FromHours(-1));
+            TimeSpan newDuration = viewModel.Settings.ViewDuration.Add(TimeSpan.FromHours(-1));
 
-            if (newDuration > TimeSpan.Zero) viewModel.ViewDuration = newDuration;
+            if (newDuration > TimeSpan.Zero) viewModel.Settings.ViewDuration = newDuration;
         }
 
         private void AbbRefUp_Click(object sender, RoutedEventArgs e)
         {
-            DateTime newRef = viewModel.RefTime.AddMinutes(-15);
+            DateTime newRef = viewModel.Settings.RefTime.AddMinutes(-15);
 
-            if (newRef.Date == viewModel.RefTime.Date) viewModel.RefTime = newRef;
+            if (newRef.Date == viewModel.Settings.RefTime.Date) viewModel.Settings.RefTime = newRef;
         }
 
         private void AbbRefDown_Click(object sender, RoutedEventArgs e)
         {
-            DateTime newRef = viewModel.RefTime.AddMinutes(15);
-            TimeSpan duration = viewModel.ViewDuration;
+            DateTime newRef = viewModel.Settings.RefTime.AddMinutes(15);
+            TimeSpan duration = viewModel.Settings.ViewDuration;
 
-            if (newRef.Add(duration).Date == viewModel.RefTime.Date) viewModel.RefTime = newRef;
+            if (newRef.Add(duration).Date == viewModel.Settings.RefTime.Date) viewModel.Settings.RefTime = newRef;
         }
     }
 }

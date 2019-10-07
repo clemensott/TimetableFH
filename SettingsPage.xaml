@@ -25,7 +25,7 @@
         <StackPanel>
             <con:SingleInputConverter x:Name="sicNames" Input="{Binding Names}"/>
 
-            <Grid DataContext="{Binding NotAdmittedClasses}" Margin="3,3,3,10">
+            <Grid DataContext="{Binding Settings.NotAdmittedClasses}" Margin="3,3,3,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -61,7 +61,7 @@
                 <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddClasses_Tapped"/>
             </Grid>
 
-            <Grid DataContext="{Binding Groups}" Margin="3">
+            <Grid DataContext="{Binding Settings.Groups}" Margin="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -103,7 +103,7 @@
                 <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddGroup_Tapped"/>
             </Grid>
 
-            <Grid DataContext="{Binding EventColors}" Margin="3,10">
+            <Grid DataContext="{Binding Settings.EventColors}" Margin="3,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -176,7 +176,7 @@
                 <Button Grid.Row="3" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddColor_Tapped"/>
             </Grid>
 
-            <Grid DataContext="{Binding EventNames}" Margin="3,10">
+            <Grid DataContext="{Binding Settings.EventNames}" Margin="3,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -221,7 +221,7 @@
                 <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddName_Tapped"/>
             </Grid>
 
-            <Grid DataContext="{Binding Rooms}" Margin="3,10,3,3">
+            <Grid DataContext="{Binding Settings.Rooms}" Margin="3,10,3,3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -263,7 +263,9 @@
                 <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Tapped="BtnAddRoom_Tapped" Margin="3"/>
             </Grid>
 
-            <Grid DataContext="{Binding PostDataPairs}" Margin="3,10,3,3">
+            <local:DaysOfWeekSelector Margin="3" Value="{Binding Settings.DaysOfWeek,Mode=TwoWay}"/>
+
+            <Grid DataContext="{Binding Settings.PostDataPairs}" Margin="3,10,3,3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -307,9 +309,9 @@
 
             <StackPanel Margin="3">
                 <TextBlock Text="Base Url:" Margin="3"/>
-                <TextBox Margin="3" Text="{Binding BaseUrl,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Margin="3" Text="{Binding Settings.BaseUrl,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Text="Url Addition:" Margin="3"/>
-                <TextBox Margin="3" Text="{Binding RequestUrlAddition,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Margin="3" Text="{Binding Settings.RequestUrlAddition,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="3">

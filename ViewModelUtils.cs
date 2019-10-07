@@ -12,7 +12,7 @@ namespace TimetableFH
 {
     static class ViewModelUtils
     {
-        private static readonly XmlSerializer serializer = new XmlSerializer(typeof(ViewModel));
+        private static readonly XmlSerializer serializer = new XmlSerializer(typeof(Settings));
 
         public static IEnumerable<Event> GetAdmittedEvents(this IEnumerable<Event> events, IEnumerable<NameCompare> notAdmittedClasses)
         {
@@ -194,11 +194,11 @@ namespace TimetableFH
         {
             IEnumerable<string> roomTypes;
 
-            fhEvent.IsAdmittedClass = !viewModel.NotAdmittedClasses.IsNotAdmittedEvent(fhEvent);
-            fhEvent.IsCurrentGroup = viewModel.Groups.CurrentGroup.IsGroupEvent(fhEvent);
-            fhEvent.ShortName = viewModel.EventNames.GetName(fhEvent.Name);
-            fhEvent.ShortRoom = viewModel.Rooms.GetShortRoomName(fhEvent.Room, out roomTypes);
-            fhEvent.Brush = viewModel.EventColors.GetBrush(fhEvent.Group, fhEvent.Name);
+            fhEvent.IsAdmittedClass = !viewModel.Settings.NotAdmittedClasses.IsNotAdmittedEvent(fhEvent);
+            fhEvent.IsCurrentGroup = viewModel.Settings.Groups.CurrentGroup.IsGroupEvent(fhEvent);
+            fhEvent.ShortName = viewModel.Settings.EventNames.GetName(fhEvent.Name);
+            fhEvent.ShortRoom = viewModel.Settings.Rooms.GetShortRoomName(fhEvent.Room, out roomTypes);
+            fhEvent.Brush = viewModel.Settings.EventColors.GetBrush(fhEvent.Group, fhEvent.Name);
 
             foreach (string roomType in roomTypes)
             {
@@ -210,9 +210,9 @@ namespace TimetableFH
 
         private static void CheckForRoomTypes(ViewModel viewModel, string value)
         {
-            if (string.IsNullOrWhiteSpace(value) || viewModel.Rooms.Examples.Contains(value)) return;
+            if (string.IsNullOrWhiteSpace(value) || viewModel.Settings.Rooms.Examples.Contains(value)) return;
 
-            viewModel.Rooms.Examples.Add(value);
+            viewModel.Settings.Rooms.Examples.Add(value);
         }
 
         public static string ToPostData(this IEnumerable<StringKeyValuePair> pairs)
@@ -220,34 +220,83 @@ namespace TimetableFH
             return string.Join("&", pairs.Select(p => p.Key + "=" + p.Value));
         }
 
-        public static async Task<ViewModel> Load(string fileName)
+        public static async Task<Settings> Load(string fileName)
         {
             StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
 
             return await Load(file);
         }
 
-        public static async Task<ViewModel> Load(StorageFile file)
+        public static async Task<Settings> Load(StorageFile file)
         {
             string xmlText = await FileIO.ReadTextAsync(file);
 
-            return (ViewModel)serializer.Deserialize(new StringReader(xmlText));
+            xmlText = xmlText.Replace("<ViewModel", "<Settings")
+                .Replace("</ViewModel>", "</Settings>");
+
+            return (Settings)serializer.Deserialize(new StringReader(xmlText));
         }
 
-        public static Task Save(this ViewModel viewModel, string fileName)
+        public static Task Save(this Settings settings, string fileName)
         {
             IAsyncOperation<StorageFile> fileOperation = ApplicationData.Current.LocalFolder
                 .CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
 
-            return Save(viewModel, fileOperation);
+            return Save(settings, fileOperation);
         }
 
-        public static async Task Save(this ViewModel viewModel, IAsyncOperation<StorageFile> fileOperation)
+        public static async Task Save(this Settings settings, IAsyncOperation<StorageFile> fileOperation)
         {
             StringWriter writer = new StringWriter();
-            serializer.Serialize(writer, viewModel);
+            serializer.Serialize(writer, settings);
 
             await FileIO.WriteTextAsync(await fileOperation, writer.ToString());
+        }
+
+        public static bool Contains(this DaysOfWeek daysOfWeek, DayOfWeek day)
+        {
+            return (daysOfWeek & Convert(day)) > 0;
+        }
+
+        public static DaysOfWeek Convert(DayOfWeek day)
+        {
+            switch (day)
+            {
+                case DayOfWeek.Friday:
+                    return DaysOfWeek.Friday;
+
+                case DayOfWeek.Monday:
+                    return DaysOfWeek.Monday;
+
+                case DayOfWeek.Saturday:
+                    return DaysOfWeek.Saturday;
+
+                case DayOfWeek.Sunday:
+                    return DaysOfWeek.Sunday;
+
+                case DayOfWeek.Thursday:
+                    return DaysOfWeek.Thursday;
+
+                case DayOfWeek.Tuesday:
+                    return DaysOfWeek.Tuesday;
+
+                case DayOfWeek.Wednesday:
+                    return DaysOfWeek.Wednesday;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(day), day, null);
+            }
+        }
+
+        public static IEnumerable<DayOfWeek> GetDaysOfWeek(this DaysOfWeek days)
+        {
+            if ((days & DaysOfWeek.Monday) > 0) yield return DayOfWeek.Monday;
+            if ((days & DaysOfWeek.Tuesday) > 0) yield return DayOfWeek.Tuesday;
+            if ((days & DaysOfWeek.Wednesday) > 0) yield return DayOfWeek.Wednesday;
+            if ((days & DaysOfWeek.Thursday) > 0) yield return DayOfWeek.Thursday;
+            if ((days & DaysOfWeek.Friday) > 0) yield return DayOfWeek.Friday;
+            if ((days & DaysOfWeek.Saturday) > 0) yield return DayOfWeek.Saturday;
+            if ((days & DaysOfWeek.Sunday) > 0) yield return DayOfWeek.Sunday;
         }
     }
 }

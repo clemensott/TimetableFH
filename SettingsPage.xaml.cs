@@ -33,14 +33,14 @@ namespace TimetableFH
 
         private void BtnAddClasses_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            viewModel.NotAdmittedClasses.Add(new NameCompare());
+            viewModel.Settings.NotAdmittedClasses.Add(new NameCompare());
         }
 
         private void SinRemoveClass_Tapped(object sender, TappedRoutedEventArgs e)
         {
             NameCompare nameCompare = (NameCompare)((FrameworkElement)sender).DataContext;
 
-            viewModel.NotAdmittedClasses.Remove(nameCompare);
+            viewModel.Settings.NotAdmittedClasses.Remove(nameCompare);
         }
 
         private void BtnAddGroup_Tapped(object sender, TappedRoutedEventArgs e)
@@ -48,7 +48,7 @@ namespace TimetableFH
             EventGroup eventGroup = new EventGroup();
             EventGroupEditPageViewModel eventGroupViewModel = new EventGroupEditPageViewModel(eventGroup, viewModel.GetAllGroups());
 
-            viewModel.Groups.Collection.Add(eventGroup);
+            viewModel.Settings.Groups.Collection.Add(eventGroup);
 
             Frame.Navigate(typeof(EventGroupEditPage), eventGroupViewModel);
         }
@@ -65,29 +65,30 @@ namespace TimetableFH
         {
             EventGroup eventGroup = (EventGroup)((FrameworkElement)sender).DataContext;
 
-            viewModel.Groups.Collection.Remove(eventGroup);
+            viewModel.Settings.Groups.Collection.Remove(eventGroup);
         }
 
         private void EleGroup_UpTapped(object sender, TappedRoutedEventArgs e)
         {
             EventGroup eventGroup = (EventGroup)((FrameworkElement)sender).DataContext;
 
-            Move(viewModel.Groups.Collection, eventGroup, -1);
+            Move(viewModel.Settings.Groups.Collection, eventGroup, -1);
         }
 
         private void EleGroup_DownTapped(object sender, TappedRoutedEventArgs e)
         {
             EventGroup eventGroup = (EventGroup)((FrameworkElement)sender).DataContext;
 
-            Move(viewModel.Groups.Collection, eventGroup, 1);
+            Move(viewModel.Settings.Groups.Collection, eventGroup, 1);
         }
 
         private void BtnAddColor_Tapped(object sender, TappedRoutedEventArgs e)
         {
             EventColor eventColor = new EventColor();
-            EventColorEditPageViewModel eventColorViewModel = new EventColorEditPageViewModel(eventColor, viewModel.GetAllGroups(), viewModel.GetAllNames());
+            EventColorEditPageViewModel eventColorViewModel =
+                new EventColorEditPageViewModel(eventColor, viewModel.GetAllGroups(), viewModel.GetAllNames());
 
-            viewModel.EventColors.Collection.Add(eventColor);
+            viewModel.Settings.EventColors.Collection.Add(eventColor);
 
             Frame.Navigate(typeof(EventColorEditPage), eventColorViewModel);
         }
@@ -95,7 +96,8 @@ namespace TimetableFH
         private void EleColor_EditTapped(object sender, TappedRoutedEventArgs e)
         {
             EventColor eventColor = (EventColor)((FrameworkElement)sender).DataContext;
-            EventColorEditPageViewModel eventColorViewModel = new EventColorEditPageViewModel(eventColor, viewModel.GetAllGroups(), viewModel.GetAllNames());
+            EventColorEditPageViewModel eventColorViewModel =
+                new EventColorEditPageViewModel(eventColor, viewModel.GetAllGroups(), viewModel.GetAllNames());
 
             Frame.Navigate(typeof(EventColorEditPage), eventColorViewModel);
         }
@@ -104,32 +106,33 @@ namespace TimetableFH
         {
             EventColor eventColor = (EventColor)((FrameworkElement)sender).DataContext;
 
-            viewModel.EventColors.Collection.Remove(eventColor);
+            viewModel.Settings.EventColors.Collection.Remove(eventColor);
         }
 
         private void EleColor_UpTapped(object sender, TappedRoutedEventArgs e)
         {
             EventColor eventGroup = (EventColor)((FrameworkElement)sender).DataContext;
 
-            Move(viewModel.EventColors.Collection, eventGroup, -1);
+            Move(viewModel.Settings.EventColors.Collection, eventGroup, -1);
         }
 
         private void EleColor_DownTapped(object sender, TappedRoutedEventArgs e)
         {
             EventColor eventGroup = (EventColor)((FrameworkElement)sender).DataContext;
 
-            Move(viewModel.EventColors.Collection, eventGroup, 1);
+            Move(viewModel.Settings.EventColors.Collection, eventGroup, 1);
         }
 
         private async void BtnChangeColor_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            AsyncResult<Color?, Color> setableValue = new AsyncResult<Color?, Color>(viewModel.EventColors.DefaultColor);
+            AsyncResult<Color?, Color> setableValue = 
+                new AsyncResult<Color?, Color>(viewModel.Settings.EventColors.DefaultColor);
 
             Frame.Navigate(typeof(ColorPickerPage), setableValue);
 
             Color? color = await setableValue.Task;
 
-            if (color.HasValue) viewModel.EventColors.DefaultColor = color.Value;
+            if (color.HasValue) viewModel.Settings.EventColors.DefaultColor = color.Value;
         }
 
         private void BtnAddName_Tapped(object sender, TappedRoutedEventArgs e)
@@ -137,7 +140,7 @@ namespace TimetableFH
             EventName eventName = new EventName();
             EventNameEditPageViewModel eventNameViewModel = new EventNameEditPageViewModel(eventName, viewModel.GetAllNames());
 
-            viewModel.EventNames.Add(eventName);
+            viewModel.Settings.EventNames.Add(eventName);
 
             Frame.Navigate(typeof(EventNameEditPage), eventNameViewModel);
         }
@@ -154,49 +157,51 @@ namespace TimetableFH
         {
             EventName eventName = (EventName)((FrameworkElement)sender).DataContext;
 
-            viewModel.EventNames.Remove(eventName);
+            viewModel.Settings.EventNames.Remove(eventName);
         }
 
         private void EleName_UpTapped(object sender, TappedRoutedEventArgs e)
         {
             EventName eventGroup = (EventName)((FrameworkElement)sender).DataContext;
 
-            Move(viewModel.EventNames, eventGroup, -1);
+            Move(viewModel.Settings.EventNames, eventGroup, -1);
         }
 
         private void EleName_DownTapped(object sender, TappedRoutedEventArgs e)
         {
             EventName eventGroup = (EventName)((FrameworkElement)sender).DataContext;
 
-            Move(viewModel.EventNames, eventGroup, 1);
+            Move(viewModel.Settings.EventNames, eventGroup, 1);
         }
 
         private void BtnAddRoom_Tapped(object sender, TappedRoutedEventArgs e)
         {
             ReplaceValue replaceValue = new ReplaceValue();
-            ReplaceValueEditPageViewModel replaceValueViewModel = new ReplaceValueEditPageViewModel(replaceValue, viewModel.Rooms.Examples);
+            ReplaceValueEditPageViewModel replaceValueViewModel =
+                new ReplaceValueEditPageViewModel(replaceValue, viewModel.Settings.Rooms.Examples);
 
-            viewModel.Rooms.Add(replaceValue);
+            viewModel.Settings.Rooms.Add(replaceValue);
 
             Frame.Navigate(typeof(ReplaceValueEditPage), replaceValueViewModel);
         }
 
         private void SinRemovePostData_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            StringKeyValuePair pair = (StringKeyValuePair) ((FrameworkElement) sender).DataContext;
+            StringKeyValuePair pair = (StringKeyValuePair)((FrameworkElement)sender).DataContext;
 
-            viewModel.PostDataPairs.Remove(pair);
+            viewModel.Settings.PostDataPairs.Remove(pair);
         }
 
         private void BtnAddPostData_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            viewModel.PostDataPairs.Add(new StringKeyValuePair());
+            viewModel.Settings.PostDataPairs.Add(new StringKeyValuePair());
         }
 
         private void EleRoom_EditTapped(object sender, TappedRoutedEventArgs e)
         {
             ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
-            ReplaceValueEditPageViewModel replaceValueViewModel = new ReplaceValueEditPageViewModel(replaceValue, viewModel.Rooms.Examples);
+            ReplaceValueEditPageViewModel replaceValueViewModel =
+                new ReplaceValueEditPageViewModel(replaceValue, viewModel.Settings.Rooms.Examples);
 
             Frame.Navigate(typeof(ReplaceValueEditPage), replaceValueViewModel);
         }
@@ -205,21 +210,21 @@ namespace TimetableFH
         {
             ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
 
-            viewModel.Rooms.Remove(replaceValue);
+            viewModel.Settings.Rooms.Remove(replaceValue);
         }
 
         private void EleRoom_UpTapped(object sender, TappedRoutedEventArgs e)
         {
             ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
 
-            Move(viewModel.Rooms, replaceValue, -1);
+            Move(viewModel.Settings.Rooms, replaceValue, -1);
         }
 
         private void EleRoom_DownTapped(object sender, TappedRoutedEventArgs e)
         {
             ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
 
-            Move(viewModel.Rooms, replaceValue, 1);
+            Move(viewModel.Settings.Rooms, replaceValue, 1);
         }
 
         private void AbbBack_Tapped(object sender, TappedRoutedEventArgs e)
