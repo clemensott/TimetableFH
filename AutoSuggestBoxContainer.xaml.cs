@@ -69,9 +69,6 @@ namespace TimetableFH
 
         private void AutoSuggestBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("GotFocus: {0}; Equals: {1}; {2} ms; Time passed: {3}",
-                Name, ReferenceEquals(sender, LastLostFocusControl), DateTime.Now.Millisecond, DateTime.Now > GetMinOpenTime());
-
             if (!ReferenceEquals(sender, LastLostFocusControl) || DateTime.Now > GetMinOpenTime())
             {
                 ((AutoSuggestBox)sender).IsSuggestionListOpen = true;
@@ -80,8 +77,6 @@ namespace TimetableFH
 
         private void AutoSuggestBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("LostFocus: {0}; {1} ms", Name, DateTime.Now.Millisecond);
-
             LastLostFocusControl = sender as AutoSuggestBox;
             LastLostFocusTime= lastLostFocusTime = DateTime.Now;
         }
