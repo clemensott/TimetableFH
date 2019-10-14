@@ -373,7 +373,7 @@ namespace TimetableFH
             if (IsSingleDay)
             {
                 IsSingleDay = false;
-                ReferenceDate = Settings.GetMondayMorningBefore(ReferenceDate);
+                ReferenceDate = Settings.GetCurrentMonday(ReferenceDate, DaysOfWeek);
             }
             else
             {

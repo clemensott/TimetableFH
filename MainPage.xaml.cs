@@ -70,7 +70,7 @@ namespace TimetableFH
 
         private void AbbThisWeek_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.Settings.RefTime = Settings.GetLastMondayMorning();
+            viewModel.Settings.SetCurrentMondayMorning();
         }
 
         private void AbbNextWeek_Click(object sender, RoutedEventArgs e)

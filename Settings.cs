@@ -129,7 +129,7 @@ namespace TimetableFH
 
         public Settings()
         {
-            RefTime = GetLastMondayMorning();
+            SetCurrentMondayMorning(TimeSpan.FromHours(7));
             ViewDuration = TimeSpan.FromHours(8);
             IsSingleDay = false;
             DaysOfWeek = GetWeekDays();
@@ -149,18 +149,31 @@ namespace TimetableFH
             return DaysOfWeek.Monday | DaysOfWeek.Tuesday | DaysOfWeek.Wednesday | DaysOfWeek.Thursday | DaysOfWeek.Friday;
         }
 
-        public static DateTime GetLastMondayMorning()
+        public void SetCurrentMondayMorning()
         {
-            return GetMondayMorningBefore(DateTime.Now);
+            SetCurrentMondayMorning(RefTime.TimeOfDay);
         }
 
-        public static DateTime GetMondayMorningBefore(DateTime date)
+        public void SetCurrentMondayMorning(TimeSpan time)
         {
-            date = date.Date;
+            DateTime monday = GetCurrentMonday(DateTime.Now, DaysOfWeek);
+            RefTime = monday.Date + time;
+        }
 
-            while (date.DayOfWeek != DayOfWeek.Monday) date = date.AddDays(-1);
+        public static DateTime GetCurrentMonday(DateTime date, DaysOfWeek daysOfWeek)
+        {
+            bool weekEnded = true;
 
-            return date.AddHours(7);
+            while (date.DayOfWeek != DayOfWeek.Monday)
+            {
+                if (daysOfWeek.Contains(date.DayOfWeek)) weekEnded = false;
+
+                date = date.AddDays(1);
+            }
+
+            if (!weekEnded) date = date.AddDays(-7);
+
+            return date;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
