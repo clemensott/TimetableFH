@@ -79,7 +79,7 @@ namespace TimetableFH
 
                 while (index < line.Length)
                 {
-                    if (withQuotation && line[index] == '\"')
+                    if (withQuotation && line[index] == '"' && (index + 2 > line.Length || line[index + 1] == ',' && line[index + 2] == '"'))
                     {
                         index++;
                         break;
