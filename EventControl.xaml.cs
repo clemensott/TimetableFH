@@ -9,6 +9,8 @@ namespace TimetableFH
 {
     public sealed partial class EventControl : UserControl
     {
+        private const double hoverOpacity = 0.15;
+
         public EventControl()
         {
             this.InitializeComponent();
@@ -33,6 +35,16 @@ namespace TimetableFH
                 fhEvent.Professor + "\r\n" + fhEvent.Room + "\r\n" + fhEvent.Group;
 
             await new MessageDialog(message).ShowAsync();
+        }
+
+        private void OnPointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            rectChangeColor.Opacity = hoverOpacity;
+        }
+
+        private void OnPointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            rectChangeColor.Opacity = 0;
         }
     }
 }
