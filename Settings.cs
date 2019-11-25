@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
-using StdOttStandard;
+using Windows.UI.Xaml;
 
 namespace TimetableFH
 {
     public class Settings : INotifyPropertyChanged
     {
         private bool viewGroupEvents, isSingleDay;
+        private ApplicationTheme theme;
         private DaysOfWeek daysOfWeek;
         private DateTime refTime;
         private TimeSpan viewDuration;
@@ -38,6 +35,18 @@ namespace TimetableFH
 
                 isSingleDay = value;
                 OnPropertyChanged(nameof(IsSingleDay));
+            }
+        }
+
+        public ApplicationTheme Theme
+        {
+            get => theme;
+            set
+            {
+                if (value == theme) return;
+
+                theme = value;
+                OnPropertyChanged(nameof(Theme));
             }
         }
 
@@ -129,6 +138,7 @@ namespace TimetableFH
 
         public Settings()
         {
+            Theme = Application.Current?.RequestedTheme ?? default(ApplicationTheme);
             SetCurrentMondayMorning(TimeSpan.FromHours(7));
             ViewDuration = TimeSpan.FromHours(8);
             IsSingleDay = false;

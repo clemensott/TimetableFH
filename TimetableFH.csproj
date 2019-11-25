@@ -190,6 +190,7 @@
     </Compile>
     <Compile Include="StringKeyValuePair.cs" />
     <Compile Include="StringKeyValuePairs.cs" />
+    <Compile Include="ThemeChecker.cs" />
     <Compile Include="ViewModelUtils.cs" />
     <Compile Include="ViewModel.cs" />
   </ItemGroup>

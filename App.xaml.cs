@@ -2,7 +2,10 @@
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Storage;
+using Windows.Foundation;
+using Windows.UI;
+using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -24,7 +27,7 @@ namespace TimetableFH
         public App()
         {
             this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            this.EnteredBackground += OnEnteredBackground;
 
             viewModel = new ViewModel();
         }
@@ -37,6 +40,8 @@ namespace TimetableFH
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             LoadSettings();
+
+            Window.Current.CoreWindow.Activated += CoreWindow_Activated;
 
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -82,16 +87,9 @@ namespace TimetableFH
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
-        /// <summary>
-        /// Wird aufgerufen, wenn die Ausführung der Anwendung angehalten wird.  Der Anwendungszustand wird gespeichert,
-        /// ohne zu wissen, ob die Anwendung beendet oder fortgesetzt wird und die Speicherinhalte dabei
-        /// unbeschädigt bleiben.
-        /// </summary>
-        /// <param name="sender">Die Quelle der Anhalteanforderung.</param>
-        /// <param name="e">Details zur Anhalteanforderung.</param>
-        private async void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnEnteredBackground(object sender, EnteredBackgroundEventArgs e)
         {
-            var deferral = e.SuspendingOperation.GetDeferral();
+            Deferral deferral = e.GetDeferral();
 
             try
             {
@@ -104,7 +102,6 @@ namespace TimetableFH
 
         private async void LoadSettings()
         {
-
             try
             {
                 viewModel.Settings = await ViewModelUtils.Load(settingsFileName);
@@ -113,6 +110,13 @@ namespace TimetableFH
             {
                 viewModel.Settings = new Settings();
             }
+        }
+
+        private async void CoreWindow_Activated(CoreWindow sender, WindowActivatedEventArgs args)
+        {
+            if (args.WindowActivationState != CoreWindowActivationState.CodeActivated) return;
+
+            await viewModel.CheckTheme();
         }
     }
 }

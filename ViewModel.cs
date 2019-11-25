@@ -1,8 +1,9 @@
 ﻿using StdOttStandard;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
+using Windows.UI;
 
 namespace TimetableFH
 {
@@ -10,6 +11,7 @@ namespace TimetableFH
 
     public class ViewModel : INotifyPropertyChanged
     {
+        private readonly ThemeChecker themeChecker;
         private Event[] allEvents, groupEvents, admittedEvents;
         private Settings settings;
 
@@ -30,6 +32,8 @@ namespace TimetableFH
                 OnPropertyChanged(nameof(AllEvents));
 
                 GroupEvents = AllEvents.Where(e => e.IsCurrentGroup).ToArray();
+
+                foreach (Event fhEvent in AllEvents) this.SetDetails(fhEvent);
             }
         }
 
@@ -81,7 +85,15 @@ namespace TimetableFH
                 OnPropertyChanged(nameof(Settings));
 
                 foreach (Event fhEvent in AllEvents) this.SetDetails(fhEvent);
+                CheckTheme();
             }
+        }
+
+        public ViewModel()
+        {
+            themeChecker = new ThemeChecker();
+            AllEvents = new Event[0];
+            Settings = new Settings();
         }
 
         private void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -89,10 +101,23 @@ namespace TimetableFH
             if (e.PropertyName == nameof(Settings.ViewGroupEvents)) OnPropertyChanged(nameof(ViewEvents));
         }
 
-        public ViewModel()
+        public async Task CheckTheme()
         {
-            AllEvents = new Event[0];
-            Settings = new Settings();
+            Settings currentSettings = Settings;
+            if (!await themeChecker.Check(currentSettings) || currentSettings != Settings) return;
+
+            foreach (EventColor eventColor in Settings.EventColors.Collection)
+            {
+                eventColor.Color = InvertColor(eventColor.Color);
+            }
+
+            foreach (Event fhEvent in AllEvents) this.SetDetails(fhEvent);
+        }
+
+        private static Color InvertColor(Color color)
+        {
+            return Color.FromArgb(color.A, (byte)(byte.MaxValue - color.R),
+                (byte)(byte.MaxValue - color.G), (byte)(byte.MaxValue - color.B));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

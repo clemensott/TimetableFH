@@ -29,16 +29,16 @@
                                           Input1="{Binding End}" Convert="MulTime_Convert"/>
 
             <TextBlock Name="tblTime" HorizontalAlignment="Center" 
-                       TextWrapping="Wrap" Foreground="Black" TextAlignment="Center"
+                       TextWrapping="Wrap" TextAlignment="Center"
                        Text="{Binding ElementName=mulTime,Path=Output}"/>
             <TextBlock Name="tblName" HorizontalAlignment="Center" 
-                       TextWrapping="Wrap" Foreground="Black" TextAlignment="Center"
+                       TextWrapping="Wrap" TextAlignment="Center"
                        Text="{Binding ShortName}"/>
             <TextBlock Name="tblRoom" HorizontalAlignment="Center" 
-                       TextWrapping="Wrap" Foreground="Black" TextAlignment="Center"
+                       TextWrapping="Wrap" TextAlignment="Center"
                        Text="{Binding ShortRoom}"/>
             <TextBlock Name="tblGroup" HorizontalAlignment="Center" TextAlignment="Center"
-                       TextWrapping="Wrap" Foreground="Black" Text="{Binding Group}"/>
+                       TextWrapping="Wrap" Text="{Binding Group}"/>
         </StackPanel>
     </Grid>
 </UserControl>
