@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=234238 dokumentiert.
@@ -28,26 +27,21 @@ namespace TimetableFH
             base.OnNavigatedTo(e);
         }
 
-        private void BtnAddGroup_Tapped(object sender, TappedRoutedEventArgs e)
+        private void IbnAddGroup_Click(object sender, RoutedEventArgs e)
         {
             viewModel.EventGroup.Collection.Add(new NameCompare());
         }
 
-        private void SinRemoveGroup_Tapped(object sender, TappedRoutedEventArgs e)
+        private void IbnRemoveGroup_Click(object sender, RoutedEventArgs e)
         {
             NameCompare nameCompare = (NameCompare)((FrameworkElement)sender).DataContext;
 
             viewModel.EventGroup.Collection.Remove(nameCompare);
         }
 
-        private void AbbBack_Tapped(object sender, TappedRoutedEventArgs e)
+        private void AbbBack_Click(object sender, RoutedEventArgs e)
         {
             Frame.GoBack();
-        }
-
-        private void AutoSuggestBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            ((AutoSuggestBox)sender).IsSuggestionListOpen = true;
         }
     }
 

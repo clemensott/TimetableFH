@@ -5,6 +5,7 @@
     xmlns:local="using:TimetableFH"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ctl="using:StdOttUwp.Controls"
     xmlns:spi="using:StdOttUwp.Converters.Specialized"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -22,13 +23,13 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <SymbolIcon Grid.Column="0" Symbol="Edit" Margin="8,3" Tapped="SinEdit_Tapped"
-                    Visibility="{Binding ElementName=control,Path=IsViewMoveIcons,Converter={StaticResource colCon}}"/>
-        <SymbolIcon Grid.Column="0" Symbol="Upload" Margin="8,3" Tapped="SinUp_Tapped"
-                    Visibility="{Binding ElementName=control,Path=IsViewMoveIcons,Converter={StaticResource visCon}}"/>
-        <SymbolIcon Grid.Column="1" Symbol="Cancel" Margin="8,3" Tapped="SinRemove_Tapped"
-                    Visibility="{Binding ElementName=control,Path=IsViewMoveIcons,Converter={StaticResource colCon}}"/>
-        <SymbolIcon Grid.Column="1" Symbol="Download" Margin="8,3" Tapped="SinDown_Tapped"
-                    Visibility="{Binding ElementName=control,Path=IsViewMoveIcons,Converter={StaticResource visCon}}"/>
+        <ctl:IconButton Grid.Column="0" Symbol="Edit" Margin="0,1" Background="Transparent" Click="SinEdit_Click"
+                        Visibility="{Binding ElementName=control,Path=IsViewMoveIcons,Converter={StaticResource colCon}}"/>
+        <ctl:IconButton Grid.Column="0" Symbol="Upload" Margin="0,1" Background="Transparent" Click="SinUp_Click"
+                        Visibility="{Binding ElementName=control,Path=IsViewMoveIcons,Converter={StaticResource visCon}}"/>
+        <ctl:IconButton Grid.Column="1" Symbol="Cancel" Margin="0,1" Background="Transparent" Click="SinRemove_Click"
+                        Visibility="{Binding ElementName=control,Path=IsViewMoveIcons,Converter={StaticResource colCon}}"/>
+        <ctl:IconButton Grid.Column="1" Symbol="Download" Margin="0,1" Background="Transparent" Click="SinDown_Click"
+                        Visibility="{Binding ElementName=control,Path=IsViewMoveIcons,Converter={StaticResource visCon}}"/>
     </Grid>
 </UserControl>

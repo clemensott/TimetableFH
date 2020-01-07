@@ -33,19 +33,19 @@ namespace TimetableFH
             base.OnNavigatedTo(e);
         }
 
-        private void BtnAddClasses_Tapped(object sender, TappedRoutedEventArgs e)
+        private void IbnAddClasses_Click(object sender, RoutedEventArgs e)
         {
             viewModel.Settings.NotAdmittedClasses.Add(new NameCompare());
         }
 
-        private void SinRemoveClass_Tapped(object sender, TappedRoutedEventArgs e)
+        private void IbnRemoveClass_Click(object sender, RoutedEventArgs e)
         {
             NameCompare nameCompare = (NameCompare)((FrameworkElement)sender).DataContext;
 
             viewModel.Settings.NotAdmittedClasses.Remove(nameCompare);
         }
 
-        private void BtnAddGroup_Tapped(object sender, TappedRoutedEventArgs e)
+        private void IbnAddGroup_Click(object sender, RoutedEventArgs e)
         {
             EventGroup eventGroup = new EventGroup();
             EventGroupEditPageViewModel eventGroupViewModel = new EventGroupEditPageViewModel(eventGroup, viewModel.GetAllGroups());
@@ -55,7 +55,7 @@ namespace TimetableFH
             Frame.Navigate(typeof(EventGroupEditPage), eventGroupViewModel);
         }
 
-        private void EleGroup_EditTapped(object sender, TappedRoutedEventArgs e)
+        private void EleGroup_EditClick(object sender, RoutedEventArgs e)
         {
             EventGroup eventGroup = (EventGroup)((FrameworkElement)sender).DataContext;
             EventGroupEditPageViewModel eventGroupViewModel = new EventGroupEditPageViewModel(eventGroup, viewModel.GetAllGroups());
@@ -63,28 +63,28 @@ namespace TimetableFH
             Frame.Navigate(typeof(EventGroupEditPage), eventGroupViewModel);
         }
 
-        private void EleGroup_RemoveTapped(object sender, TappedRoutedEventArgs e)
+        private void EleGroup_RemoveClick(object sender, RoutedEventArgs e)
         {
             EventGroup eventGroup = (EventGroup)((FrameworkElement)sender).DataContext;
 
             viewModel.Settings.Groups.Collection.Remove(eventGroup);
         }
 
-        private void EleGroup_UpTapped(object sender, TappedRoutedEventArgs e)
+        private void EleGroup_UpClick(object sender, RoutedEventArgs e)
         {
             EventGroup eventGroup = (EventGroup)((FrameworkElement)sender).DataContext;
 
             Move(viewModel.Settings.Groups.Collection, eventGroup, -1);
         }
 
-        private void EleGroup_DownTapped(object sender, TappedRoutedEventArgs e)
+        private void EleGroup_DownClick(object sender, RoutedEventArgs e)
         {
             EventGroup eventGroup = (EventGroup)((FrameworkElement)sender).DataContext;
 
             Move(viewModel.Settings.Groups.Collection, eventGroup, 1);
         }
 
-        private void BtnAddColor_Tapped(object sender, TappedRoutedEventArgs e)
+        private void BtnAddColor_Click(object sender, RoutedEventArgs e)
         {
             EventColor eventColor = new EventColor();
             EventColorEditPageViewModel eventColorViewModel =
@@ -95,7 +95,7 @@ namespace TimetableFH
             Frame.Navigate(typeof(EventColorEditPage), eventColorViewModel);
         }
 
-        private void EleColor_EditTapped(object sender, TappedRoutedEventArgs e)
+        private void EleColor_EditClick(object sender, RoutedEventArgs e)
         {
             EventColor eventColor = (EventColor)((FrameworkElement)sender).DataContext;
             EventColorEditPageViewModel eventColorViewModel =
@@ -104,28 +104,28 @@ namespace TimetableFH
             Frame.Navigate(typeof(EventColorEditPage), eventColorViewModel);
         }
 
-        private void EleColor_RemoveTapped(object sender, TappedRoutedEventArgs e)
+        private void EleColor_RemoveClick(object sender, RoutedEventArgs e)
         {
             EventColor eventColor = (EventColor)((FrameworkElement)sender).DataContext;
 
             viewModel.Settings.EventColors.Collection.Remove(eventColor);
         }
 
-        private void EleColor_UpTapped(object sender, TappedRoutedEventArgs e)
+        private void EleColor_UpClick(object sender, RoutedEventArgs e)
         {
             EventColor eventGroup = (EventColor)((FrameworkElement)sender).DataContext;
 
             Move(viewModel.Settings.EventColors.Collection, eventGroup, -1);
         }
 
-        private void EleColor_DownTapped(object sender, TappedRoutedEventArgs e)
+        private void EleColor_DownClick(object sender, RoutedEventArgs e)
         {
             EventColor eventGroup = (EventColor)((FrameworkElement)sender).DataContext;
 
             Move(viewModel.Settings.EventColors.Collection, eventGroup, 1);
         }
 
-        private async void BtnChangeColor_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void RectChangeColor_Tapped(object sender, TappedRoutedEventArgs e)
         {
             AsyncResult<Color?, Color> setableValue =
                 new AsyncResult<Color?, Color>(viewModel.Settings.EventColors.DefaultColor);
@@ -137,7 +137,7 @@ namespace TimetableFH
             if (color.HasValue) viewModel.Settings.EventColors.DefaultColor = color.Value;
         }
 
-        private void BtnAddName_Tapped(object sender, TappedRoutedEventArgs e)
+        private void IbnAddName_Click(object sender, RoutedEventArgs e)
         {
             EventName eventName = new EventName();
             EventNameEditPageViewModel eventNameViewModel = new EventNameEditPageViewModel(eventName, viewModel.GetAllNames());
@@ -147,7 +147,7 @@ namespace TimetableFH
             Frame.Navigate(typeof(EventNameEditPage), eventNameViewModel);
         }
 
-        private void EleName_EditTapped(object sender, TappedRoutedEventArgs e)
+        private void EleName_EditClick(object sender, RoutedEventArgs e)
         {
             EventName eventName = (EventName)((FrameworkElement)sender).DataContext;
             EventNameEditPageViewModel eventNameViewModel = new EventNameEditPageViewModel(eventName, viewModel.GetAllNames());
@@ -155,28 +155,28 @@ namespace TimetableFH
             Frame.Navigate(typeof(EventNameEditPage), eventNameViewModel);
         }
 
-        private void EleName_RemoveTapped(object sender, TappedRoutedEventArgs e)
+        private void EleName_RemoveClick(object sender, RoutedEventArgs e)
         {
             EventName eventName = (EventName)((FrameworkElement)sender).DataContext;
 
             viewModel.Settings.EventNames.Remove(eventName);
         }
 
-        private void EleName_UpTapped(object sender, TappedRoutedEventArgs e)
+        private void EleName_UpClick(object sender, RoutedEventArgs e)
         {
             EventName eventGroup = (EventName)((FrameworkElement)sender).DataContext;
 
             Move(viewModel.Settings.EventNames, eventGroup, -1);
         }
 
-        private void EleName_DownTapped(object sender, TappedRoutedEventArgs e)
+        private void EleName_DownClick(object sender, RoutedEventArgs e)
         {
             EventName eventGroup = (EventName)((FrameworkElement)sender).DataContext;
 
             Move(viewModel.Settings.EventNames, eventGroup, 1);
         }
 
-        private void BtnAddRoom_Tapped(object sender, TappedRoutedEventArgs e)
+        private void IbnAddRoom_Click(object sender, RoutedEventArgs e)
         {
             ReplaceValue replaceValue = new ReplaceValue();
             ReplaceValueEditPageViewModel replaceValueViewModel =
@@ -187,19 +187,19 @@ namespace TimetableFH
             Frame.Navigate(typeof(ReplaceValueEditPage), replaceValueViewModel);
         }
 
-        private void SinRemovePostData_Tapped(object sender, TappedRoutedEventArgs e)
+        private void IbnRemovePostData_Click(object sender, RoutedEventArgs e)
         {
             StringKeyValuePair pair = (StringKeyValuePair)((FrameworkElement)sender).DataContext;
 
             viewModel.Settings.PostDataPairs.Remove(pair);
         }
 
-        private void BtnAddPostData_Tapped(object sender, TappedRoutedEventArgs e)
+        private void IbnAddPostData_Click(object sender, RoutedEventArgs e)
         {
             viewModel.Settings.PostDataPairs.Add(new StringKeyValuePair());
         }
 
-        private void EleRoom_EditTapped(object sender, TappedRoutedEventArgs e)
+        private void EleRoom_EditClick(object sender, RoutedEventArgs e)
         {
             ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
             ReplaceValueEditPageViewModel replaceValueViewModel =
@@ -208,28 +208,28 @@ namespace TimetableFH
             Frame.Navigate(typeof(ReplaceValueEditPage), replaceValueViewModel);
         }
 
-        private void EleRoom_RemoveTapped(object sender, TappedRoutedEventArgs e)
+        private void EleRoom_RemoveClick(object sender, RoutedEventArgs e)
         {
             ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
 
             viewModel.Settings.Rooms.Remove(replaceValue);
         }
 
-        private void EleRoom_UpTapped(object sender, TappedRoutedEventArgs e)
+        private void EleRoom_UpClick(object sender, RoutedEventArgs e)
         {
             ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
 
             Move(viewModel.Settings.Rooms, replaceValue, -1);
         }
 
-        private void EleRoom_DownTapped(object sender, TappedRoutedEventArgs e)
+        private void EleRoom_DownClick(object sender, RoutedEventArgs e)
         {
             ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
 
             Move(viewModel.Settings.Rooms, replaceValue, 1);
         }
 
-        private void AbbBack_Tapped(object sender, TappedRoutedEventArgs e)
+        private void AbbBack_Click(object sender, RoutedEventArgs e)
         {
             Frame.GoBack();
         }

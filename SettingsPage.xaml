@@ -5,6 +5,7 @@
     xmlns:local="using:TimetableFH"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ctl="using:StdOttUwp.Controls"
     xmlns:con="using:StdOttUwp.Converters"
     xmlns:spi="using:StdOttUwp.Converters.Specialized"
     mc:Ignorable="d"
@@ -49,7 +50,8 @@
                                 </Grid.ColumnDefinitions>
 
                                 <local:NameCompareControl Margin="3" Value="{Binding}" Names="{Binding ElementName=sicNames,Path=Input}"/>
-                                <SymbolIcon Grid.Column="1" Symbol="Cancel" Margin="8,3" Tapped="SinRemoveClass_Tapped"/>
+                                <ctl:IconButton Grid.Column="1" Symbol="Cancel"
+                                                Background="Transparent" Click="IbnRemoveClass_Click"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -58,7 +60,8 @@
                 <TextBlock Grid.Row="1" Text="No Classes" Margin="3"
                            Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
 
-                <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddClasses_Tapped"/>
+                <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
+                                Width="100" Margin="3" Click="IbnAddClasses_Click"/>
             </Grid>
 
             <Grid DataContext="{Binding Settings.Groups}" Margin="3">
@@ -90,8 +93,8 @@
 
                                 <local:EditListElementControl Grid.Column="3"
                                                               IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
-                                                              EditTapped="EleGroup_EditTapped" RemoveTapped="EleGroup_RemoveTapped"
-                                                              UpTapped="EleGroup_UpTapped" DownTapped="EleGroup_DownTapped"/>
+                                                              EditClick="EleGroup_EditClick" RemoveClick="EleGroup_RemoveClick"
+                                                              UpClick="EleGroup_UpClick" DownClick="EleGroup_DownClick"/>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -100,7 +103,8 @@
                 <TextBlock Grid.Row="1" Text="No Groups" Margin="3"
                            Visibility="{Binding Collection.Count,Converter={StaticResource visNoEleCon}}"/>
 
-                <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddGroup_Tapped"/>
+                <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
+                                Width="100" Margin="3" Click="IbnAddGroup_Click"/>
             </Grid>
 
             <Grid DataContext="{Binding Settings.EventColors}" Margin="3,10">
@@ -116,7 +120,7 @@
                 <TextBlock Grid.Row="1" Text="DefaultColor:" HorizontalAlignment="Left" 
                            VerticalAlignment="Center" Margin="3"/>
                 <Rectangle Grid.Row="1" Fill="{Binding DefaultBrush}" HorizontalAlignment="Right"
-                           Width="100" Height="30" Margin="3" Tapped="BtnChangeColor_Tapped"/>
+                           Width="100" Height="30" Margin="3" Tapped="RectChangeColor_Tapped"/>
 
                 <ListView Grid.Row="2" SelectionMode="None" ItemsSource="{Binding Collection}"
                           Loaded="Lvw_Loaded">
@@ -165,8 +169,8 @@
 
                                 <local:EditListElementControl Grid.Column="3"
                                                               IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
-                                                              EditTapped="EleColor_EditTapped" RemoveTapped="EleColor_RemoveTapped"
-                                                              UpTapped="EleColor_UpTapped" DownTapped="EleColor_DownTapped"/>
+                                                              EditClick="EleColor_EditClick" RemoveClick="EleColor_RemoveClick"
+                                                              UpClick="EleColor_UpClick" DownClick="EleColor_DownClick"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -175,7 +179,8 @@
                 <TextBlock Grid.Row="2" Text="No Colors" Margin="3"
                            Visibility="{Binding Collection.Count,Converter={StaticResource visNoEleCon}}"/>
 
-                <Button Grid.Row="3" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddColor_Tapped"/>
+                <ctl:IconButton Grid.Row="3" Symbol="Add" HorizontalAlignment="Right"
+                                Width="100" Margin="3" Click="BtnAddColor_Click"/>
             </Grid>
 
             <Grid DataContext="{Binding Settings.EventNames}" Margin="3,10">
@@ -210,8 +215,8 @@
 
                                 <local:EditListElementControl Grid.Column="3"
                                                               IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
-                                                              EditTapped="EleName_EditTapped" RemoveTapped="EleName_RemoveTapped"
-                                                              UpTapped="EleName_UpTapped" DownTapped="EleName_DownTapped"/>
+                                                              EditClick="EleName_EditClick" RemoveClick="EleName_RemoveClick"
+                                                              UpClick="EleName_UpClick" DownClick="EleName_DownClick"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -220,7 +225,8 @@
                 <TextBlock Grid.Row="1" Text="No Names" Margin="3"
                            Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
 
-                <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddName_Tapped"/>
+                <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
+                                Width="100" Margin="3" Click="IbnAddName_Click"/>
             </Grid>
 
             <Grid DataContext="{Binding Settings.Rooms}" Margin="3,10,3,3">
@@ -252,8 +258,8 @@
 
                                 <local:EditListElementControl Grid.Column="2"
                                                               IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
-                                                              EditTapped="EleRoom_EditTapped" RemoveTapped="EleRoom_RemoveTapped"
-                                                              UpTapped="EleRoom_UpTapped" DownTapped="EleRoom_DownTapped"/>
+                                                              EditClick="EleRoom_EditClick" RemoveClick="EleRoom_RemoveClick"
+                                                              UpClick="EleRoom_UpClick" DownClick="EleRoom_DownClick"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -262,7 +268,8 @@
                 <TextBlock Grid.Row="1" Text="No Replacements" Margin="3"
                            Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
 
-                <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Tapped="BtnAddRoom_Tapped" Margin="3"/>
+                <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
+                                Width="100" Margin="3" Click="IbnAddRoom_Click"/>
             </Grid>
 
             <local:DaysOfWeekSelector Margin="3" Value="{Binding Settings.DaysOfWeek,Mode=TwoWay}"/>
@@ -296,8 +303,8 @@
                                 <TextBox Grid.Column="1" IsTextPredictionEnabled="False"
                                          Margin="3" Text="{Binding Value,Mode=TwoWay}"/>
 
-                                <SymbolIcon Grid.Column="2" Symbol="Cancel" Margin="3" 
-                                            Tapped="SinRemovePostData_Tapped"/>
+                                <ctl:IconButton Grid.Column="2" Symbol="Cancel"
+                                                Background="Transparent" Click="IbnRemovePostData_Click"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -306,7 +313,8 @@
                 <TextBlock Grid.Row="1" Text="No Post Data" Margin="3"
                            Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
 
-                <Button Grid.Row="2" Content="Add" HorizontalAlignment="Right" Width="70" Tapped="BtnAddPostData_Tapped" Margin="3"/>
+                <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
+                                Width="100" Margin="3" Click="IbnAddPostData_Click"/>
             </Grid>
 
             <StackPanel Margin="3">
@@ -326,7 +334,7 @@
     <Page.BottomAppBar>
         <CommandBar>
             <CommandBar.PrimaryCommands>
-                <AppBarButton Label="Back" Icon="Back" Tapped="AbbBack_Tapped"/>
+                <AppBarButton Label="Back" Icon="Back" Click="AbbBack_Click"/>
                 <AppBarToggleButton x:Name="atbMove" Label="Move" Icon="Sort"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>

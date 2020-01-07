@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // Die Elementvorlage "Benutzersteuerelement" wird unter https://go.microsoft.com/fwlink/?LinkId=234236 dokumentiert.
 
@@ -22,10 +11,10 @@ namespace TimetableFH
         public static readonly DependencyProperty IsViewMoveIconsProperty = DependencyProperty.Register("IsViewMoveIcons",
             typeof(bool), typeof(EditListElementControl), new PropertyMetadata(default(bool)));
 
-        public event EventHandler<TappedRoutedEventArgs> EditTapped;
-        public event EventHandler<TappedRoutedEventArgs> UpTapped;
-        public event EventHandler<TappedRoutedEventArgs> RemoveTapped;
-        public event EventHandler<TappedRoutedEventArgs> DownTapped;
+        public event EventHandler<RoutedEventArgs> EditClick;
+        public event EventHandler<RoutedEventArgs> UpClick;
+        public event EventHandler<RoutedEventArgs> RemoveClick;
+        public event EventHandler<RoutedEventArgs> DownClick;
 
         public bool IsViewMoveIcons
         {
@@ -38,24 +27,24 @@ namespace TimetableFH
             this.InitializeComponent();
         }
 
-        private void SinEdit_Tapped(object sender, TappedRoutedEventArgs e)
+        private void SinEdit_Click(object sender, RoutedEventArgs e)
         {
-            EditTapped?.Invoke(this, e);
+            EditClick?.Invoke(this, e);
         }
 
-        private void SinUp_Tapped(object sender, TappedRoutedEventArgs e)
+        private void SinUp_Click(object sender, RoutedEventArgs e)
         {
-            UpTapped?.Invoke(this, e);
+            UpClick?.Invoke(this, e);
         }
 
-        private void SinRemove_Tapped(object sender, TappedRoutedEventArgs e)
+        private void SinRemove_Click(object sender, RoutedEventArgs e)
         {
-            RemoveTapped?.Invoke(this, e);
+            RemoveClick?.Invoke(this, e);
         }
 
-        private void SinDown_Tapped(object sender, TappedRoutedEventArgs e)
+        private void SinDown_Click(object sender, RoutedEventArgs e)
         {
-            DownTapped?.Invoke(this, e);
+            DownClick?.Invoke(this, e);
         }
     }
 }

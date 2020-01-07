@@ -5,6 +5,7 @@
     xmlns:local="using:TimetableFH"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ctl="using:StdOttUwp.Controls"
     xmlns:con="using:StdOttUwp.Converters"
     xmlns:spi="using:StdOttUwp.Converters.Specialized"
     mc:Ignorable="d"
@@ -24,7 +25,7 @@
                                            ItemsSource="{Binding SuggestedGroups}"
                                            FocusLockMillis="{StaticResource lockMillis}"/>
 
-            <TextBlock Grid.Row="2" Text="Exclude Groups:" VerticalAlignment="Center"/>
+            <TextBlock Text="Exclude Groups:" VerticalAlignment="Center"/>
 
             <con:SingleInputConverter x:Name="sicGroups" Input="{Binding Groups}"/>
             <ItemsControl ItemsSource="{Binding EventGroup.Collection}">
@@ -43,7 +44,8 @@
 
                             <local:NameCompareControl Margin="3" Value="{Binding}" 
                                                       Names="{Binding ElementName=sicGroups,Path=Input}"/>
-                            <SymbolIcon Grid.Column="4" Symbol="Remove" Margin="8,3" Tapped="SinRemoveGroup_Tapped"/>
+                            <ctl:IconButton Grid.Column="1" Symbol="Remove" 
+                                            Click="IbnRemoveGroup_Click"/>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -52,14 +54,15 @@
             <TextBlock Text="No Groups" Margin="3"
                        Visibility="{Binding EventGroup.Collection.Count,Converter={StaticResource visNoEleCon}}"/>
 
-            <Button Content="Add" HorizontalAlignment="Right" Width="70" Margin="3" Tapped="BtnAddGroup_Tapped"/>
+            <ctl:IconButton Content="Add" Symbol="Add" HorizontalAlignment="Right"
+                            Width="100" Margin="3" Click="IbnAddGroup_Click"/>
         </StackPanel>
     </ScrollViewer>
 
     <Page.BottomAppBar>
         <CommandBar>
             <CommandBar.PrimaryCommands>
-                <AppBarButton Label="Back" Icon="Back" Tapped="AbbBack_Tapped"/>
+                <AppBarButton Label="Back" Icon="Back" Click="AbbBack_Click"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
