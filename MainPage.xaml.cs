@@ -136,46 +136,6 @@ namespace TimetableFH
             Frame.Navigate(typeof(SettingsPage), viewModel);
         }
 
-        private async void AbbExportSettings_Click(object sender, RoutedEventArgs e)
-        {
-            const string fileName = "TimetableFhSettings.xml";
-            const CreationCollisionOption option = CreationCollisionOption.GenerateUniqueName;
-
-            try
-            {
-                StorageFolder folder = KnownFolders.DocumentsLibrary;
-                IAsyncOperation<StorageFile> fileOperation = folder.CreateFileAsync(fileName, option);
-
-                await viewModel.Settings.Save(fileOperation);
-            }
-            catch (Exception exc)
-            {
-                await new MessageDialog(exc.ToString(), "ExportSettings").ShowAsync();
-            }
-        }
-
-        private async void AbbImportSettings_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                FileOpenPicker picker = new FileOpenPicker()
-                {
-                    SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
-                    ViewMode = PickerViewMode.List
-                };
-
-                picker.FileTypeFilter.Add(".xml");
-
-                StorageFile srcFile = await picker.PickSingleFileAsync();
-
-                viewModel.Settings = await ViewModelUtils.Load(srcFile);
-            }
-            catch (Exception exc)
-            {
-                await new MessageDialog(exc.ToString(), "ImportSettings").ShowAsync();
-            }
-        }
-
         private void AbbMoreTime_Click(object sender, RoutedEventArgs e)
         {
             TimeSpan newDuration = viewModel.Settings.ViewDuration.Add(TimeSpan.FromHours(1));

@@ -1,6 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using StdOttStandard.AsyncResult;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -248,7 +252,7 @@ namespace TimetableFH
         private void Lvw_Loaded(object sender, RoutedEventArgs e)
         {
             ScrollViewer scrollViewer;
-            if (!TryFindScrollView((DependencyObject) sender, out scrollViewer)) return;
+            if (!TryFindScrollView((DependencyObject)sender, out scrollViewer)) return;
 
             scrollViewer.VerticalScrollMode = ScrollMode.Disabled;
             scrollViewer.HorizontalScrollMode = ScrollMode.Disabled;
@@ -269,6 +273,47 @@ namespace TimetableFH
 
             sv = null;
             return false;
+        }
+
+        private async void AbbExport_Click(object sender, RoutedEventArgs e)
+        {
+            const string fileName = "TimetableFhSettings.xml";
+            const CreationCollisionOption option = CreationCollisionOption.GenerateUniqueName;
+
+            try
+            {
+                StorageFolder folder = KnownFolders.DocumentsLibrary;
+                StorageFile file = await folder.CreateFileAsync(fileName, option);
+
+                await viewModel.Settings.Save(file);
+                await new MessageDialog(file.Name, "Exported settings").ShowAsync();
+            }
+            catch (Exception exc)
+            {
+                await new MessageDialog(exc.ToString(), "ExportSettings").ShowAsync();
+            }
+        }
+
+        private async void AbbImport_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                FileOpenPicker picker = new FileOpenPicker()
+                {
+                    SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+                    ViewMode = PickerViewMode.List
+                };
+
+                picker.FileTypeFilter.Add(".xml");
+
+                StorageFile srcFile = await picker.PickSingleFileAsync();
+
+                viewModel.Settings = await ViewModelUtils.Load(srcFile);
+            }
+            catch (Exception exc)
+            {
+                await new MessageDialog(exc.ToString(), "ImportSettings").ShowAsync();
+            }
         }
     }
 }

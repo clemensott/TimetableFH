@@ -237,20 +237,20 @@ namespace TimetableFH
             return (Settings)serializer.Deserialize(new StringReader(xmlText));
         }
 
-        public static Task Save(this Settings settings, string fileName)
+        public static async Task Save(this Settings settings, string fileName)
         {
-            IAsyncOperation<StorageFile> fileOperation = ApplicationData.Current.LocalFolder
+            StorageFile file = await ApplicationData.Current.LocalFolder
                 .CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
 
-            return Save(settings, fileOperation);
+            await Save(settings, file);
         }
 
-        public static async Task Save(this Settings settings, IAsyncOperation<StorageFile> fileOperation)
+        public static async Task Save(this Settings settings, StorageFile file)
         {
             StringWriter writer = new StringWriter();
             serializer.Serialize(writer, settings);
 
-            await FileIO.WriteTextAsync(await fileOperation, writer.ToString());
+            await FileIO.WriteTextAsync(file, writer.ToString());
         }
 
         public static bool Contains(this DaysOfWeek daysOfWeek, DayOfWeek day)

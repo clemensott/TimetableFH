@@ -337,6 +337,11 @@
                 <AppBarButton Label="Back" Icon="Back" Click="AbbBack_Click"/>
                 <AppBarToggleButton x:Name="atbMove" Label="Move" Icon="Sort"/>
             </CommandBar.PrimaryCommands>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="Export" Icon="Save" Click="AbbExport_Click"/>
+                <AppBarButton Label="Import" Icon="Find" Click="AbbImport_Click"/>
+            </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>
