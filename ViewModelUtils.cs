@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Windows.Foundation;
 using Windows.Storage;
-using Windows.UI;
-using Windows.UI.Popups;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
 namespace TimetableFH

@@ -21,7 +21,7 @@
         <local:CompareTypeIconConverter x:Key="comIcoCon"/>
     </Page.Resources>
 
-    <ScrollViewer>
+    <ScrollViewer Name="svrMain">
         <StackPanel>
             <con:SingleInputConverter x:Name="sicNames" Input="{Binding Names}"/>
 
@@ -34,15 +34,15 @@
 
                 <TextBlock Text="Not Admitted Classes:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
 
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding}">
-                    <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
+                <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}" Loaded="Lvw_Loaded">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         </Style>
-                    </ItemsControl.ItemContainerStyle>
-                    <ItemsControl.ItemTemplate>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <Grid Margin="-15">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
@@ -52,8 +52,8 @@
                                 <SymbolIcon Grid.Column="1" Symbol="Cancel" Margin="8,3" Tapped="SinRemoveClass_Tapped"/>
                             </Grid>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ListView.ItemTemplate>
+                </ListView>
 
                 <TextBlock Grid.Row="1" Text="No Classes" Margin="3"
                            Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
@@ -71,7 +71,7 @@
                 <TextBlock Text="Groups:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
 
                 <ListBox Grid.Row="1" Background="Transparent" ItemsSource="{Binding Collection}"
-                         SelectedIndex="{Binding CurrentGroupIndex,Mode=TwoWay}">
+                         SelectedIndex="{Binding CurrentGroupIndex,Mode=TwoWay}" Loaded="Lvw_Loaded">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -113,19 +113,21 @@
 
                 <TextBlock Text="Colors:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
 
-                <TextBlock Grid.Row="1" Text="DefaultColor:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
+                <TextBlock Grid.Row="1" Text="DefaultColor:" HorizontalAlignment="Left" 
+                           VerticalAlignment="Center" Margin="3"/>
                 <Rectangle Grid.Row="1" Fill="{Binding DefaultBrush}" HorizontalAlignment="Right"
                            Width="100" Height="30" Margin="3" Tapped="BtnChangeColor_Tapped"/>
 
-                <ItemsControl Grid.Row="2" ItemsSource="{Binding Collection}">
-                    <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
+                <ListView Grid.Row="2" SelectionMode="None" ItemsSource="{Binding Collection}"
+                          Loaded="Lvw_Loaded">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         </Style>
-                    </ItemsControl.ItemContainerStyle>
-                    <ItemsControl.ItemTemplate>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,3">
+                            <Grid Margin="-10,-15">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
@@ -167,8 +169,8 @@
                                                               UpTapped="EleColor_UpTapped" DownTapped="EleColor_DownTapped"/>
                             </Grid>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ListView.ItemTemplate>
+                </ListView>
 
                 <TextBlock Grid.Row="2" Text="No Colors" Margin="3"
                            Visibility="{Binding Collection.Count,Converter={StaticResource visNoEleCon}}"/>
@@ -185,15 +187,15 @@
 
                 <TextBlock Text="Names:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
 
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding}">
-                    <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
+                <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}" Loaded="Lvw_Loaded">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         </Style>
-                    </ItemsControl.ItemContainerStyle>
-                    <ItemsControl.ItemTemplate>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,3">
+                            <Grid Margin="-10,-15">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
@@ -212,8 +214,8 @@
                                                               UpTapped="EleName_UpTapped" DownTapped="EleName_DownTapped"/>
                             </Grid>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ListView.ItemTemplate>
+                </ListView>
 
                 <TextBlock Grid.Row="1" Text="No Names" Margin="3"
                            Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
@@ -230,15 +232,15 @@
 
                 <TextBlock Text="Room Replacements:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
 
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding}" Margin="3">
-                    <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
+                <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}" Loaded="Lvw_Loaded">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         </Style>
-                    </ItemsControl.ItemContainerStyle>
-                    <ItemsControl.ItemTemplate>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,3">
+                            <Grid Margin="-10,-15">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
@@ -254,8 +256,8 @@
                                                               UpTapped="EleRoom_UpTapped" DownTapped="EleRoom_DownTapped"/>
                             </Grid>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ListView.ItemTemplate>
+                </ListView>
 
                 <TextBlock Grid.Row="1" Text="No Replacements" Margin="3"
                            Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
@@ -274,15 +276,15 @@
 
                 <TextBlock Text="Post Data:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
 
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding}" Margin="3">
-                    <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
+                <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}" Loaded="Lvw_Loaded">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         </Style>
-                    </ItemsControl.ItemContainerStyle>
-                    <ItemsControl.ItemTemplate>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,3">
+                            <Grid Margin="-10,-15">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
@@ -298,8 +300,8 @@
                                             Tapped="SinRemovePostData_Tapped"/>
                             </Grid>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ListView.ItemTemplate>
+                </ListView>
 
                 <TextBlock Grid.Row="1" Text="No Post Data" Margin="3"
                            Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>

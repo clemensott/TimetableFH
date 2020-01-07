@@ -4,7 +4,9 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using StdOttStandard;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=234238 dokumentiert.
 
@@ -125,7 +127,7 @@ namespace TimetableFH
 
         private async void BtnChangeColor_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            AsyncResult<Color?, Color> setableValue = 
+            AsyncResult<Color?, Color> setableValue =
                 new AsyncResult<Color?, Color>(viewModel.Settings.EventColors.DefaultColor);
 
             Frame.Navigate(typeof(ColorPickerPage), setableValue);
@@ -238,9 +240,35 @@ namespace TimetableFH
 
             if (oldIndex == -1) return;
 
-            int newIndex = ((oldIndex + offset + collection.Count) % collection.Count + collection.Count) % collection.Count;
+            int newIndex = Utils.OffsetIndex(oldIndex, collection.Count, offset).index;
 
             collection.Move(oldIndex, newIndex);
+        }
+
+        private void Lvw_Loaded(object sender, RoutedEventArgs e)
+        {
+            ScrollViewer scrollViewer;
+            if (!TryFindScrollView((DependencyObject) sender, out scrollViewer)) return;
+
+            scrollViewer.VerticalScrollMode = ScrollMode.Disabled;
+            scrollViewer.HorizontalScrollMode = ScrollMode.Disabled;
+        }
+
+        private static bool TryFindScrollView(DependencyObject db, out ScrollViewer sv)
+        {
+            if (db is ScrollViewer)
+            {
+                sv = (ScrollViewer)db;
+                return true;
+            }
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(db); i++)
+            {
+                if (TryFindScrollView(VisualTreeHelper.GetChild(db, i), out sv)) return true;
+            }
+
+            sv = null;
+            return false;
         }
     }
 }
