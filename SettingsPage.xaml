@@ -37,7 +37,8 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Not Admitted Classes:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
+                <TextBlock Text="Not Admitted Classes:" FontWeight="Bold" HorizontalAlignment="Left"
+                           VerticalAlignment="Center" Margin="3"/>
 
                 <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}" Loaded="Lvw_Loaded">
                     <ListView.ItemContainerStyle>
@@ -68,6 +69,8 @@
                                 Width="100" Margin="3" Click="IbnAddClasses_Click"/>
             </Grid>
 
+            <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
+                    BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
             <Grid DataContext="{Binding Settings.Groups}" Margin="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -75,7 +78,8 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Groups:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
+                <TextBlock Text="Groups:" FontWeight="Bold" HorizontalAlignment="Left"
+                           VerticalAlignment="Center" Margin="3"/>
 
                 <ListBox Grid.Row="1" Background="Transparent" ItemsSource="{Binding Collection}"
                          SelectedIndex="{Binding CurrentGroupIndex,Mode=TwoWay}" Loaded="Lvw_Loaded">
@@ -111,6 +115,8 @@
                                 Width="100" Margin="3" Click="IbnAddGroup_Click"/>
             </Grid>
 
+            <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
+                    BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
             <Grid DataContext="{Binding Settings.EventColors}" Margin="3,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -119,7 +125,8 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Colors:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
+                <TextBlock Text="Colors:" FontWeight="Bold" HorizontalAlignment="Left"
+                           VerticalAlignment="Center" Margin="3"/>
 
                 <TextBlock Grid.Row="1" Text="DefaultColor:" HorizontalAlignment="Left" 
                            VerticalAlignment="Center" Margin="3"/>
@@ -187,6 +194,8 @@
                                 Width="100" Margin="3" Click="BtnAddColor_Click"/>
             </Grid>
 
+            <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
+                    BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
             <Grid DataContext="{Binding Settings.EventNames}" Margin="3,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -194,7 +203,8 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Names:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
+                <TextBlock Text="Names:" FontWeight="Bold" HorizontalAlignment="Left" 
+                           VerticalAlignment="Center" Margin="3"/>
 
                 <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}" Loaded="Lvw_Loaded">
                     <ListView.ItemContainerStyle>
@@ -233,6 +243,8 @@
                                 Width="100" Margin="3" Click="IbnAddName_Click"/>
             </Grid>
 
+            <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
+                    BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
             <Grid DataContext="{Binding Settings.Rooms}" Margin="3,10,3,3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -240,7 +252,8 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Room Replacements:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
+                <TextBlock Text="Room Replacements:" FontWeight="Bold" HorizontalAlignment="Left"
+                           VerticalAlignment="Center" Margin="3"/>
 
                 <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}" Loaded="Lvw_Loaded">
                     <ListView.ItemContainerStyle>
@@ -276,20 +289,27 @@
                                 Width="100" Margin="3" Click="IbnAddRoom_Click"/>
             </Grid>
 
+            <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
+                    BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
+            <TextBlock Text="Visible Days:" FontWeight="Bold" HorizontalAlignment="Left"
+                       VerticalAlignment="Center" Margin="3"/>
             <local:DaysOfWeekSelector Margin="3" Value="{Binding Settings.DaysOfWeek,Mode=TwoWay}"/>
 
-            
-            <CheckBox Content="Use simple login" Margin="10"
+            <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
+                    BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
+            <TextBlock Text="Login:" FontWeight="Bold" HorizontalAlignment="Left"
+                       VerticalAlignment="Center" Margin="3"/>
+            <CheckBox Content="Use simple login" VerticalAlignment="Center" Margin="5"
                       IsChecked="{Binding Settings.UseSimpleLogin,Mode=TwoWay}"/>
 
             <StackPanel Visibility="{Binding Settings.UseSimpleLogin,Converter={StaticResource visCon}}">
-                <TextBlock Text="Studiengang: (short name with 3 letters)" Margin="3"/>
+                <TextBlock Text="Studiengang: (short name with 3 letters)" Margin="5,3"/>
                 <TextBox Text="{Binding Settings.MajorShortName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                         LostFocus="TbxMajor_LostFocus"/>
-                <TextBlock Name="tblWaring" Text="Are you sure its correct?" Visibility="Collapsed"/>
+                         Margin="5,3" LostFocus="TbxMajor_LostFocus"/>
+                <TextBlock Name="tblWaring" Text="Are you sure its correct?" Margin="8,3" Visibility="Collapsed"/>
 
-                <TextBlock Text="Starting year (YYYY)" Margin="3"/>
-                <TextBox InputScope="Number"
+                <TextBlock Text="Starting year (YYYY)" Margin="5,3"/>
+                <TextBox Margin="5,3" InputScope="Number"
                          Text="{Binding Settings.BeginYear,Converter={StaticResource yearCon},
                             Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
@@ -341,7 +361,7 @@
                 <StackPanel Margin="3">
                     <TextBlock Text="Base Url:" Margin="3"/>
                     <TextBox Margin="3" Text="{Binding Settings.CustomBaseUrl,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                    
+
                     <TextBlock Text="Url Addition:" Margin="3"/>
                     <TextBox Margin="3" Text="{Binding Settings.CustomRequestUrlAddition,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
