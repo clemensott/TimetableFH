@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Popups;
@@ -94,9 +93,27 @@ namespace TimetableFH
 
         private async Task DownloadCsv()
         {
-            string baseUrl = viewModel.Settings.BaseUrl;
-            string urlAddition = viewModel.Settings.RequestUrlAddition;
-            string postData = viewModel.Settings.PostDataPairs.ToPostData();
+            //const string urlAdditionFormat = "?new_stg={0}&new_jg={1}&new_date=1569830400&new_viewmode=matrix_vertical";
+            const string urlAdditionFormat = "?new_stg=MSD&new_jg=2018&new_date=1569830400&new_viewmode=matrix_vertical";
+            //const string postDataFormat = "user={0}&password={0}&login=Login&spanne_start=01.08.{1}&spanne_end=01.11.{2}&write_spanne=Von-Bis-Datum";
+            const string postDataFormat = "user=msd&password=msd&login=Login&spanne_start=01.10.2018&spanne_end=01.10.2021&write_spanne=Von-Bis-Datum";
+
+            string baseUrl, urlAddition, postData;
+            if (viewModel.Settings.UseSimpleLogin)
+            {
+                string majorShortName = viewModel.Settings.MajorShortName;
+                uint beginYear = viewModel.Settings.BeginYear;
+
+                baseUrl = Settings.BaseFhUrl;
+                urlAddition = string.Format(urlAdditionFormat, majorShortName?.ToUpper(), beginYear);
+                postData = string.Format(postDataFormat, majorShortName?.ToLower(), beginYear, beginYear + 2);
+            }
+            else
+            {
+                baseUrl = viewModel.Settings.CustomBaseUrl;
+                urlAddition = viewModel.Settings.CustomRequestUrlAddition;
+                postData = viewModel.Settings.CustomPostDataPairs.ToPostData();
+            }
             StorageFile srcFile = await EventRequester.DownloadCsv(baseUrl, urlAddition, postData);
 
             await SetEventsFromFile(srcFile);

@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using StdOttStandard;
+using System.Linq;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=234238 dokumentiert.
 
@@ -191,16 +192,23 @@ namespace TimetableFH
             Frame.Navigate(typeof(ReplaceValueEditPage), replaceValueViewModel);
         }
 
+        private void TbxMajor_LostFocus(object sender, RoutedEventArgs e)
+        {
+            string major = viewModel.Settings.MajorShortName;
+            bool warn = major.Length != 3 || !major.All(char.IsLetter);
+            tblWaring.Visibility = warn ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         private void IbnRemovePostData_Click(object sender, RoutedEventArgs e)
         {
             StringKeyValuePair pair = (StringKeyValuePair)((FrameworkElement)sender).DataContext;
 
-            viewModel.Settings.PostDataPairs.Remove(pair);
+            viewModel.Settings.CustomPostDataPairs.Remove(pair);
         }
 
         private void IbnAddPostData_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.Settings.PostDataPairs.Add(new StringKeyValuePair());
+            viewModel.Settings.CustomPostDataPairs.Add(new StringKeyValuePair());
         }
 
         private void EleRoom_EditClick(object sender, RoutedEventArgs e)

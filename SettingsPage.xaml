@@ -20,6 +20,10 @@
         <spi:CollapsedVisibleConverter x:Key="colIgnoreCon" CompareValue="{StaticResource ignore}"/>
 
         <local:CompareTypeIconConverter x:Key="comIcoCon"/>
+
+        <con:UIntConverter x:Key="yearCon"/>
+        <spi:VisibleCollapsedConverter x:Key="visCon"/>
+        <spi:CollapsedVisibleConverter x:Key="colCon"/>
     </Page.Resources>
 
     <ScrollViewer Name="svrMain">
@@ -274,54 +278,73 @@
 
             <local:DaysOfWeekSelector Margin="3" Value="{Binding Settings.DaysOfWeek,Mode=TwoWay}"/>
 
-            <Grid DataContext="{Binding Settings.PostDataPairs}" Margin="3,10,3,3">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+            
+            <CheckBox Content="Use simple login" Margin="10"
+                      IsChecked="{Binding Settings.UseSimpleLogin,Mode=TwoWay}"/>
 
-                <TextBlock Text="Post Data:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
+            <StackPanel Visibility="{Binding Settings.UseSimpleLogin,Converter={StaticResource visCon}}">
+                <TextBlock Text="Studiengang: (short name with 3 letters)" Margin="3"/>
+                <TextBox Text="{Binding Settings.MajorShortName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                         LostFocus="TbxMajor_LostFocus"/>
+                <TextBlock Name="tblWaring" Text="Are you sure its correct?" Visibility="Collapsed"/>
 
-                <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}" Loaded="Lvw_Loaded">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="-10,-15">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+                <TextBlock Text="Starting year (YYYY)" Margin="3"/>
+                <TextBox InputScope="Number"
+                         Text="{Binding Settings.BeginYear,Converter={StaticResource yearCon},
+                            Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
 
-                                <TextBox Grid.Column="0" IsTextPredictionEnabled="False"
-                                         Margin="3" Text="{Binding Key,Mode=TwoWay}"/>
-                                <TextBox Grid.Column="1" IsTextPredictionEnabled="False"
-                                         Margin="3" Text="{Binding Value,Mode=TwoWay}"/>
+            <StackPanel Visibility="{Binding Settings.UseSimpleLogin,Converter={StaticResource colCon}}">
+                <Grid DataContext="{Binding Settings.CustomPostDataPairs}" Margin="3,10,3,3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                                <ctl:IconButton Grid.Column="2" Symbol="Cancel"
-                                                Background="Transparent" Click="IbnRemovePostData_Click"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    <TextBlock Text="Post Data:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
 
-                <TextBlock Grid.Row="1" Text="No Post Data" Margin="3"
-                           Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
+                    <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}" Loaded="Lvw_Loaded">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="-10,-15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
 
-                <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
-                                Width="100" Margin="3" Click="IbnAddPostData_Click"/>
-            </Grid>
+                                    <TextBox Grid.Column="0" IsTextPredictionEnabled="False"
+                                             Margin="3" Text="{Binding Key,Mode=TwoWay}"/>
+                                    <TextBox Grid.Column="1" IsTextPredictionEnabled="False"
+                                             Margin="3" Text="{Binding Value,Mode=TwoWay}"/>
 
-            <StackPanel Margin="3">
-                <TextBlock Text="Base Url:" Margin="3"/>
-                <TextBox Margin="3" Text="{Binding Settings.BaseUrl,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBlock Text="Url Addition:" Margin="3"/>
-                <TextBox Margin="3" Text="{Binding Settings.RequestUrlAddition,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                    <ctl:IconButton Grid.Column="2" Symbol="Cancel"
+                                                    Background="Transparent" Click="IbnRemovePostData_Click"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <TextBlock Grid.Row="1" Text="No Post Data" Margin="3"
+                               Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
+
+                    <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
+                                    Width="100" Margin="3" Click="IbnAddPostData_Click"/>
+                </Grid>
+
+                <StackPanel Margin="3">
+                    <TextBlock Text="Base Url:" Margin="3"/>
+                    <TextBox Margin="3" Text="{Binding Settings.CustomBaseUrl,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                    
+                    <TextBlock Text="Url Addition:" Margin="3"/>
+                    <TextBox Margin="3" Text="{Binding Settings.CustomRequestUrlAddition,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="3">

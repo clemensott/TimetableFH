@@ -231,9 +231,6 @@ namespace TimetableFH
         {
             string xmlText = await FileIO.ReadTextAsync(file);
 
-            xmlText = xmlText.Replace("<ViewModel", "<Settings")
-                .Replace("</ViewModel>", "</Settings>");
-
             return (Settings)serializer.Deserialize(new StringReader(xmlText));
         }
 

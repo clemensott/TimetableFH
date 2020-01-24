@@ -7,12 +7,15 @@ namespace TimetableFH
 {
     public class Settings : INotifyPropertyChanged
     {
-        private bool viewGroupEvents, isSingleDay;
+        public const string BaseFhUrl = "http://stundenplan.fh-joanneum.at/";
+
+        private bool viewGroupEvents, isSingleDay, useSimpleLogin;
         private ApplicationTheme theme;
         private DaysOfWeek daysOfWeek;
         private DateTime refTime;
         private TimeSpan viewDuration;
-        private string baseUrl, requestUrlAddition;
+        private uint beginYear;
+        private string majorShortName, customBaseUrl, customRequestUrlAddition;
 
         public bool ViewGroupEvents
         {
@@ -100,27 +103,65 @@ namespace TimetableFH
             }
         }
 
-        public string BaseUrl
+        public bool UseSimpleLogin
         {
-            get => baseUrl;
+            get => useSimpleLogin;
             set
             {
-                if (value == baseUrl) return;
+                if (value == useSimpleLogin) return;
 
-                baseUrl = value;
-                OnPropertyChanged(nameof(BaseUrl));
+                useSimpleLogin = value;
+                OnPropertyChanged(nameof(UseSimpleLogin));
             }
         }
 
-        public string RequestUrlAddition
+        public string MajorShortName
         {
-            get => requestUrlAddition;
+            get => majorShortName;
             set
             {
-                if (value == requestUrlAddition) return;
+                value = value?.Trim();
 
-                requestUrlAddition = value;
-                OnPropertyChanged(nameof(RequestUrlAddition));
+                if (value == majorShortName) return;
+
+                majorShortName = value;
+                OnPropertyChanged(nameof(MajorShortName));
+            }
+        }
+
+        public uint BeginYear
+        {
+            get => beginYear;
+            set
+            {
+                if (value == beginYear) return;
+
+                beginYear = value;
+                OnPropertyChanged(nameof(BeginYear));
+            }
+        }
+
+        public string CustomBaseUrl
+        {
+            get => customBaseUrl;
+            set
+            {
+                if (value == customBaseUrl) return;
+
+                customBaseUrl = value;
+                OnPropertyChanged(nameof(CustomBaseUrl));
+            }
+        }
+
+        public string CustomRequestUrlAddition
+        {
+            get => customRequestUrlAddition;
+            set
+            {
+                if (value == customRequestUrlAddition) return;
+
+                customRequestUrlAddition = value;
+                OnPropertyChanged(nameof(CustomRequestUrlAddition));
             }
         }
 
@@ -134,7 +175,7 @@ namespace TimetableFH
 
         public EventRooms Rooms { get; set; }
 
-        public StringKeyValuePairs PostDataPairs { get; set; }
+        public StringKeyValuePairs CustomPostDataPairs { get; set; }
 
         public Settings()
         {
@@ -143,15 +184,16 @@ namespace TimetableFH
             ViewDuration = TimeSpan.FromHours(8);
             IsSingleDay = false;
             DaysOfWeek = GetWeekDays();
-            BaseUrl = "http://stundenplan.fh-joanneum.at/";
-            RequestUrlAddition = "?new_stg=MSD&new_jg=2018&new_date=1569830400&new_viewmode=matrix_vertical";
+            UseSimpleLogin = true;
+            CustomBaseUrl = BaseFhUrl;
+            CustomRequestUrlAddition = "?new_stg=MSD&new_jg=2018&new_date=1569830400&new_viewmode=matrix_vertical";
 
             NotAdmittedClasses = new EventClasses();
             Groups = new EventGroups();
             EventColors = new EventColors();
             EventNames = new EventNames();
             Rooms = new EventRooms();
-            PostDataPairs = new StringKeyValuePairs();
+            CustomPostDataPairs = new StringKeyValuePairs();
         }
 
         private static DaysOfWeek GetWeekDays()
