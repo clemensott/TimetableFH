@@ -93,10 +93,8 @@ namespace TimetableFH
 
         private async Task DownloadCsv()
         {
-            //const string urlAdditionFormat = "?new_stg={0}&new_jg={1}&new_date=1569830400&new_viewmode=matrix_vertical";
-            const string urlAdditionFormat = "?new_stg=MSD&new_jg=2018&new_date=1569830400&new_viewmode=matrix_vertical";
-            //const string postDataFormat = "user={0}&password={0}&login=Login&spanne_start=01.08.{1}&spanne_end=01.11.{2}&write_spanne=Von-Bis-Datum";
-            const string postDataFormat = "user=msd&password=msd&login=Login&spanne_start=01.10.2018&spanne_end=01.10.2021&write_spanne=Von-Bis-Datum";
+            const string urlAdditionFormat = "?new_stg={0}&new_jg={1}&new_date=1569830400&new_viewmode=matrix_vertical";
+            const string postDataFormat = "user={0}&pass={0}&login=Login&spanne_start=01.08.{1}&spanne_end=01.11.{2}&write_spanne=Von-Bis-Datum";
 
             string baseUrl, urlAddition, postData;
             if (viewModel.Settings.UseSimpleLogin)
