@@ -216,7 +216,7 @@ namespace TimetableFH
             int columnIndex = GetColumnIndex(fhEvent.Begin.DayOfWeek);
 
             TimeSpan offset = fhEvent.Begin.TimeOfDay - ReferenceDate.TimeOfDay;
-            int offsetRows = (int)Math.Floor(offset.TotalDays / grdRowDuration.TotalDays);
+            int offsetRows = (int)Math.Max(Math.Floor(offset.TotalDays / grdRowDuration.TotalDays), 0);
 
             TimeSpan duration = fhEvent.End - fhEvent.Begin;
             int durationRows = (int)Math.Ceiling(duration.TotalDays / grdRowDuration.TotalDays);
