@@ -26,8 +26,6 @@ namespace TimetableFH
 
         public SettingsPage()
         {
-            Resources.Add("ignore", CompareType.Ignore);
-
             this.InitializeComponent();
         }
 
@@ -252,7 +250,7 @@ namespace TimetableFH
 
             if (oldIndex == -1) return;
 
-            int newIndex = Utils.OffsetIndex(oldIndex, collection.Count, offset).index;
+            int newIndex = StdUtils.OffsetIndex(oldIndex, collection.Count, offset).index;
 
             collection.Move(oldIndex, newIndex);
         }

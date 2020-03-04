@@ -1,5 +1,4 @@
 ﻿using StdOttStandard.AsyncResult;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Windows.UI;
@@ -44,11 +43,6 @@ namespace TimetableFH
         private void AbbBack_Tapped(object sender, TappedRoutedEventArgs e)
         {
             Frame.GoBack();
-        }
-
-        private void AutoSuggestBox_GotFocus(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            ((AutoSuggestBox)sender).IsSuggestionListOpen = true;
         }
     }
 

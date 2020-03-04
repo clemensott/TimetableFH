@@ -7,13 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ctl="using:StdOttUwp.Controls"
     xmlns:con="using:StdOttUwp.Converters"
-    xmlns:spi="using:StdOttUwp.Converters.Specialized"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
         <x:Int32 x:Key="zero">0</x:Int32>
-        <spi:VisibleCollapsedConverter x:Key="visNoEleCon" CompareValue="{StaticResource zero}"/>
+        <con:VisibleCollapsedConverter x:Key="visNoEleCon" CompareValue="{StaticResource zero}"/>
 
         <x:Int32 x:Key="lockMillis">100</x:Int32>
     </Page.Resources>

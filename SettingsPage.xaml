@@ -7,23 +7,20 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ctl="using:StdOttUwp.Controls"
     xmlns:con="using:StdOttUwp.Converters"
-    xmlns:spi="using:StdOttUwp.Converters.Specialized"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <x:Int32 x:Key="zero">0</x:Int32>
-        <spi:VisibleCollapsedConverter x:Key="visNoEleCon" CompareValue="{StaticResource zero}"/>
+        <con:VisibleCollapsedConverter x:Key="visNoEleCon" CompareValue="0" DecideType="Int"/>
 
-        <!--<local:CompareType x:Key="ignore">Ignore</local:CompareType>-->
-        <spi:VisibleCollapsedConverter x:Key="visIgnoreCon" CompareValue="{StaticResource ignore}"/>
-        <spi:CollapsedVisibleConverter x:Key="colIgnoreCon" CompareValue="{StaticResource ignore}"/>
+        <con:VisibleCollapsedConverter x:Key="visIgnoreCon" CompareValue="Ignore" DecideType="Enum"/>
+        <con:CollapsedVisibleConverter x:Key="colIgnoreCon" CompareValue="Ignore" DecideType="Enum"/>
 
         <local:CompareTypeIconConverter x:Key="comIcoCon"/>
 
         <con:UIntConverter x:Key="yearCon"/>
-        <spi:VisibleCollapsedConverter x:Key="visCon"/>
-        <spi:CollapsedVisibleConverter x:Key="colCon"/>
+        <con:VisibleCollapsedConverter x:Key="visCon"/>
+        <con:CollapsedVisibleConverter x:Key="colCon"/>
     </Page.Resources>
 
     <ScrollViewer Name="svrMain">
