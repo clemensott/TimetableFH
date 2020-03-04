@@ -180,5 +180,72 @@ namespace TimetableFH
 
             if (newRef.Add(duration).Date == viewModel.Settings.RefTime.Date) viewModel.Settings.RefTime = newRef;
         }
+
+        private void EventsView_SetColorClick(object sender, Event e)
+        {
+            foreach (EventColor eventColor in viewModel.Settings.EventColors.Collection)
+            {
+                if (!ViewModelUtils.IsEvent(eventColor, e.Group, e.Name)) continue;
+
+                EventColorEditPageViewModel eventColorViewModel =
+                    new EventColorEditPageViewModel(eventColor, viewModel.GetAllGroups(), viewModel.GetAllNames());
+
+                Frame.Navigate(typeof(EventColorEditPage), eventColorViewModel);
+                return;
+            }
+
+            EventColor newEventColor = new EventColor()
+            {
+                NameCompareType = CompareType.StartsWith,
+                Name = e.Name,
+            };
+            EventColorEditPageViewModel newEventColorViewModel =
+                new EventColorEditPageViewModel(newEventColor, viewModel.GetAllGroups(), viewModel.GetAllNames());
+
+            viewModel.Settings.EventColors.Collection.Add(newEventColor);
+            Frame.Navigate(typeof(EventColorEditPage), newEventColorViewModel);
+        }
+
+        private void EventsView_SetNameClick(object sender, Event e)
+        {
+            foreach (EventName eventName in viewModel.Settings.EventNames)
+            {
+                if (!ViewModelUtils.IsEvent(eventName, e.Name)) continue;
+
+                EventNameEditPageViewModel eventNameViewModel = new EventNameEditPageViewModel(eventName, viewModel.GetAllNames());
+
+                viewModel.Settings.EventNames.Add(eventName);
+                Frame.Navigate(typeof(EventNameEditPage), eventNameViewModel);
+                return;
+            }
+
+            EventName newEventName = new EventName()
+            {
+                CompareType = CompareType.StartsWith,
+                Reference = e.Name,
+            };
+            EventNameEditPageViewModel newEventNameViewModel =
+                new EventNameEditPageViewModel(newEventName, viewModel.GetAllNames());
+
+            viewModel.Settings.EventNames.Add(newEventName);
+            Frame.Navigate(typeof(EventNameEditPage), newEventNameViewModel);
+        }
+
+        private void EventsView_AddNotAdmittedClick(object sender, Event e)
+        {
+            foreach (NameCompare notAdmittedClass in viewModel.Settings.NotAdmittedClasses)
+            {
+                if (ViewModelUtils.Compare(notAdmittedClass.CompareType,
+                    e.Name, notAdmittedClass.Name)) return;
+            }
+
+            NameCompare newNotAdmittedClass = new NameCompare()
+            {
+                CompareType = CompareType.StartsWith,
+                Name = e.Name,
+            };
+
+            viewModel.Settings.NotAdmittedClasses.Add(newNotAdmittedClass);
+        }
     }
 }

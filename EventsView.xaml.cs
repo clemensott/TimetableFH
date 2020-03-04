@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
@@ -79,6 +80,8 @@ namespace TimetableFH
 
         private Event[] events;
         private readonly Dictionary<Event, EventControl> eventControls;
+
+        public event EventHandler<Event> SetColorClick, SetNameClick,AddNotAdmittedClick;
 
         public DateTime ReferenceDate
         {
@@ -194,6 +197,8 @@ namespace TimetableFH
 
                 eventControls.Add(fhEvent, control);
                 grdEvents.Children.Add(control);
+                control.RightTapped += EventControl_RightTapped;
+                control.Holding += EventControl_Holding;
             }
         }
 
@@ -202,6 +207,29 @@ namespace TimetableFH
             EventControl control = GetEventControl(fhEvent);
 
             if (control != null) control.Visibility = Visibility.Collapsed;
+        }
+
+        private void EventControl_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            OpenFlyout((FrameworkElement)sender);
+        }
+
+        private void EventControl_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+            OpenFlyout((FrameworkElement) sender);
+        }
+
+        private void OpenFlyout(FrameworkElement element)
+        {
+            FlyoutBase flyout = FlyoutBase.GetAttachedFlyout(element);
+
+            if (flyout == null)
+            {
+                flyout = CreateEventControlFlyout();
+                FlyoutBase.SetAttachedFlyout(element, flyout);
+            }
+
+            FlyoutBase.ShowAttachedFlyout(element);
         }
 
         private EventControl GetEventControl(Event fhEvent)
@@ -526,6 +554,41 @@ namespace TimetableFH
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (e.PreviousSize.Height != e.NewSize.Height) UpdateRowsHeight();
+        }
+
+        private FlyoutBase CreateEventControlFlyout()
+        {
+            MenuFlyout flyout = new MenuFlyout();
+            MenuFlyoutItem setColorItem = new MenuFlyoutItem() { Text = "Set Color" };
+            setColorItem.Click += SetColorItem_Click;
+            MenuFlyoutItem setNameItem = new MenuFlyoutItem() { Text = "Set Name" };
+            setNameItem.Click += SetNameItem_Click;
+            MenuFlyoutItem addNotAdmittedItem = new MenuFlyoutItem() { Text = "Add to not admitted classes" };
+            addNotAdmittedItem.Click += AddNotAdmittedItem_Click;
+
+            flyout.Items.Add(setColorItem);
+            flyout.Items.Add(setNameItem);
+            flyout.Items.Add(addNotAdmittedItem);
+
+            return flyout;
+        }
+
+        private void SetColorItem_Click(object sender, RoutedEventArgs e)
+        {
+            Event fhEvent = (Event) ((FrameworkElement) sender).DataContext;
+            SetColorClick?.Invoke(this, fhEvent);
+        }
+
+        private void SetNameItem_Click(object sender, RoutedEventArgs e)
+        {
+            Event fhEvent = (Event)((FrameworkElement)sender).DataContext;
+            SetNameClick?.Invoke(this, fhEvent);
+        }
+
+        private void AddNotAdmittedItem_Click(object sender, RoutedEventArgs e)
+        {
+            Event fhEvent = (Event)((FrameworkElement)sender).DataContext;
+            AddNotAdmittedClick?.Invoke(this, fhEvent);
         }
     }
 }

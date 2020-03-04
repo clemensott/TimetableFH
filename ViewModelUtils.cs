@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Windows.Foundation;
 using Windows.Storage;
 using Windows.UI.Xaml.Media;
 
@@ -13,24 +12,12 @@ namespace TimetableFH
     static class ViewModelUtils
     {
         private static readonly XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-
-        public static IEnumerable<Event> GetAdmittedEvents(this IEnumerable<Event> events, IEnumerable<NameCompare> notAdmittedClasses)
-        {
-            return events.Where(e => !IsNotAdmittedEvent(notAdmittedClasses, e));
-        }
-
+        
         private static bool IsNotAdmittedEvent(this IEnumerable<NameCompare> notAdmittedClasses, Event fhEvent)
         {
             return notAdmittedClasses.Any(c => Compare(c.CompareType, fhEvent.Name, c.Name));
         }
-
-        public static IEnumerable<Event> GetGroupEvents(this IEnumerable<Event> events, EventGroups groups)
-        {
-            EventGroup group = groups?.CurrentGroup;
-
-            return group == null ? events : events.Where(e => IsGroupEvent(group, e));
-        }
-
+        
         private static bool IsGroupEvent(this EventGroup group, Event fhEvent)
         {
             return group?.Collection?.All(n => !Compare(n.CompareType, fhEvent.Group, n.Name)) ?? false;
@@ -46,7 +33,7 @@ namespace TimetableFH
             return eventColors.DefaultBrush;
         }
 
-        private static bool IsEvent(EventColor ec, string group, string name)
+        public static bool IsEvent(EventColor ec, string group, string name)
         {
             return Compare(ec.GroupCompareType, group, ec.Group) && Compare(ec.NameCompareType, name, ec.Name);
         }
@@ -61,7 +48,7 @@ namespace TimetableFH
             return name;
         }
 
-        private static bool IsEvent(EventName en, string name)
+        public static bool IsEvent(EventName en, string name)
         {
             return Compare(en.CompareType, name, en.Reference);
         }
@@ -138,8 +125,11 @@ namespace TimetableFH
             return Replace(items, type + roomNumber);
         }
 
-        private static bool Compare(CompareType type, string value, string reference)
+        public static bool Compare(CompareType type, string value, string reference)
         {
+            if (type == CompareType.Ignore) return true;
+            if (value == null || reference == null) return false;
+
             switch (type)
             {
                 case CompareType.Equals:
@@ -153,9 +143,6 @@ namespace TimetableFH
 
                 case CompareType.Contains:
                     return value.Contains(reference);
-
-                case CompareType.Ignore:
-                    return true;
             }
 
             throw new ArgumentException("CompareType \"" + type + "\" is not implemented.", nameof(type));

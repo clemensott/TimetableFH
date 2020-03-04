@@ -12,7 +12,10 @@
         <local:EventsView ReferenceDate="{Binding Settings.RefTime,Mode=TwoWay}" 
                           AllEvents="{Binding ViewEvents}" 
                           DaysOfWeek="{Binding Settings.DaysOfWeek,Mode=TwoWay}"
-                          ViewDuration="{Binding Settings.ViewDuration,Mode=TwoWay}"/>
+                          ViewDuration="{Binding Settings.ViewDuration,Mode=TwoWay}"
+                          SetColorClick="EventsView_SetColorClick"
+                          SetNameClick="EventsView_SetNameClick"
+                          AddNotAdmittedClick="EventsView_AddNotAdmittedClick"/>
     </Grid>
 
     <Page.BottomAppBar>
