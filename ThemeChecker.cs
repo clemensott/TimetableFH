@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using StdOttUwp;
 using System.Threading.Tasks;
-using Windows.Foundation;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 
@@ -61,7 +56,7 @@ namespace TimetableFH
             dialog.DefaultCommandIndex = 0;
             dialog.CancelCommandIndex = 1;
 
-            IUICommand cmdResult = await dialog.ShowAsync();
+            IUICommand cmdResult = await dialog.ShowSafeAsync();
 
             return cmdResult == cmdYes;
         }

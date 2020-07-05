@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StdOttStandard.Converter.MultipleInputs;
+using System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -16,10 +17,10 @@ namespace TimetableFH
             this.InitializeComponent();
         }
 
-        private object MulTime_Convert(object input0, object input1, int changeIndex)
+        private object MulTime_Convert(object sender, MultiplesInputsConvert2EventArgs args)
         {
-            DateTime begin = ((DateTime?)input0).GetValueOrDefault();
-            DateTime end = ((DateTime?)input1).GetValueOrDefault();
+            DateTime begin = ((DateTime?)args.Input0).GetValueOrDefault();
+            DateTime end = ((DateTime?)args.Input1).GetValueOrDefault();
 
             return string.Format("{0:00}:{1:00} - {2:00}:{3:00}", begin.TimeOfDay.Hours,
                 begin.TimeOfDay.Minutes, end.TimeOfDay.Hours, end.TimeOfDay.Minutes);
