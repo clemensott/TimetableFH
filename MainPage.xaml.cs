@@ -35,9 +35,8 @@ namespace TimetableFH
 
             try
             {
-                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(dataFileName);
-
-                await SetEventsFromFile(file);
+                IStorageItem item = await ApplicationData.Current.LocalFolder.TryGetItemAsync(dataFileName);
+                if (item is StorageFile) await SetEventsFromFile(item as StorageFile);
             }
             catch (Exception exc)
             {
@@ -93,12 +92,15 @@ namespace TimetableFH
 
         private async Task DownloadCsv()
         {
+
             const string urlAdditionFormat = "?new_stg={0}&new_jg={1}&new_date=1569830400&new_viewmode=matrix_vertical";
             const string postDataFormat = "user={0}&pass={0}&login=Login&spanne_start=01.08.{1}&spanne_end=01.11.{2}&write_spanne=Von-Bis-Datum";
 
             string baseUrl, urlAddition, postData;
             if (viewModel.Settings.UseSimpleLogin)
             {
+                if (string.IsNullOrWhiteSpace(viewModel.Settings.MajorShortName) || viewModel.Settings.BeginYear == 0) return;
+
                 string majorShortName = viewModel.Settings.MajorShortName;
                 uint beginYear = viewModel.Settings.BeginYear;
 
@@ -108,6 +110,9 @@ namespace TimetableFH
             }
             else
             {
+                if (string.IsNullOrWhiteSpace(viewModel.Settings.CustomBaseUrl) ||
+                    string.IsNullOrWhiteSpace(viewModel.Settings.CustomRequestUrlAddition)) return;
+
                 baseUrl = viewModel.Settings.CustomBaseUrl;
                 urlAddition = viewModel.Settings.CustomRequestUrlAddition;
                 postData = viewModel.Settings.CustomPostDataPairs.ToPostData();
