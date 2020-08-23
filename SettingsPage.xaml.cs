@@ -192,7 +192,7 @@ namespace TimetableFH
 
         private void TbxMajor_LostFocus(object sender, RoutedEventArgs e)
         {
-            string major = viewModel.Settings.MajorShortName;
+            string major = viewModel.Settings.MajorShortName ?? string.Empty;
             bool warn = major.Length != 3 || !major.All(char.IsLetter);
             tblWaring.Visibility = warn ? Visibility.Visible : Visibility.Collapsed;
         }

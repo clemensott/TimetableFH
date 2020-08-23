@@ -11,7 +11,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <con:VisibleCollapsedConverter x:Key="visNoEleCon" CompareValue="0" DecideType="Int"/>
+        <con:VisibleCollapsedConverter x:Key="visNoEleCon" CompareValue="0" DecideType="ToInt"/>
 
         <con:VisibleCollapsedConverter x:Key="visIgnoreCon" CompareValue="Ignore" DecideType="Enum"/>
         <con:CollapsedVisibleConverter x:Key="colIgnoreCon" CompareValue="Ignore" DecideType="Enum"/>
