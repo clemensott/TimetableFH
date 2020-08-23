@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StdOttStandard.Converter.MultipleInputs;
+using System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -16,7 +17,7 @@ namespace TimetableFH
             this.InitializeComponent();
         }
 
-        private object MulTime_Convert(object sender, StdOttStandard.Converter.MultipleInputs.MultiplesInputsConvert2EventArgs args)
+        private object MulTime_Convert(object sender, MultiplesInputsConvert2EventArgs args)
         {
             DateTime begin = ((DateTime?)args.Input0).GetValueOrDefault();
             DateTime end = ((DateTime?)args.Input1).GetValueOrDefault();
