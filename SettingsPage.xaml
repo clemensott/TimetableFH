@@ -131,10 +131,12 @@
                     <TextBlock Text="Colors:" FontWeight="Bold" HorizontalAlignment="Left"
                                VerticalAlignment="Center" Margin="3"/>
 
-                    <TextBlock Grid.Row="1" Text="DefaultColor:" HorizontalAlignment="Left" 
+                    <TextBlock Grid.Row="1" Text="Default Color:" HorizontalAlignment="Left" 
                                VerticalAlignment="Center" Margin="3"/>
-                    <Rectangle Grid.Row="1" Fill="{Binding DefaultBrush}" HorizontalAlignment="Right"
-                               Width="100" Height="30" Margin="3" Tapped="RectChangeColor_Tapped"/>
+                    <Border Grid.Row="1" HorizontalAlignment="Right" Width="100" Height="30" Margin="3"
+                            BorderThickness="2" BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}">
+                        <Rectangle Fill="{Binding DefaultBrush}" Tapped="RectChangeColor_Tapped"/>
+                    </Border>
 
                     <ListView Grid.Row="2" SelectionMode="None" ItemsSource="{Binding Collection}"
                               ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Disabled">
@@ -179,7 +181,10 @@
                                     <SymbolIcon Grid.Column="1" Symbol="Remove" Margin="3" HorizontalAlignment="Center"
                                                 Visibility="{Binding NameCompareType,Converter={StaticResource visIgnoreCon}}"/>
 
-                                    <Rectangle Grid.Column="2" Fill="{Binding Brush}" Width="50" VerticalAlignment="Stretch" Margin="3"/>
+                                    <Border Grid.Column="2" VerticalAlignment="Stretch" Margin="3" Width="50"
+                                            BorderThickness="1.5" BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}">
+                                        <Rectangle Fill="{Binding Brush}"/>
+                                    </Border>
 
                                     <local:EditListElementControl Grid.Column="3"
                                                                   IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
