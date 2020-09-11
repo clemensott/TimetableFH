@@ -324,12 +324,12 @@
 
                 <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
                         BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
-                <TextBlock Text="Login:" FontSize="18" FontWeight="Bold" Margin="5,3"
+                <TextBlock Text="Source:" FontSize="18" FontWeight="Bold" Margin="5,3"
                            HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <CheckBox Content="Use simple login" VerticalAlignment="Center" Margin="15,3"
-                          IsChecked="{Binding Settings.UseSimpleLogin,Mode=TwoWay}"/>
+                <CheckBox Content="Use custom options" VerticalAlignment="Center" Margin="15,3"
+                          IsChecked="{Binding Settings.UseCustomOptions,Mode=TwoWay}"/>
 
-                <StackPanel Margin="10,0" Visibility="{Binding Settings.UseSimpleLogin,Converter={StaticResource visCon}}">
+                <StackPanel Margin="10,0" Visibility="{Binding Settings.UseCustomOptions,Converter={StaticResource colCon}}">
                     <TextBlock Text="Studiengang: (short name with 3 letters)" FontWeight="SemiBold" Margin="5,3"/>
                     <TextBox Text="{Binding Settings.MajorShortName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                              Margin="5,3" LostFocus="TbxMajor_LostFocus"/>
@@ -341,7 +341,7 @@
                                 Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
 
-                <StackPanel Margin="10,0" Visibility="{Binding Settings.UseSimpleLogin,Converter={StaticResource colCon}}">
+                <StackPanel Margin="10,0" Visibility="{Binding Settings.UseCustomOptions,Converter={StaticResource visCon}}">
                     <Grid DataContext="{Binding Settings.CustomPostDataPairs}" Margin="3,10,3,3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />

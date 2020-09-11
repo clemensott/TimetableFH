@@ -9,7 +9,7 @@ namespace TimetableFH
     {
         public const string BaseFhUrl = "http://stundenplan.fh-joanneum.at/";
 
-        private bool viewGroupEvents, isSingleDay, useSimpleLogin;
+        private bool viewGroupEvents, isSingleDay, useCustomOptions;
         private ApplicationTheme theme;
         private DaysOfWeek daysOfWeek;
         private DateTime refTime;
@@ -103,15 +103,15 @@ namespace TimetableFH
             }
         }
 
-        public bool UseSimpleLogin
+        public bool UseCustomOptions
         {
-            get => useSimpleLogin;
+            get => useCustomOptions;
             set
             {
-                if (value == useSimpleLogin) return;
+                if (value == useCustomOptions) return;
 
-                useSimpleLogin = value;
-                OnPropertyChanged(nameof(UseSimpleLogin));
+                useCustomOptions = value;
+                OnPropertyChanged(nameof(UseCustomOptions));
             }
         }
 
@@ -184,7 +184,7 @@ namespace TimetableFH
             ViewDuration = TimeSpan.FromHours(8);
             IsSingleDay = false;
             DaysOfWeek = GetWeekDays();
-            UseSimpleLogin = true;
+            UseCustomOptions = true;
             CustomBaseUrl = BaseFhUrl;
             CustomRequestUrlAddition = "?new_stg=MSD&new_jg=2018&new_date=1569830400&new_viewmode=matrix_vertical";
 

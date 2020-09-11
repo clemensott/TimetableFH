@@ -97,7 +97,7 @@ namespace TimetableFH
             const string postDataFormat = "user={0}&pass={0}&login=Login&spanne_start=01.08.{1}&spanne_end=01.11.{2}&write_spanne=Von-Bis-Datum";
 
             string baseUrl, urlAddition, postData;
-            if (viewModel.Settings.UseSimpleLogin)
+            if (!viewModel.Settings.UseCustomOptions)
             {
                 if (string.IsNullOrWhiteSpace(viewModel.Settings.MajorShortName) || viewModel.Settings.BeginYear == 0) return;
 
@@ -106,7 +106,7 @@ namespace TimetableFH
 
                 baseUrl = Settings.BaseFhUrl;
                 urlAddition = string.Format(urlAdditionFormat, majorShortName?.ToUpper(), beginYear);
-                postData = string.Format(postDataFormat, majorShortName?.ToLower(), beginYear, beginYear + 2);
+                postData = string.Format(postDataFormat, majorShortName?.ToLower(), beginYear, DateTime.Now.Year + 1);
             }
             else
             {
