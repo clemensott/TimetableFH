@@ -14,41 +14,51 @@
         <x:Int32 x:Key="lockMillis">100</x:Int32>
     </Page.Resources>
 
-    <Grid Margin="3">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <ScrollViewer>
+        <Grid Margin="5,3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <local:FocusableControl/>
+            <local:FocusableControl/>
 
-        <TextBlock Grid.Row="0" Text="Group:" Margin="3"/>
-        <local:AutoSuggestBoxContainer Grid.Row="1" x:Name="asbGroup" Margin="3"
-                                       Text="{Binding EventColor.Group,Mode=TwoWay}" 
-                                       ItemsSource="{Binding SuggestedGroups}"
-                                       FocusLockMillis="{StaticResource lockMillis}"/>
-        <local:CompareTypePicker Grid.Row="2" CompareType="{Binding EventColor.GroupCompareType,Mode=TwoWay}"/>
+            <TextBlock Grid.Row="0" Text="Group:" Margin="3,0"
+                       FontSize="20" FontWeight="SemiBold"/>
+            <local:AutoSuggestBoxContainer Grid.Row="1" x:Name="asbGroup" Margin="3"
+                                           Text="{Binding EventColor.Group,Mode=TwoWay}" 
+                                           ItemsSource="{Binding SuggestedGroups}"
+                                           FocusLockMillis="{StaticResource lockMillis}"/>
+            <local:CompareTypePicker Grid.Row="2" Margin="3"
+                                     CompareType="{Binding EventColor.GroupCompareType,Mode=TwoWay}"/>
 
-        <TextBlock Grid.Row="3" Text="Name:" Margin="3"/>
-        <local:AutoSuggestBoxContainer Grid.Row="4" Margin="3"
-                                       Text="{Binding EventColor.Name,Mode=TwoWay}" 
-                                       ItemsSource="{Binding SuggestedNames}"
-                                       FocusLockMillis="{StaticResource lockMillis}"
-                                       LastLostFocusControl="{Binding ElementName=asbRef,Path=LastLostFocusControl}"
-                                       LastLostFocusTime="{Binding ElementName=asbRef,Path=LastLostFocusTime}"/>
-        <local:CompareTypePicker Grid.Row="5" Margin="3"
-                                 CompareType="{Binding EventColor.NameCompareType,Mode=TwoWay}"/>
+            <TextBlock Grid.Row="4" Text="Name:" Margin="3,0"
+                       FontSize="20" FontWeight="SemiBold"/>
+            <local:AutoSuggestBoxContainer Grid.Row="5" Margin="3"
+                                           Text="{Binding EventColor.Name,Mode=TwoWay}" 
+                                           ItemsSource="{Binding SuggestedNames}"
+                                           FocusLockMillis="{StaticResource lockMillis}"
+                                           LastLostFocusControl="{Binding ElementName=asbRef,Path=LastLostFocusControl}"
+                                           LastLostFocusTime="{Binding ElementName=asbRef,Path=LastLostFocusTime}"/>
+            <local:CompareTypePicker Grid.Row="6" Margin="3"
+                                     CompareType="{Binding EventColor.NameCompareType,Mode=TwoWay}"/>
 
-        <Rectangle Grid.Row="6" Height="50" HorizontalAlignment="Stretch" StrokeThickness="3"
-                   Stroke="{ThemeResource ApplicationForegroundThemeBrush}"
-                   Fill="{Binding EventColor.Brush}" Tapped="RectColor_Tapped"/>
-    </Grid>
+            <TextBlock Grid.Row="8" Text="Color:" Margin="3,0"
+                       FontSize="20" FontWeight="SemiBold"/>
+            <Rectangle Grid.Row="9" Height="50" Margin="0,3" StrokeThickness="3"
+                       Stroke="{ThemeResource ApplicationForegroundThemeBrush}"
+                       Fill="{Binding EventColor.Brush}" Tapped="RectColor_Tapped"/>
+        </Grid>
+    </ScrollViewer>
 
     <Page.BottomAppBar>
         <CommandBar>
