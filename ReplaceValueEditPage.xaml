@@ -12,10 +12,11 @@
         <x:Int32 x:Key="lockMillis">100</x:Int32>
     </Page.Resources>
 
-    <Grid Margin="3">
+    <Grid Margin="5,3">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -23,14 +24,14 @@
 
         <local:FocusableControl/>
 
-        <TextBlock Grid.Row="0" Text="Reference:" Margin="3"/>
-        <local:AutoSuggestBoxContainer Grid.Row="1" Name="asbRef" Margin="3"
+        <TextBlock Grid.Row="0" Text="Reference:" FontSize="20" FontWeight="SemiBold" Margin="3"/>
+        <local:AutoSuggestBoxContainer Grid.Row="1" Name="asbRef" Margin="3,0"
                                        FocusLockMillis="{StaticResource lockMillis}"
                                        Text="{Binding ReplaceValue.Reference,Mode=TwoWay}"
                                        ItemsSource="{Binding SuggestedExamples}"/>
 
-        <TextBlock Grid.Row="2" Text="Replacement:" Margin="3"/>
-        <TextBox Grid.Row="3" Margin="3" Text="{Binding ReplaceValue.Replacement,Mode=TwoWay}"/>
+        <TextBlock Grid.Row="3" Text="Replacement:" FontSize="20" FontWeight="SemiBold" Margin="3"/>
+        <TextBox Grid.Row="4" Margin="3" Text="{Binding ReplaceValue.Replacement,Mode=TwoWay}"/>
     </Grid>
 
     <Page.BottomAppBar>

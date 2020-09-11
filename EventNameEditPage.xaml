@@ -12,27 +12,29 @@
         <x:Int32 x:Key="lockMillis">100</x:Int32>
     </Page.Resources>
 
-    <Grid Margin="3">
+    <Grid Margin="5,3">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <local:FocusableControl/>
-      
-        <TextBlock Grid.Row="0" Text="Reference:" Margin="3"/>
+
+        <TextBlock Grid.Row="0" Text="Reference:" FontSize="20" FontWeight="SemiBold" Margin="3"/>
         <local:AutoSuggestBoxContainer Grid.Row="1" Margin="3"
                                        Text="{Binding EventName.Reference,Mode=TwoWay}"
                                        ItemsSource="{Binding SuggestedNames}"
                                        FocusLockMillis="{StaticResource lockMillis}"/>
-        <local:CompareTypePicker Grid.Row="2" CompareType="{Binding EventName.CompareType,Mode=TwoWay}"/>
+        <local:CompareTypePicker Grid.Row="2" Margin="3,0"
+                                 CompareType="{Binding EventName.CompareType,Mode=TwoWay}"/>
 
-        <TextBlock Grid.Row="3" Text="Short:" Margin="3"/>
-        <TextBox Grid.Row="4" Margin="3" Text="{Binding EventName.Short,Mode=TwoWay}"/>
+        <TextBlock Grid.Row="4" Text="Short:" FontSize="20" FontWeight="SemiBold" Margin="3"/>
+        <TextBox Grid.Row="5" Margin="3" Text="{Binding EventName.Short,Mode=TwoWay}"/>
     </Grid>
 
     <Page.BottomAppBar>

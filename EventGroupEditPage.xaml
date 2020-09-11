@@ -11,20 +11,19 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <x:Int32 x:Key="zero">0</x:Int32>
-        <con:VisibleCollapsedConverter x:Key="visNoEleCon" CompareValue="{StaticResource zero}"/>
+        <con:VisibleCollapsedConverter x:Key="visNoEleCon" CompareValue="0" DecideType="ToInt"/>
 
         <x:Int32 x:Key="lockMillis">100</x:Int32>
     </Page.Resources>
     
     <ScrollViewer>
-        <StackPanel>
-            <TextBlock Text="Name:"/>
+        <StackPanel Margin="3">
+            <TextBlock Text="Name:" FontSize="20" FontWeight="SemiBold" Margin="3"/>
             <local:AutoSuggestBoxContainer Text="{Binding EventGroup.Name,Mode=TwoWay}"
                                            ItemsSource="{Binding SuggestedGroups}"
                                            FocusLockMillis="{StaticResource lockMillis}"/>
 
-            <TextBlock Text="Exclude Groups:" VerticalAlignment="Center"/>
+            <TextBlock Text="Exclude Groups:" FontSize="20" FontWeight="SemiBold" Margin="3,10,3,3"/>
 
             <con:SingleInputConverter x:Name="sicGroups" Input="{Binding Groups}"/>
             <ItemsControl ItemsSource="{Binding EventGroup.Collection}">
@@ -43,18 +42,18 @@
 
                             <local:NameCompareControl Margin="3" Value="{Binding}" 
                                                       Names="{Binding ElementName=sicGroups,Path=Input}"/>
-                            <ctl:IconButton Grid.Column="1" Symbol="Remove" 
+                            <ctl:IconButton Grid.Column="1" Symbol="Remove" Margin="0,0,5,0"
                                             Click="IbnRemoveGroup_Click"/>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <TextBlock Text="No Groups" Margin="3"
+            <TextBlock Text="6lt;No Groups&gt;" FontStyle="Italic" Margin="10,3"
                        Visibility="{Binding EventGroup.Collection.Count,Converter={StaticResource visNoEleCon}}"/>
 
-            <ctl:IconButton Content="Add" Symbol="Add" HorizontalAlignment="Right"
-                            Width="100" Margin="3" Click="IbnAddGroup_Click"/>
+            <ctl:IconButton Symbol="Add" HorizontalAlignment="Right" Margin="3,0"
+                            Width="100" Click="IbnAddGroup_Click"/>
         </StackPanel>
     </ScrollViewer>
 
