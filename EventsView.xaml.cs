@@ -5,6 +5,7 @@ using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
@@ -365,15 +366,20 @@ namespace TimetableFH
             return new ColumnDefinition() { Width = new GridLength(width) };
         }
 
-        private static Rectangle GetVerticalLine(int day)
+        private Rectangle GetVerticalLine(int day)
         {
             Rectangle rect = new Rectangle()
             {
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Fill = (Brush)Application.Current.Resources["ApplicationForegroundThemeBrush"]
             };
 
+            Binding fillBinding = new Binding()
+            {
+                ElementName = nameof(rectHori),
+                Path = new PropertyPath(nameof(Shape.Fill)),
+            };
+            rect.SetBinding(Shape.FillProperty, fillBinding);
             rect.SetValue(Grid.ColumnProperty, day * 2 - 1);
             rect.SetValue(Grid.RowSpanProperty, 3);
 
