@@ -8,7 +8,8 @@
     xmlns:ctl="using:StdOttUwp.Controls"
     xmlns:con="using:StdOttUwp.Converters"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="Page_Loaded">
 
     <Page.Resources>
         <con:VisibleCollapsedConverter x:Key="visNoEleCon" CompareValue="0" DecideType="ToInt"/>
@@ -21,307 +22,245 @@
         <con:UIntConverter x:Key="yearCon"/>
         <con:VisibleCollapsedConverter x:Key="visCon"/>
         <con:CollapsedVisibleConverter x:Key="colCon"/>
+        <con:FalsyConverter x:Key="falsyCon"/>
     </Page.Resources>
 
-    <ScrollViewer Name="svrMain">
-        <StackPanel>
-            <con:SingleInputConverter x:Name="sicNames" Input="{Binding Names}"/>
+    <Grid>
+        <ScrollViewer Visibility="{Binding Converter={StaticResource visCon},FallbackValue=Collapsed}">
+            <StackPanel>
+                <con:SingleInputConverter x:Name="sicNames" Input="{Binding Names}"/>
 
-            <Grid DataContext="{Binding Settings.NotAdmittedClasses}" Margin="3,3,3,10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <TextBlock Text="Not Admitted Classes:" FontWeight="Bold" HorizontalAlignment="Left"
-                           VerticalAlignment="Center" Margin="3"/>
-
-                <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}" Loaded="Lvw_Loaded">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="-15">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <local:NameCompareControl Margin="3" Value="{Binding}" Names="{Binding ElementName=sicNames,Path=Input}"/>
-                                <ctl:IconButton Grid.Column="1" Symbol="Cancel"
-                                                Background="Transparent" Click="IbnRemoveClass_Click"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-
-                <TextBlock Grid.Row="1" Text="No Classes" Margin="3"
-                           Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
-
-                <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
-                                Width="100" Margin="3" Click="IbnAddClasses_Click"/>
-            </Grid>
-
-            <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
-                    BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
-            <Grid DataContext="{Binding Settings.Groups}" Margin="3">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <TextBlock Text="Groups:" FontWeight="Bold" HorizontalAlignment="Left"
-                           VerticalAlignment="Center" Margin="3"/>
-
-                <ListBox Grid.Row="1" Background="Transparent" ItemsSource="{Binding Collection}"
-                         SelectedIndex="{Binding CurrentGroupIndex,Mode=TwoWay}" Loaded="Lvw_Loaded">
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="3"/>
-
-                                <local:EditListElementControl Grid.Column="3"
-                                                              IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
-                                                              EditClick="EleGroup_EditClick" RemoveClick="EleGroup_RemoveClick"
-                                                              UpClick="EleGroup_UpClick" DownClick="EleGroup_DownClick"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-
-                <TextBlock Grid.Row="1" Text="No Groups" Margin="3"
-                           Visibility="{Binding Collection.Count,Converter={StaticResource visNoEleCon}}"/>
-
-                <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
-                                Width="100" Margin="3" Click="IbnAddGroup_Click"/>
-            </Grid>
-
-            <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
-                    BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
-            <Grid DataContext="{Binding Settings.EventColors}" Margin="3,10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <TextBlock Text="Colors:" FontWeight="Bold" HorizontalAlignment="Left"
-                           VerticalAlignment="Center" Margin="3"/>
-
-                <TextBlock Grid.Row="1" Text="DefaultColor:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Center" Margin="3"/>
-                <Rectangle Grid.Row="1" Fill="{Binding DefaultBrush}" HorizontalAlignment="Right"
-                           Width="100" Height="30" Margin="3" Tapped="RectChangeColor_Tapped"/>
-
-                <ListView Grid.Row="2" SelectionMode="None" ItemsSource="{Binding Collection}"
-                          Loaded="Lvw_Loaded">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="-10,-15">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <Grid Grid.Column="0" Visibility="{Binding GroupCompareType,Converter={StaticResource colIgnoreCon}}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <TextBlock Grid.Column="0" Text="{Binding Group}" Margin="3"/>
-                                    <SymbolIcon Grid.Column="1" Symbol="{Binding GroupCompareType,Converter={StaticResource comIcoCon}}" Margin="3"/>
-                                </Grid>
-                                <SymbolIcon Grid.Column="0" Symbol="Remove" Margin="3" HorizontalAlignment="Center"
-                                            Visibility="{Binding GroupCompareType,Converter={StaticResource visIgnoreCon}}"/>
-
-
-                                <Grid Grid.Column="1" Visibility="{Binding NameCompareType,Converter={StaticResource colIgnoreCon}}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="3"/>
-                                    <SymbolIcon Grid.Column="1" Symbol="{Binding NameCompareType,Converter={StaticResource comIcoCon}}" Margin="3"/>
-                                </Grid>
-                                <SymbolIcon Grid.Column="1" Symbol="Remove" Margin="3" HorizontalAlignment="Center"
-                                            Visibility="{Binding NameCompareType,Converter={StaticResource visIgnoreCon}}"/>
-
-                                <Rectangle Grid.Column="2" Fill="{Binding Brush}" Width="50" VerticalAlignment="Stretch" Margin="3"/>
-
-                                <local:EditListElementControl Grid.Column="3"
-                                                              IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
-                                                              EditClick="EleColor_EditClick" RemoveClick="EleColor_RemoveClick"
-                                                              UpClick="EleColor_UpClick" DownClick="EleColor_DownClick"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-
-                <TextBlock Grid.Row="2" Text="No Colors" Margin="3"
-                           Visibility="{Binding Collection.Count,Converter={StaticResource visNoEleCon}}"/>
-
-                <ctl:IconButton Grid.Row="3" Symbol="Add" HorizontalAlignment="Right"
-                                Width="100" Margin="3" Click="BtnAddColor_Click"/>
-            </Grid>
-
-            <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
-                    BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
-            <Grid DataContext="{Binding Settings.EventNames}" Margin="3,10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <TextBlock Text="Names:" FontWeight="Bold" HorizontalAlignment="Left" 
-                           VerticalAlignment="Center" Margin="3"/>
-
-                <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}" Loaded="Lvw_Loaded">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="-10,-15">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Grid.Column="0" Text="{Binding Reference}" Margin="3"/>
-                                <SymbolIcon Grid.Column="1" Symbol="{Binding CompareType,Converter={StaticResource comIcoCon}}" Margin="3"/>
-                                <TextBlock Grid.Column="2" Text="{Binding Short}" Margin="3"/>
-
-                                <local:EditListElementControl Grid.Column="3"
-                                                              IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
-                                                              EditClick="EleName_EditClick" RemoveClick="EleName_RemoveClick"
-                                                              UpClick="EleName_UpClick" DownClick="EleName_DownClick"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-
-                <TextBlock Grid.Row="1" Text="No Names" Margin="3"
-                           Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
-
-                <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
-                                Width="100" Margin="3" Click="IbnAddName_Click"/>
-            </Grid>
-
-            <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
-                    BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
-            <Grid DataContext="{Binding Settings.Rooms}" Margin="3,10,3,3">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <TextBlock Text="Room Replacements:" FontWeight="Bold" HorizontalAlignment="Left"
-                           VerticalAlignment="Center" Margin="3"/>
-
-                <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}" Loaded="Lvw_Loaded">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="-10,-15">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Grid.Column="0" Text="{Binding Reference}" Margin="3"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Replacement}" Margin="3"/>
-
-                                <local:EditListElementControl Grid.Column="2"
-                                                              IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
-                                                              EditClick="EleRoom_EditClick" RemoveClick="EleRoom_RemoveClick"
-                                                              UpClick="EleRoom_UpClick" DownClick="EleRoom_DownClick"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-
-                <TextBlock Grid.Row="1" Text="No Replacements" Margin="3"
-                           Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
-
-                <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
-                                Width="100" Margin="3" Click="IbnAddRoom_Click"/>
-            </Grid>
-
-            <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
-                    BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
-            <TextBlock Text="Visible Days:" FontWeight="Bold" HorizontalAlignment="Left"
-                       VerticalAlignment="Center" Margin="3"/>
-            <local:DaysOfWeekSelector Margin="3" Value="{Binding Settings.DaysOfWeek,Mode=TwoWay}"/>
-
-            <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
-                    BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
-            <TextBlock Text="Login:" FontWeight="Bold" HorizontalAlignment="Left"
-                       VerticalAlignment="Center" Margin="3"/>
-            <CheckBox Content="Use simple login" VerticalAlignment="Center" Margin="5"
-                      IsChecked="{Binding Settings.UseSimpleLogin,Mode=TwoWay}"/>
-
-            <StackPanel Visibility="{Binding Settings.UseSimpleLogin,Converter={StaticResource visCon}}">
-                <TextBlock Text="Studiengang: (short name with 3 letters)" Margin="5,3"/>
-                <TextBox Text="{Binding Settings.MajorShortName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                         Margin="5,3" LostFocus="TbxMajor_LostFocus"/>
-                <TextBlock Name="tblWaring" Text="Are you sure its correct?" Margin="8,3" Visibility="Collapsed"/>
-
-                <TextBlock Text="Starting year (YYYY)" Margin="5,3"/>
-                <TextBox Margin="5,3" InputScope="Number"
-                         Text="{Binding Settings.BeginYear,Converter={StaticResource yearCon},
-                            Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
-
-            <StackPanel Visibility="{Binding Settings.UseSimpleLogin,Converter={StaticResource colCon}}">
-                <Grid DataContext="{Binding Settings.CustomPostDataPairs}" Margin="3,10,3,3">
+                <Grid DataContext="{Binding Settings.NotAdmittedClasses}" Margin="3,3,3,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Post Data:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
+                    <TextBlock Text="Not Admitted Classes:" FontWeight="Bold" HorizontalAlignment="Left"
+                               VerticalAlignment="Center" Margin="3"/>
 
-                    <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}" Loaded="Lvw_Loaded">
+                    <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}"
+                              ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Disabled">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="-15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <local:NameCompareControl Margin="3" Value="{Binding}" 
+                                                              Names="{Binding ElementName=sicNames,Path=Input}"/>
+                                    <ctl:IconButton Grid.Column="1" Symbol="Cancel"
+                                                    Background="Transparent" Click="IbnRemoveClass_Click"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <TextBlock Grid.Row="1" Text="No Classes" Margin="3"
+                               Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
+
+                    <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
+                                    Width="100" Margin="3" Click="IbnAddClasses_Click"/>
+                </Grid>
+
+                <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
+                        BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
+                <Grid DataContext="{Binding Settings.Groups}" Margin="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Groups:" FontWeight="Bold" HorizontalAlignment="Left"
+                               VerticalAlignment="Center" Margin="3"/>
+
+                    <ListBox Grid.Row="1" Background="Transparent" ItemsSource="{Binding Collection}"
+                             SelectedIndex="{Binding CurrentGroupIndex,Mode=TwoWay}"
+                             ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Disabled">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="3"/>
+
+                                    <local:EditListElementControl Grid.Column="3"
+                                                                  IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
+                                                                  EditClick="EleGroup_EditClick" RemoveClick="EleGroup_RemoveClick"
+                                                                  UpClick="EleGroup_UpClick" DownClick="EleGroup_DownClick"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <TextBlock Grid.Row="1" Text="No Groups" Margin="3"
+                               Visibility="{Binding Collection.Count,Converter={StaticResource visNoEleCon}}"/>
+
+                    <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
+                                    Width="100" Margin="3" Click="IbnAddGroup_Click"/>
+                </Grid>
+
+                <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
+                        BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
+                <Grid DataContext="{Binding Settings.EventColors}" Margin="3,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Colors:" FontWeight="Bold" HorizontalAlignment="Left"
+                               VerticalAlignment="Center" Margin="3"/>
+
+                    <TextBlock Grid.Row="1" Text="DefaultColor:" HorizontalAlignment="Left" 
+                               VerticalAlignment="Center" Margin="3"/>
+                    <Rectangle Grid.Row="1" Fill="{Binding DefaultBrush}" HorizontalAlignment="Right"
+                               Width="100" Height="30" Margin="3" Tapped="RectChangeColor_Tapped"/>
+
+                    <ListView Grid.Row="2" SelectionMode="None" ItemsSource="{Binding Collection}"
+                              ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Disabled">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="-10,-15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0" Visibility="{Binding GroupCompareType,Converter={StaticResource colIgnoreCon}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0" Text="{Binding Group}" Margin="3"/>
+                                        <SymbolIcon Grid.Column="1" Symbol="{Binding GroupCompareType,Converter={StaticResource comIcoCon}}" Margin="3"/>
+                                    </Grid>
+                                    <SymbolIcon Grid.Column="0" Symbol="Remove" Margin="3" HorizontalAlignment="Center"
+                                                Visibility="{Binding GroupCompareType,Converter={StaticResource visIgnoreCon}}"/>
+
+
+                                    <Grid Grid.Column="1" Visibility="{Binding NameCompareType,Converter={StaticResource colIgnoreCon}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="3"/>
+                                        <SymbolIcon Grid.Column="1" Symbol="{Binding NameCompareType,Converter={StaticResource comIcoCon}}" Margin="3"/>
+                                    </Grid>
+                                    <SymbolIcon Grid.Column="1" Symbol="Remove" Margin="3" HorizontalAlignment="Center"
+                                                Visibility="{Binding NameCompareType,Converter={StaticResource visIgnoreCon}}"/>
+
+                                    <Rectangle Grid.Column="2" Fill="{Binding Brush}" Width="50" VerticalAlignment="Stretch" Margin="3"/>
+
+                                    <local:EditListElementControl Grid.Column="3"
+                                                                  IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
+                                                                  EditClick="EleColor_EditClick" RemoveClick="EleColor_RemoveClick"
+                                                                  UpClick="EleColor_UpClick" DownClick="EleColor_DownClick"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <TextBlock Grid.Row="2" Text="No Colors" Margin="3"
+                               Visibility="{Binding Collection.Count,Converter={StaticResource visNoEleCon}}"/>
+
+                    <ctl:IconButton Grid.Row="3" Symbol="Add" HorizontalAlignment="Right"
+                                    Width="100" Margin="3" Click="BtnAddColor_Click"/>
+                </Grid>
+
+                <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
+                        BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
+                <Grid DataContext="{Binding Settings.EventNames}" Margin="3,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Names:" FontWeight="Bold" HorizontalAlignment="Left" 
+                               VerticalAlignment="Center" Margin="3"/>
+
+                    <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}"
+                              ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Disabled">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="-10,-15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="{Binding Reference}" Margin="3"/>
+                                    <SymbolIcon Grid.Column="1" Symbol="{Binding CompareType,Converter={StaticResource comIcoCon}}" Margin="3"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Short}" Margin="3"/>
+
+                                    <local:EditListElementControl Grid.Column="3"
+                                                                  IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
+                                                                  EditClick="EleName_EditClick" RemoveClick="EleName_RemoveClick"
+                                                                  UpClick="EleName_UpClick" DownClick="EleName_DownClick"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <TextBlock Grid.Row="1" Text="No Names" Margin="3"
+                               Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
+
+                    <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
+                                    Width="100" Margin="3" Click="IbnAddName_Click"/>
+                </Grid>
+
+                <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
+                        BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
+                <Grid DataContext="{Binding Settings.Rooms}" Margin="3,10,3,3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Room Replacements:" FontWeight="Bold" HorizontalAlignment="Left"
+                               VerticalAlignment="Center" Margin="3"/>
+
+                    <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}"
+                              ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Disabled">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -336,40 +275,114 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBox Grid.Column="0" IsTextPredictionEnabled="False"
-                                             Margin="3" Text="{Binding Key,Mode=TwoWay}"/>
-                                    <TextBox Grid.Column="1" IsTextPredictionEnabled="False"
-                                             Margin="3" Text="{Binding Value,Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding Reference}" Margin="3"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Replacement}" Margin="3"/>
 
-                                    <ctl:IconButton Grid.Column="2" Symbol="Cancel"
-                                                    Background="Transparent" Click="IbnRemovePostData_Click"/>
+                                    <local:EditListElementControl Grid.Column="2"
+                                                                  IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
+                                                                  EditClick="EleRoom_EditClick" RemoveClick="EleRoom_RemoveClick"
+                                                                  UpClick="EleRoom_UpClick" DownClick="EleRoom_DownClick"/>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <TextBlock Grid.Row="1" Text="No Post Data" Margin="3"
+                    <TextBlock Grid.Row="1" Text="No Replacements" Margin="3"
                                Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
 
                     <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
-                                    Width="100" Margin="3" Click="IbnAddPostData_Click"/>
+                                    Width="100" Margin="3" Click="IbnAddRoom_Click"/>
                 </Grid>
 
-                <StackPanel Margin="3">
-                    <TextBlock Text="Base Url:" Margin="3"/>
-                    <TextBox Margin="3" Text="{Binding Settings.CustomBaseUrl,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
+                        BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
+                <TextBlock Text="Visible Days:" FontWeight="Bold" HorizontalAlignment="Left"
+                           VerticalAlignment="Center" Margin="3"/>
+                <local:DaysOfWeekSelector Margin="3" Value="{Binding Settings.DaysOfWeek,Mode=TwoWay}"/>
 
-                    <TextBlock Text="Url Addition:" Margin="3"/>
-                    <TextBox Margin="3" Text="{Binding Settings.CustomRequestUrlAddition,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
+                        BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
+                <TextBlock Text="Login:" FontWeight="Bold" HorizontalAlignment="Left"
+                           VerticalAlignment="Center" Margin="3"/>
+                <CheckBox Content="Use simple login" VerticalAlignment="Center" Margin="5"
+                          IsChecked="{Binding Settings.UseSimpleLogin,Mode=TwoWay}"/>
+
+                <StackPanel Visibility="{Binding Settings.UseSimpleLogin,Converter={StaticResource visCon}}">
+                    <TextBlock Text="Studiengang: (short name with 3 letters)" Margin="5,3"/>
+                    <TextBox Text="{Binding Settings.MajorShortName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                             Margin="5,3" LostFocus="TbxMajor_LostFocus"/>
+                    <TextBlock Name="tblWaring" Text="Are you sure its correct?" Margin="8,3" Visibility="Collapsed"/>
+
+                    <TextBlock Text="Starting year (YYYY)" Margin="5,3"/>
+                    <TextBox Margin="5,3" InputScope="Number"
+                             Text="{Binding Settings.BeginYear,Converter={StaticResource yearCon},
+                                Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+
+                <StackPanel Visibility="{Binding Settings.UseSimpleLogin,Converter={StaticResource colCon}}">
+                    <Grid DataContext="{Binding Settings.CustomPostDataPairs}" Margin="3,10,3,3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Post Data:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
+
+                        <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}"
+                                  ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Disabled">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="-10,-15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBox Grid.Column="0" IsTextPredictionEnabled="False"
+                                                 Margin="3" Text="{Binding Key,Mode=TwoWay}"/>
+                                        <TextBox Grid.Column="1" IsTextPredictionEnabled="False"
+                                                 Margin="3" Text="{Binding Value,Mode=TwoWay}"/>
+
+                                        <ctl:IconButton Grid.Column="2" Symbol="Cancel"
+                                                        Background="Transparent" Click="IbnRemovePostData_Click"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <TextBlock Grid.Row="1" Text="No Post Data" Margin="3"
+                                   Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
+
+                        <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
+                                        Width="100" Margin="3" Click="IbnAddPostData_Click"/>
+                    </Grid>
+
+                    <StackPanel Margin="3">
+                        <TextBlock Text="Base Url:" Margin="3"/>
+                        <TextBox Margin="3" Text="{Binding Settings.CustomBaseUrl,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock Text="Url Addition:" Margin="3"/>
+                        <TextBox Margin="3" Text="{Binding Settings.CustomRequestUrlAddition,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="3">
+                    <TextBlock Text="Events: " Margin="3"/>
+                    <TextBlock Text="{Binding AllEvents.Length}" Margin="3"/>
                 </StackPanel>
             </StackPanel>
+        </ScrollViewer>
 
-            <StackPanel Orientation="Horizontal" Margin="3">
-                <TextBlock Text="Events: " Margin="3"/>
-                <TextBlock Text="{Binding AllEvents.Length}" Margin="3"/>
-            </StackPanel>
-        </StackPanel>
-    </ScrollViewer>
+        <ProgressRing Width="100" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center"
+                      IsActive="{Binding Converter={StaticResource falsyCon},FallbackValue=true}" />
+    </Grid>
 
     <Page.BottomAppBar>
         <CommandBar>
