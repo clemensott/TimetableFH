@@ -30,26 +30,28 @@
             <StackPanel>
                 <con:SingleInputConverter x:Name="sicNames" Input="{Binding Names}"/>
 
-                <Grid DataContext="{Binding Settings.NotAdmittedClasses}" Margin="3,3,3,10">
+                <Grid DataContext="{Binding Settings.AdmittedClasses}" Margin="3,3,3,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Not Admitted Classes:" FontWeight="Bold" HorizontalAlignment="Left"
-                               VerticalAlignment="Center" Margin="3"/>
+                    <TextBlock Text="Admitted Classes:" FontSize="18" FontWeight="Bold"
+                               HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,3"/>
 
                     <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}"
                               ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Disabled">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="MinHeight" Value="0"/>
                             </Style>
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="-15">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
@@ -64,7 +66,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <TextBlock Grid.Row="1" Text="No Classes" Margin="3"
+                    <TextBlock Grid.Row="1" Text="&lt;No Classes&gt;" FontStyle="Italic" Margin="10,3"
                                Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
 
                     <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
@@ -80,8 +82,8 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Groups:" FontWeight="Bold" HorizontalAlignment="Left"
-                               VerticalAlignment="Center" Margin="3"/>
+                    <TextBlock Text="Groups:" FontSize="18" FontWeight="Bold" Margin="5,3"
+                               HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
                     <ListBox Grid.Row="1" Background="Transparent" ItemsSource="{Binding Collection}"
                              SelectedIndex="{Binding CurrentGroupIndex,Mode=TwoWay}"
@@ -89,6 +91,8 @@
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Padding" Value="8,2"/>
+                                <Setter Property="MinHeight" Value="0"/>
                             </Style>
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
@@ -100,9 +104,9 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="3"/>
+                                    <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="3,0" Text="{Binding Name}"/>
 
-                                    <local:EditListElementControl Grid.Column="3"
+                                    <local:EditListElementControl Grid.Column="3" VerticalAlignment="Center"
                                                                   IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
                                                                   EditClick="EleGroup_EditClick" RemoveClick="EleGroup_RemoveClick"
                                                                   UpClick="EleGroup_UpClick" DownClick="EleGroup_DownClick"/>
@@ -128,8 +132,8 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Colors:" FontWeight="Bold" HorizontalAlignment="Left"
-                               VerticalAlignment="Center" Margin="3"/>
+                    <TextBlock Text="Colors:" FontSize="18" FontWeight="Bold" Margin="5,3"
+                               HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
                     <TextBlock Grid.Row="1" Text="Default Color:" HorizontalAlignment="Left" 
                                VerticalAlignment="Center" Margin="3"/>
@@ -143,11 +147,13 @@
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="MinHeight" Value="0"/>
                             </Style>
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="-10,-15">
+                                <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
@@ -156,7 +162,8 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <Grid Grid.Column="0" Visibility="{Binding GroupCompareType,Converter={StaticResource colIgnoreCon}}">
+                                    <Grid Grid.Column="0" VerticalAlignment="Center"
+                                          Visibility="{Binding GroupCompareType,Converter={StaticResource colIgnoreCon}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
@@ -165,11 +172,13 @@
                                         <TextBlock Grid.Column="0" Text="{Binding Group}" Margin="3"/>
                                         <SymbolIcon Grid.Column="1" Symbol="{Binding GroupCompareType,Converter={StaticResource comIcoCon}}" Margin="3"/>
                                     </Grid>
-                                    <SymbolIcon Grid.Column="0" Symbol="Remove" Margin="3" HorizontalAlignment="Center"
+                                    <SymbolIcon Grid.Column="0" Symbol="Remove" Margin="3" 
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"
                                                 Visibility="{Binding GroupCompareType,Converter={StaticResource visIgnoreCon}}"/>
 
 
-                                    <Grid Grid.Column="1" Visibility="{Binding NameCompareType,Converter={StaticResource colIgnoreCon}}">
+                                    <Grid Grid.Column="1" VerticalAlignment="Center"
+                                          Visibility="{Binding NameCompareType,Converter={StaticResource colIgnoreCon}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
@@ -178,7 +187,8 @@
                                         <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="3"/>
                                         <SymbolIcon Grid.Column="1" Symbol="{Binding NameCompareType,Converter={StaticResource comIcoCon}}" Margin="3"/>
                                     </Grid>
-                                    <SymbolIcon Grid.Column="1" Symbol="Remove" Margin="3" HorizontalAlignment="Center"
+                                    <SymbolIcon Grid.Column="1" Symbol="Remove" Margin="3"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"
                                                 Visibility="{Binding NameCompareType,Converter={StaticResource visIgnoreCon}}"/>
 
                                     <Border Grid.Column="2" VerticalAlignment="Stretch" Margin="3" Width="50"
@@ -186,7 +196,7 @@
                                         <Rectangle Fill="{Binding Brush}"/>
                                     </Border>
 
-                                    <local:EditListElementControl Grid.Column="3"
+                                    <local:EditListElementControl Grid.Column="3" VerticalAlignment="Center"
                                                                   IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
                                                                   EditClick="EleColor_EditClick" RemoveClick="EleColor_RemoveClick"
                                                                   UpClick="EleColor_UpClick" DownClick="EleColor_DownClick"/>
@@ -211,19 +221,20 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Names:" FontWeight="Bold" HorizontalAlignment="Left" 
-                               VerticalAlignment="Center" Margin="3"/>
+                    <TextBlock Text="Names:" FontSize="18" FontWeight="Bold" Margin="5,3"
+                               HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
                     <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}"
                               ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Disabled">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="MinHeight" Value="0"/>
                             </Style>
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="-10,-15">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
@@ -232,11 +243,14 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0" Text="{Binding Reference}" Margin="3"/>
-                                    <SymbolIcon Grid.Column="1" Symbol="{Binding CompareType,Converter={StaticResource comIcoCon}}" Margin="3"/>
-                                    <TextBlock Grid.Column="2" Text="{Binding Short}" Margin="3"/>
+                                    <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                                               Margin="3" Text="{Binding Reference}"/>
+                                    <SymbolIcon Grid.Column="1" VerticalAlignment="Center" Margin="3"
+                                                Symbol="{Binding CompareType,Converter={StaticResource comIcoCon}}"/>
+                                    <TextBlock Grid.Column="2" VerticalAlignment="Center"
+                                               Margin="3" Text="{Binding Short}"/>
 
-                                    <local:EditListElementControl Grid.Column="3"
+                                    <local:EditListElementControl Grid.Column="3" VerticalAlignment="Center"
                                                                   IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
                                                                   EditClick="EleName_EditClick" RemoveClick="EleName_RemoveClick"
                                                                   UpClick="EleName_UpClick" DownClick="EleName_DownClick"/>
@@ -245,7 +259,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <TextBlock Grid.Row="1" Text="No Names" Margin="3"
+                    <TextBlock Grid.Row="1" Text="&lt;No Names&gt;" FontStyle="Italic" Margin="10,3"
                                Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
 
                     <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
@@ -261,29 +275,32 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Room Replacements:" FontWeight="Bold" HorizontalAlignment="Left"
-                               VerticalAlignment="Center" Margin="3"/>
+                    <TextBlock Text="Room Aliases:" FontSize="18" FontWeight="Bold" Margin="5,3"
+                               HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
                     <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}"
                               ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Disabled">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="MinHeight" Value="0"/>
                             </Style>
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="-10,-15">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0" Text="{Binding Reference}" Margin="3"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Replacement}" Margin="3"/>
+                                    <TextBlock Grid.Column="0" VerticalAlignment="Center" 
+                                               Margin="3" Text="{Binding Reference}"/>
+                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" 
+                                               Margin="3" Text="{Binding Replacement}"/>
 
-                                    <local:EditListElementControl Grid.Column="2"
+                                    <local:EditListElementControl Grid.Column="2" VerticalAlignment="Center"
                                                                   IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
                                                                   EditClick="EleRoom_EditClick" RemoveClick="EleRoom_RemoveClick"
                                                                   UpClick="EleRoom_UpClick" DownClick="EleRoom_DownClick"/>
@@ -292,7 +309,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <TextBlock Grid.Row="1" Text="No Replacements" Margin="3"
+                    <TextBlock Grid.Row="1" Text="&lt;No Aliases&gt;" FontStyle="Italic" Margin="10,3"
                                Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
 
                     <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
@@ -301,30 +318,30 @@
 
                 <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
                         BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
-                <TextBlock Text="Visible Days:" FontWeight="Bold" HorizontalAlignment="Left"
-                           VerticalAlignment="Center" Margin="3"/>
-                <local:DaysOfWeekSelector Margin="3" Value="{Binding Settings.DaysOfWeek,Mode=TwoWay}"/>
+                <TextBlock Text="Visible Days:" FontSize="18" FontWeight="Bold" Margin="5,3"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <local:DaysOfWeekSelector Margin="15,3" Value="{Binding Settings.DaysOfWeek,Mode=TwoWay}"/>
 
                 <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
                         BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
-                <TextBlock Text="Login:" FontWeight="Bold" HorizontalAlignment="Left"
-                           VerticalAlignment="Center" Margin="3"/>
-                <CheckBox Content="Use simple login" VerticalAlignment="Center" Margin="5"
+                <TextBlock Text="Login:" FontSize="18" FontWeight="Bold" Margin="5,3"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox Content="Use simple login" VerticalAlignment="Center" Margin="15,3"
                           IsChecked="{Binding Settings.UseSimpleLogin,Mode=TwoWay}"/>
 
-                <StackPanel Visibility="{Binding Settings.UseSimpleLogin,Converter={StaticResource visCon}}">
-                    <TextBlock Text="Studiengang: (short name with 3 letters)" Margin="5,3"/>
+                <StackPanel Margin="10,0" Visibility="{Binding Settings.UseSimpleLogin,Converter={StaticResource visCon}}">
+                    <TextBlock Text="Studiengang: (short name with 3 letters)" FontWeight="SemiBold" Margin="5,3"/>
                     <TextBox Text="{Binding Settings.MajorShortName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                              Margin="5,3" LostFocus="TbxMajor_LostFocus"/>
                     <TextBlock Name="tblWaring" Text="Are you sure its correct?" Margin="8,3" Visibility="Collapsed"/>
 
-                    <TextBlock Text="Starting year (YYYY)" Margin="5,3"/>
+                    <TextBlock Text="Starting year (YYYY)" FontWeight="SemiBold" Margin="5,3"/>
                     <TextBox Margin="5,3" InputScope="Number"
                              Text="{Binding Settings.BeginYear,Converter={StaticResource yearCon},
                                 Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
 
-                <StackPanel Visibility="{Binding Settings.UseSimpleLogin,Converter={StaticResource colCon}}">
+                <StackPanel Margin="10,0" Visibility="{Binding Settings.UseSimpleLogin,Converter={StaticResource colCon}}">
                     <Grid DataContext="{Binding Settings.CustomPostDataPairs}" Margin="3,10,3,3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -332,18 +349,20 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="Post Data:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3"/>
+                        <TextBlock Text="Post Data:" FontWeight="SemiBold" Margin="3"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
                         <ListView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding}"
                                   ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Disabled">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="MinHeight" Value="0"/>
                                 </Style>
                             </ListView.ItemContainerStyle>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Margin="-10,-15">
+                                    <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="*" />
@@ -362,7 +381,7 @@
                             </ListView.ItemTemplate>
                         </ListView>
 
-                        <TextBlock Grid.Row="1" Text="No Post Data" Margin="3"
+                        <TextBlock Grid.Row="1" Text="&lt;No Post Data&gt;" FontStyle="Italic" Margin="10,3"
                                    Visibility="{Binding Count,Converter={StaticResource visNoEleCon}}"/>
 
                         <ctl:IconButton Grid.Row="2" Symbol="Add" HorizontalAlignment="Right"
@@ -370,17 +389,17 @@
                     </Grid>
 
                     <StackPanel Margin="3">
-                        <TextBlock Text="Base Url:" Margin="3"/>
+                        <TextBlock Text="Base Url:" FontWeight="SemiBold" Margin="3"/>
                         <TextBox Margin="3" Text="{Binding Settings.CustomBaseUrl,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <TextBlock Text="Url Addition:" Margin="3"/>
+                        <TextBlock Text="Url Addition:" FontWeight="SemiBold" Margin="3"/>
                         <TextBox Margin="3" Text="{Binding Settings.CustomRequestUrlAddition,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="3">
-                    <TextBlock Text="Events: " Margin="3"/>
-                    <TextBlock Text="{Binding AllEvents.Length}" Margin="3"/>
+                <StackPanel Orientation="Horizontal" Margin="3,5">
+                    <TextBlock Text="Events: " FontSize="18" FontWeight="Bold" Margin="3"/>
+                    <TextBlock Margin="3" VerticalAlignment="Center" Text="{Binding AllEvents.Length}"/>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

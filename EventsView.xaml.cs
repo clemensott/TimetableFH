@@ -81,7 +81,7 @@ namespace TimetableFH
         private Event[] events;
         private readonly Dictionary<Event, EventControl> eventControls;
 
-        public event EventHandler<Event> SetColorClick, SetNameClick,AddNotAdmittedClick;
+        public event EventHandler<Event> SetColorClick, SetNameClick, AddAdmittedClick;
 
         public DateTime ReferenceDate
         {
@@ -216,7 +216,7 @@ namespace TimetableFH
 
         private void EventControl_Holding(object sender, HoldingRoutedEventArgs e)
         {
-            OpenFlyout((FrameworkElement) sender);
+            OpenFlyout((FrameworkElement)sender);
         }
 
         private void OpenFlyout(FrameworkElement element)
@@ -563,19 +563,19 @@ namespace TimetableFH
             setColorItem.Click += SetColorItem_Click;
             MenuFlyoutItem setNameItem = new MenuFlyoutItem() { Text = "Set Name" };
             setNameItem.Click += SetNameItem_Click;
-            MenuFlyoutItem addNotAdmittedItem = new MenuFlyoutItem() { Text = "Add to not admitted classes" };
-            addNotAdmittedItem.Click += AddNotAdmittedItem_Click;
+            MenuFlyoutItem addAdmittedItem = new MenuFlyoutItem() { Text = "Add to admitted classes" };
+            addAdmittedItem.Click += AddAdmittedItem_Click;
 
             flyout.Items.Add(setColorItem);
             flyout.Items.Add(setNameItem);
-            flyout.Items.Add(addNotAdmittedItem);
+            flyout.Items.Add(addAdmittedItem);
 
             return flyout;
         }
 
         private void SetColorItem_Click(object sender, RoutedEventArgs e)
         {
-            Event fhEvent = (Event) ((FrameworkElement) sender).DataContext;
+            Event fhEvent = (Event)((FrameworkElement)sender).DataContext;
             SetColorClick?.Invoke(this, fhEvent);
         }
 
@@ -585,10 +585,10 @@ namespace TimetableFH
             SetNameClick?.Invoke(this, fhEvent);
         }
 
-        private void AddNotAdmittedItem_Click(object sender, RoutedEventArgs e)
+        private void AddAdmittedItem_Click(object sender, RoutedEventArgs e)
         {
             Event fhEvent = (Event)((FrameworkElement)sender).DataContext;
-            AddNotAdmittedClick?.Invoke(this, fhEvent);
+            AddAdmittedClick?.Invoke(this, fhEvent);
         }
     }
 }

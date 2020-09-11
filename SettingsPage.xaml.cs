@@ -12,6 +12,8 @@ using Windows.UI.Xaml.Navigation;
 using StdOttStandard;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using StdOttUwp;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=234238 dokumentiert.
 
@@ -44,14 +46,15 @@ namespace TimetableFH
 
         private void IbnAddClasses_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.Settings.NotAdmittedClasses.Add(new NameCompare());
+            viewModel.Settings.AdmittedClasses.Add(new NameCompare());
         }
 
-        private void IbnRemoveClass_Click(object sender, RoutedEventArgs e)
+        private async void IbnRemoveClass_Click(object sender, RoutedEventArgs e)
         {
             NameCompare nameCompare = (NameCompare)((FrameworkElement)sender).DataContext;
 
-            viewModel.Settings.NotAdmittedClasses.Remove(nameCompare);
+            await AskRemove(viewModel.Settings.AdmittedClasses, nameCompare,
+                $"Do you want to remove admitted class:\n{nameCompare.Name}");
         }
 
         private void IbnAddGroup_Click(object sender, RoutedEventArgs e)
@@ -72,11 +75,12 @@ namespace TimetableFH
             Frame.Navigate(typeof(EventGroupEditPage), eventGroupViewModel);
         }
 
-        private void EleGroup_RemoveClick(object sender, RoutedEventArgs e)
+        private async void EleGroup_RemoveClick(object sender, RoutedEventArgs e)
         {
             EventGroup eventGroup = (EventGroup)((FrameworkElement)sender).DataContext;
 
-            viewModel.Settings.Groups.Collection.Remove(eventGroup);
+            await AskRemove(viewModel.Settings.Groups.Collection, eventGroup,
+                $"Do you want to remove group:\n{eventGroup.Name}");
         }
 
         private void EleGroup_UpClick(object sender, RoutedEventArgs e)
@@ -113,11 +117,12 @@ namespace TimetableFH
             Frame.Navigate(typeof(EventColorEditPage), eventColorViewModel);
         }
 
-        private void EleColor_RemoveClick(object sender, RoutedEventArgs e)
+        private async void EleColor_RemoveClick(object sender, RoutedEventArgs e)
         {
             EventColor eventColor = (EventColor)((FrameworkElement)sender).DataContext;
 
-            viewModel.Settings.EventColors.Collection.Remove(eventColor);
+            await AskRemove(viewModel.Settings.EventColors.Collection, eventColor,
+                "Do you want to remove color");
         }
 
         private void EleColor_UpClick(object sender, RoutedEventArgs e)
@@ -164,11 +169,12 @@ namespace TimetableFH
             Frame.Navigate(typeof(EventNameEditPage), eventNameViewModel);
         }
 
-        private void EleName_RemoveClick(object sender, RoutedEventArgs e)
+        private async void EleName_RemoveClick(object sender, RoutedEventArgs e)
         {
             EventName eventName = (EventName)((FrameworkElement)sender).DataContext;
 
-            viewModel.Settings.EventNames.Remove(eventName);
+            await AskRemove(viewModel.Settings.EventNames, eventName,
+                $"Do you want to remove name:\n{eventName.Reference}");
         }
 
         private void EleName_UpClick(object sender, RoutedEventArgs e)
@@ -203,11 +209,12 @@ namespace TimetableFH
             tblWaring.Visibility = warn ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void IbnRemovePostData_Click(object sender, RoutedEventArgs e)
+        private async void IbnRemovePostData_Click(object sender, RoutedEventArgs e)
         {
             StringKeyValuePair pair = (StringKeyValuePair)((FrameworkElement)sender).DataContext;
 
-            viewModel.Settings.CustomPostDataPairs.Remove(pair);
+            await AskRemove(viewModel.Settings.CustomPostDataPairs, pair,
+                $"Do you want to remove post data:\n{pair.Key}");
         }
 
         private void IbnAddPostData_Click(object sender, RoutedEventArgs e)
@@ -224,11 +231,12 @@ namespace TimetableFH
             Frame.Navigate(typeof(ReplaceValueEditPage), replaceValueViewModel);
         }
 
-        private void EleRoom_RemoveClick(object sender, RoutedEventArgs e)
+        private async void EleRoom_RemoveClick(object sender, RoutedEventArgs e)
         {
             ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
 
-            viewModel.Settings.Rooms.Remove(replaceValue);
+            await AskRemove(viewModel.Settings.Rooms, replaceValue,
+                $"Do you want to remove alias:\n{replaceValue.Reference}");
         }
 
         private void EleRoom_UpClick(object sender, RoutedEventArgs e)
@@ -243,6 +251,11 @@ namespace TimetableFH
             ReplaceValue replaceValue = (ReplaceValue)((FrameworkElement)sender).DataContext;
 
             Move(viewModel.Settings.Rooms, replaceValue, 1);
+        }
+
+        private async Task AskRemove<T>(IList<T> list, T item, string text)
+        {
+            if (await DialogUtils.ShowTwoOptionsAsync(text, "Remove", "No", "Yes")) list.Remove(item);
         }
 
         private void AbbBack_Click(object sender, RoutedEventArgs e)

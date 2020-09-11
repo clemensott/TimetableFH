@@ -15,7 +15,7 @@
                           ViewDuration="{Binding Settings.ViewDuration,Mode=TwoWay}"
                           SetColorClick="EventsView_SetColorClick"
                           SetNameClick="EventsView_SetNameClick"
-                          AddNotAdmittedClick="EventsView_AddNotAdmittedClick"/>
+                          AddAdmittedClick="EventsView_AddAdmittedClick"/>
     </Grid>
 
     <Page.BottomAppBar>

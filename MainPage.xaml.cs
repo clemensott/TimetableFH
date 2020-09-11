@@ -236,21 +236,21 @@ namespace TimetableFH
             Frame.Navigate(typeof(EventNameEditPage), newEventNameViewModel);
         }
 
-        private void EventsView_AddNotAdmittedClick(object sender, Event e)
+        private void EventsView_AddAdmittedClick(object sender, Event e)
         {
-            foreach (NameCompare notAdmittedClass in viewModel.Settings.NotAdmittedClasses)
+            foreach (NameCompare admittedClass in viewModel.Settings.AdmittedClasses)
             {
-                if (ViewModelUtils.Compare(notAdmittedClass.CompareType,
-                    e.Name, notAdmittedClass.Name)) return;
+                if (ViewModelUtils.Compare(admittedClass.CompareType,
+                    e.Name, admittedClass.Name)) return;
             }
 
-            NameCompare newNotAdmittedClass = new NameCompare()
+            NameCompare newAdmittedClass = new NameCompare()
             {
                 CompareType = CompareType.StartsWith,
                 Name = e.Name,
             };
 
-            viewModel.Settings.NotAdmittedClasses.Add(newNotAdmittedClass);
+            viewModel.Settings.AdmittedClasses.Add(newAdmittedClass);
         }
     }
 }

@@ -165,7 +165,7 @@ namespace TimetableFH
             }
         }
 
-        public EventClasses NotAdmittedClasses { get; set; }
+        public EventClasses AdmittedClasses { get; set; }
 
         public EventGroups Groups { get; set; }
 
@@ -188,7 +188,7 @@ namespace TimetableFH
             CustomBaseUrl = BaseFhUrl;
             CustomRequestUrlAddition = "?new_stg=MSD&new_jg=2018&new_date=1569830400&new_viewmode=matrix_vertical";
 
-            NotAdmittedClasses = new EventClasses();
+            AdmittedClasses = new EventClasses();
             Groups = new EventGroups();
             EventColors = new EventColors();
             EventNames = new EventNames();

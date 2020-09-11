@@ -13,9 +13,9 @@ namespace TimetableFH
     {
         private static readonly XmlSerializer serializer = new XmlSerializer(typeof(Settings));
         
-        private static bool IsNotAdmittedEvent(this IEnumerable<NameCompare> notAdmittedClasses, Event fhEvent)
+        private static bool IsAdmittedEvent(this IEnumerable<NameCompare> admittedClasses, Event fhEvent)
         {
-            return notAdmittedClasses.Any(c => Compare(c.CompareType, fhEvent.Name, c.Name));
+            return admittedClasses.Any(c => Compare(c.CompareType, fhEvent.Name, c.Name));
         }
         
         private static bool IsGroupEvent(this EventGroup group, Event fhEvent)
@@ -181,7 +181,7 @@ namespace TimetableFH
         {
             IEnumerable<string> roomTypes;
 
-            fhEvent.IsAdmittedClass = !viewModel.Settings.NotAdmittedClasses.IsNotAdmittedEvent(fhEvent);
+            fhEvent.IsAdmittedClass = !viewModel.Settings.AdmittedClasses.IsAdmittedEvent(fhEvent);
             fhEvent.IsCurrentGroup = viewModel.Settings.Groups.CurrentGroup.IsGroupEvent(fhEvent);
             fhEvent.ShortName = viewModel.Settings.EventNames.GetName(fhEvent.Name);
             fhEvent.ShortRoom = viewModel.Settings.Rooms.GetShortRoomName(fhEvent.Room, out roomTypes);
