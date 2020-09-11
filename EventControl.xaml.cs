@@ -47,5 +47,10 @@ namespace TimetableFH
         {
             rectChangeColor.Opacity = 0;
         }
+
+        private void OnPointerCaptureLost(object sender, PointerRoutedEventArgs e)
+        {
+            rectChangeColor.Opacity = 0;
+        }
     }
 }

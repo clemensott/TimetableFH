@@ -12,7 +12,8 @@
     VerticalAlignment="Stretch"
     HorizontalAlignment="Stretch"
     PointerEntered="OnPointerEntered"
-    PointerExited="OnPointerExited">
+    PointerExited="OnPointerExited"
+    PointerCaptureLost="OnPointerCaptureLost">
 
     <Grid Background="{Binding Brush}">
         <Rectangle x:Name="rectChangeColor" Opacity="0"
@@ -22,23 +23,35 @@
         <SymbolIcon Symbol="TouchPointer" Margin="10"
                     VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
-        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                    BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}"
-                    BorderThickness="2">
-            <con:MultipleInputs2Converter x:Name="mulTime" Input0="{Binding Begin}"
-                                          Input1="{Binding End}" Convert="MulTime_Convert"/>
+        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="2" />
+            </Grid.RowDefinitions>
 
-            <TextBlock Name="tblTime" HorizontalAlignment="Center" 
-                       TextWrapping="Wrap" TextAlignment="Center"
-                       Text="{Binding ElementName=mulTime,Path=Output}"/>
-            <TextBlock Name="tblName" HorizontalAlignment="Center" 
-                       TextWrapping="Wrap" TextAlignment="Center"
-                       Text="{Binding ShortName}"/>
-            <TextBlock Name="tblRoom" HorizontalAlignment="Center" 
-                       TextWrapping="Wrap" TextAlignment="Center"
-                       Text="{Binding ShortRoom}"/>
-            <TextBlock Name="tblGroup" HorizontalAlignment="Center" TextAlignment="Center"
-                       TextWrapping="Wrap" Text="{Binding Group}"/>
-        </StackPanel>
+            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                       Fill="{ThemeResource ApplicationForegroundThemeBrush}"/>
+
+            <StackPanel Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <con:MultipleInputs2Converter x:Name="mulTime" Input0="{Binding Begin}"
+                                              Input1="{Binding End}" Convert="MulTime_Convert"/>
+
+                <TextBlock Name="tblTime" HorizontalAlignment="Center" 
+                           TextWrapping="Wrap" TextAlignment="Center"
+                           Text="{Binding ElementName=mulTime,Path=Output}"/>
+                <TextBlock Name="tblName" HorizontalAlignment="Center" 
+                           TextWrapping="Wrap" TextAlignment="Center"
+                           Text="{Binding ShortName}"/>
+                <TextBlock Name="tblRoom" HorizontalAlignment="Center" 
+                           TextWrapping="Wrap" TextAlignment="Center"
+                           Text="{Binding ShortRoom}"/>
+                <TextBlock Name="tblGroup" HorizontalAlignment="Center" TextAlignment="Center"
+                           TextWrapping="Wrap" Text="{Binding Group}"/>
+            </StackPanel>
+
+            <Rectangle Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                       Fill="{ThemeResource ApplicationForegroundThemeBrush}"/>
+        </Grid>
     </Grid>
 </UserControl>
