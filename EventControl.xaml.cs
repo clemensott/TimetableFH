@@ -1,8 +1,10 @@
 ﻿using StdOttStandard.Converter.MultipleInputs;
 using System;
+using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 
 // Die Elementvorlage "Benutzersteuerelement" wird unter https://go.microsoft.com/fwlink/?LinkId=234236 dokumentiert.
 
@@ -15,6 +17,16 @@ namespace TimetableFH
         public EventControl()
         {
             this.InitializeComponent();
+        }
+
+        private object SicForeground_Convert(object sender, SingleInputsConvertEventArgs args)
+        {
+            if (args.Input == null) return null;
+
+            SolidColorBrush background = (SolidColorBrush)args.Input;
+            int sum = background.Color.B + background.Color.G + background.Color.R;
+
+            return new SolidColorBrush(sum > 255 * 1.5 ? Colors.Black : Colors.White);
         }
 
         private object MulTime_Convert(object sender, MultiplesInputsConvert2EventArgs args)
