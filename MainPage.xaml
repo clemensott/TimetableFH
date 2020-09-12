@@ -9,9 +9,10 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <local:EventsView ReferenceDate="{Binding Settings.RefTime,Mode=TwoWay}" 
+        <local:EventsView x:Name="eventView"
+                          ReferenceDate="{Binding Settings.RefTime,Mode=TwoWay}" 
                           AllEvents="{Binding ViewEvents}" 
-                          DaysOfWeek="{Binding Settings.DaysOfWeek,Mode=TwoWay}"
+                          BaseDays="{Binding Settings.DaysOfWeek,Mode=TwoWay}"
                           ViewDuration="{Binding Settings.ViewDuration,Mode=TwoWay}"
                           SetColorClick="EventsView_SetColorClick"
                           SetNameClick="EventsView_SetNameClick"

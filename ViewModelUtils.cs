@@ -242,7 +242,7 @@ namespace TimetableFH
             return (daysOfWeek & Convert(day)) > 0;
         }
 
-        public static DaysOfWeek Convert(DayOfWeek day)
+        public static DaysOfWeek Convert(this DayOfWeek day)
         {
             switch (day)
             {

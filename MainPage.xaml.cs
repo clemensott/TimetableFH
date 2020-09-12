@@ -63,7 +63,20 @@ namespace TimetableFH
 
         private void AbbPreviousWeek_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.Settings.RefTime = viewModel.Settings.RefTime.AddDays(viewModel.Settings.IsSingleDay ? -1 : -7);
+            DaysOfWeek days = eventView.ViewDays;
+            if (days.GetDaysOfWeek().Count() == 1)
+            {
+                if (days.Contains(viewModel.Settings.RefTime.DayOfWeek))
+                {
+                    viewModel.Settings.RefTime = viewModel.Settings.RefTime.AddDays(-7);
+                }
+
+                if (days == DaysOfWeek.Monday) days = DaysOfWeek.Sunday;
+                else days = (DaysOfWeek)((int)days >> 1);
+
+                eventView.ViewDays = days;
+            }
+            else viewModel.Settings.RefTime = viewModel.Settings.RefTime.AddDays(-7);
         }
 
         private void AbbThisWeek_Click(object sender, RoutedEventArgs e)
@@ -73,7 +86,20 @@ namespace TimetableFH
 
         private void AbbNextWeek_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.Settings.RefTime = viewModel.Settings.RefTime.AddDays(viewModel.Settings.IsSingleDay ? 1 : 7);
+            DaysOfWeek days = eventView.ViewDays;
+            if (days.GetDaysOfWeek().Count() == 1)
+            {
+                if (days == DaysOfWeek.Sunday) days = DaysOfWeek.Monday;
+                else days = (DaysOfWeek)((int)days << 1);
+
+                if (days.Contains(viewModel.Settings.RefTime.DayOfWeek))
+                {
+                    viewModel.Settings.RefTime = viewModel.Settings.RefTime.AddDays(7);
+                }
+
+                eventView.ViewDays = days;
+            }
+            else viewModel.Settings.RefTime = viewModel.Settings.RefTime.AddDays(7);
         }
 
         private async void AbbDownloadFile_Click(object sender, RoutedEventArgs e)
