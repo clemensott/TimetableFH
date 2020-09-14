@@ -10,11 +10,10 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <viewEvents:EventsView x:Name="eventView"
-                               ReferenceDate="{Binding Settings.RefTime,Mode=TwoWay}" 
-                               AllEvents="{Binding ViewEvents}" 
-                               BaseDays="{Binding Settings.DaysOfWeek,Mode=TwoWay}"
+        <viewEvents:EventsView BeginOfDay="{Binding Settings.RefTime.TimeOfDay}" 
                                ViewDuration="{Binding Settings.ViewDuration,Mode=TwoWay}"
+                               EventDays="{Binding Controller.EventDays}" 
+                               DayHeaderClick="EventView_DayHeaderClick"
                                SetColorClick="EventsView_SetColorClick"
                                SetNameClick="EventsView_SetNameClick"
                                AddAdmittedClick="EventsView_AddAdmittedClick"/>
@@ -26,8 +25,8 @@
                 <AppBarButton Label="Previous" Icon="Previous" Click="AbbPreviousWeek_Click"/>
                 <AppBarButton Label="Now" Icon="GoToToday" Click="AbbThisWeek_Click"/>
                 <AppBarButton Label="Next" Icon="Next" Click="AbbNextWeek_Click"/>
-                <AppBarToggleButton Label="ViewGroup" Icon="ViewAll"
-                                    IsChecked="{Binding Settings.ViewGroupEvents,Mode=TwoWay}"/>
+                <AppBarToggleButton Label="Hide admitted" Icon="ViewAll"
+                                    IsChecked="{Binding Settings.HideAdmittedClasses,Mode=TwoWay}"/>
             </CommandBar.PrimaryCommands>
 
             <CommandBar.SecondaryCommands>

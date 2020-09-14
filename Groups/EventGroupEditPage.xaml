@@ -51,7 +51,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <TextBlock Text="6lt;No Groups&gt;" FontStyle="Italic" Margin="10,3"
+            <TextBlock Text="&lt;No Groups&gt;" FontStyle="Italic" Margin="10,3"
                        Visibility="{Binding EventGroup.Collection.Count,Converter={StaticResource visNoEleCon}}"/>
 
             <ctl:IconButton Symbol="Add" HorizontalAlignment="Right" Margin="3,0"

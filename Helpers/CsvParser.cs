@@ -11,17 +11,17 @@ namespace TimetableFH.Helpers
 {
     static class CsvParser
     {
-        public static async Task<IEnumerable<Event>> GetEvents(StorageFile file)
+        public static async Task<IEnumerable<EventBase>> GetEvents(StorageFile file)
         {
             byte[] fileData = await GetBytes(file);
             string data = Encoding.UTF8.GetString(fileData, 0, fileData.Length);
             string[] lines = data.Split('\n').Select(l => l.TrimEnd('\r')).ToArray();
 
-            if (lines.Length == 0) return Enumerable.Empty<Event>();
+            if (lines.Length == 0) return Enumerable.Empty<EventBase>();
 
-            Event[] events = new Event[lines.Length - 1];
+            EventBase[] events = new EventBase[lines.Length - 1];
 
-            Parallel.ForEach(GetCsvLines(lines), (d, s, i) => events[i] = new Event(d));
+            Parallel.ForEach(GetCsvLines(lines), (d, s, i) => events[i] = new EventBase(d));
 
             return events;
         }

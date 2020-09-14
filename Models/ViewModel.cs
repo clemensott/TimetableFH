@@ -1,72 +1,39 @@
-﻿using System.Collections.Generic;
+﻿using StdOttStandard.Linq;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using StdOttStandard.Linq;
 using TimetableFH.Coloring;
+using TimetableFH.Groups;
 using TimetableFH.Helpers;
+using TimetableFH.ViewEvents;
+using Windows.UI;
 
 namespace TimetableFH.Models
 {
     public class ViewModel : INotifyPropertyChanged
     {
         private readonly ThemeChecker themeChecker;
-        private Event[] allEvents, groupEvents, admittedEvents;
+        private EventBase[] allEvents;
         private Settings settings;
 
-        public Event[] AllEvents
+        public EventBase[] AllEvents
         {
             get { return allEvents; }
             set
             {
                 if (value == allEvents) return;
 
-                Settings?.Rooms?.Examples?.Clear();
-                foreach (Event fhEvent in value)
-                {
-                    this.SetDetails(fhEvent);
-                }
+                EventBase[] oldValue = allEvents;
 
                 allEvents = value;
                 OnPropertyChanged(nameof(AllEvents));
 
-                GroupEvents = AllEvents.Where(e => e.IsCurrentGroup).ToArray();
-
-                foreach (Event fhEvent in AllEvents) this.SetDetails(fhEvent);
+                if (!oldValue.BothNullOrSequenceEqual(allEvents)) SetControllerEvents();
             }
         }
-
-        public Event[] GroupEvents
-        {
-            get { return groupEvents; }
-            private set
-            {
-                if (value.BothNullOrSequenceEqual(groupEvents)) return;
-
-                groupEvents = value;
-                OnPropertyChanged(nameof(GroupEvents));
-
-                if (Settings?.ViewGroupEvents == true) OnPropertyChanged(nameof(ViewEvents));
-
-                AdmittedEvents = GroupEvents.Where(e => e.IsAdmittedClass).ToArray();
-            }
-        }
-
-        public Event[] AdmittedEvents
-        {
-            get { return admittedEvents; }
-            private set
-            {
-                if (value.BothNullOrSequenceEqual(admittedEvents)) return;
-
-                admittedEvents = value;
-                OnPropertyChanged(nameof(AdmittedEvents));
-
-                if (!Settings?.ViewGroupEvents == true) OnPropertyChanged(nameof(ViewEvents));
-            }
-        }
-
-        public Event[] ViewEvents => Settings?.ViewGroupEvents == true ? GroupEvents : AdmittedEvents;
 
         public IEnumerable<string> Names => this.GetAllNames();
 
@@ -75,29 +42,27 @@ namespace TimetableFH.Models
             get => settings;
             set
             {
-                if (value == settings) return;
+                if (value == null || value == settings) return;
 
-                if (settings != null) Settings.PropertyChanged -= Settings_PropertyChanged;
+                if (settings != null) Unsubscribe(settings);
                 settings = value;
-                if (settings != null) Settings.PropertyChanged += Settings_PropertyChanged;
+                Subscribe(settings);
 
                 OnPropertyChanged(nameof(Settings));
 
-                foreach (Event fhEvent in AllEvents) this.SetDetails(fhEvent);
+                ApplySettings();
                 CheckTheme();
             }
         }
 
+        public EventsViewController Controller { get; }
+
         public ViewModel()
         {
+            Controller = new EventsViewController();
             themeChecker = new ThemeChecker();
-            AllEvents = new Event[0];
+            AllEvents = new EventBase[0];
             Settings = new Settings();
-        }
-
-        private void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(Settings.ViewGroupEvents)) OnPropertyChanged(nameof(ViewEvents));
         }
 
         public async Task CheckTheme()
@@ -110,13 +75,80 @@ namespace TimetableFH.Models
                 eventColor.Color = InvertColor(eventColor.Color);
             }
 
-            foreach (Event fhEvent in AllEvents) this.SetDetails(fhEvent);
+            ApplySettings();
         }
 
-        private static Windows.UI.Color InvertColor(Windows.UI.Color color)
+        private static Color InvertColor(Color color)
         {
-            return Windows.UI.Color.FromArgb(color.A, (byte)(byte.MaxValue - color.R),
+            return Color.FromArgb(color.A, (byte)(byte.MaxValue - color.R),
                 (byte)(byte.MaxValue - color.G), (byte)(byte.MaxValue - color.B));
+        }
+
+        private void Subscribe(Settings settings)
+        {
+            if (settings == null) return;
+
+            settings.PropertyChanged += Settings_PropertyChanged;
+        }
+
+        private void Unsubscribe(Settings settings)
+        {
+            if (settings == null) return;
+
+            settings.PropertyChanged -= Settings_PropertyChanged;
+        }
+
+        private void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(Settings.HideAdmittedClasses):
+                    Controller.HideAdmittedEvents = Settings.HideAdmittedClasses;
+                    break;
+
+                case nameof(Settings.RefTime):
+                    Controller.ReferenceDate = Settings.RefTime.Date;
+                    break;
+
+                case nameof(Settings.DaysOfWeek):
+                    Controller.ViewDays = Settings.DaysOfWeek;
+                    break;
+            }
+        }
+
+        public void ApplySettings()
+        {
+            Settings settings = Settings;
+            if (settings == null) return;
+
+            Controller.HideAdmittedEvents = settings.HideAdmittedClasses;
+            Controller.ReferenceDate = settings.RefTime.Date;
+            Controller.ViewDays = settings.DaysOfWeek;
+
+            UpdateControllerEvents();
+        }
+
+        private void UpdateControllerEvents()
+        {
+            Settings settings = Settings;
+            if (settings == null) return;
+
+            settings.Rooms.Clear();
+            foreach (Event fhEvent in Controller.AllEvents.ToNotNull())
+            {
+                settings.UpdateEvent(fhEvent);
+            }
+
+            Controller.Update();
+        }
+
+        private void SetControllerEvents()
+        {
+            Settings settings = Settings;
+            if (settings == null) return;
+
+            settings.Rooms.Examples.Clear();
+            Controller.AllEvents = AllEvents.Select(Settings.CreateEvent).ToArray();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

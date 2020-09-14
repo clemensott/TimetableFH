@@ -7,16 +7,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400"
-    SizeChanged="UserControl_SizeChanged">
+    d:DesignWidth="400">
 
-    <Grid x:Name="grdMain">
+    <Grid x:Name="grdMain" DataContext="{x:Null}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="1">
+        <ScrollViewer Grid.Row="1" Name="svrEvents" SizeChanged="SvrEvents_SizeChanged">
             <Grid x:Name="grdEvents" />
         </ScrollViewer>
 

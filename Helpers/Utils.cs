@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Windows.Storage;
-using Windows.UI.Xaml.Media;
 using TimetableFH.AdmittedClasses;
 using TimetableFH.Coloring;
 using TimetableFH.Groups;
@@ -14,31 +13,32 @@ using TimetableFH.Names;
 using TimetableFH.PostData;
 using TimetableFH.Rooms;
 using TimetableFH.Controls.Compare;
+using Windows.UI;
 
 namespace TimetableFH.Helpers
 {
-    static class ViewModelUtils
+    static class Utils
     {
         private static readonly XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-        
-        private static bool IsAdmittedEvent(this IEnumerable<NameCompare> admittedClasses, Event fhEvent)
+
+        private static bool IsAdmittedEvent(this IEnumerable<NameCompare> admittedClasses, EventBase fhEvent)
         {
             return admittedClasses.Any(c => Compare(c.CompareType, fhEvent.Name, c.Name));
         }
-        
-        private static bool IsGroupEvent(this EventGroup group, Event fhEvent)
+
+        private static bool IsGroupEvent(this EventGroup group, EventBase fhEvent)
         {
-            return group?.Collection?.All(n => !Compare(n.CompareType, fhEvent.Group, n.Name)) ?? false;
+            return group?.Collection?.All(n => !Compare(n.CompareType, fhEvent.Group, n.Name)) ?? true;
         }
 
-        private static Brush GetBrush(this EventColors eventColors, string group, string name)
+        private static Color GetColor(this EventColors eventColors, string group, string name)
         {
             foreach (EventColor eventColor in eventColors.Collection)
             {
-                if (IsEvent(eventColor, group, name)) return eventColor.Brush;
+                if (IsEvent(eventColor, group, name)) return eventColor.Color;
             }
 
-            return eventColors.DefaultBrush;
+            return eventColors.DefaultColor;
         }
 
         public static bool IsEvent(EventColor ec, string group, string name)
@@ -185,29 +185,35 @@ namespace TimetableFH.Helpers
             return lowerItem != lowerKey && lowerItem.Contains(lowerKey);
         }
 
-        public static Event SetDetails(this ViewModel viewModel, Event fhEvent)
+        public static Event CreateEvent(this Settings settings, EventBase fhEventBase)
         {
-            IEnumerable<string> roomTypes;
-
-            fhEvent.IsAdmittedClass = !viewModel.Settings.AdmittedClasses.IsAdmittedEvent(fhEvent);
-            fhEvent.IsCurrentGroup = viewModel.Settings.Groups.CurrentGroup.IsGroupEvent(fhEvent);
-            fhEvent.ShortName = viewModel.Settings.EventNames.GetName(fhEvent.Name);
-            fhEvent.ShortRoom = viewModel.Settings.Rooms.GetShortRoomName(fhEvent.Room, out roomTypes);
-            fhEvent.Brush = viewModel.Settings.EventColors.GetBrush(fhEvent.Group, fhEvent.Name);
-
-            foreach (string roomType in roomTypes)
-            {
-                CheckForRoomTypes(viewModel, roomType);
-            }
+            Event fhEvent = new Event(fhEventBase);
+            UpdateEvent(settings, fhEvent);
 
             return fhEvent;
         }
 
-        private static void CheckForRoomTypes(ViewModel viewModel, string value)
+        public static void UpdateEvent(this Settings settings, Event fhEvent)
         {
-            if (string.IsNullOrWhiteSpace(value) || viewModel.Settings.Rooms.Examples.Contains(value)) return;
+            IEnumerable<string> roomTypes;
 
-            viewModel.Settings.Rooms.Examples.Add(value);
+            fhEvent.IsAdmittedClass = settings.AdmittedClasses.IsAdmittedEvent(fhEvent.Base);
+            fhEvent.IsCurrentGroup = settings.Groups.CurrentGroup.IsGroupEvent(fhEvent.Base);
+            fhEvent.ShortName = settings.EventNames.GetName(fhEvent.Base.Name);
+            fhEvent.ShortRoom = settings.Rooms.GetShortRoomName(fhEvent.Base.Room, out roomTypes);
+            fhEvent.Color = settings.EventColors.GetColor(fhEvent.Base.Group, fhEvent.Base.Name);
+
+            foreach (string roomType in roomTypes)
+            {
+                CheckForRoomTypes(settings.Rooms, roomType);
+            }
+        }
+
+        private static void CheckForRoomTypes(EventRooms rooms, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value) || rooms.Examples.Contains(value)) return;
+
+            rooms.Examples.Add(value);
         }
 
         public static string ToPostData(this IEnumerable<StringKeyValuePair> pairs)
@@ -247,10 +253,10 @@ namespace TimetableFH.Helpers
 
         public static bool Contains(this DaysOfWeek daysOfWeek, DayOfWeek day)
         {
-            return (daysOfWeek & Convert(day)) > 0;
+            return (daysOfWeek & ToDaysOfWeek(day)) > 0;
         }
 
-        public static DaysOfWeek Convert(this DayOfWeek day)
+        public static DaysOfWeek ToDaysOfWeek(this DayOfWeek day)
         {
             switch (day)
             {

@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using Windows.UI.Xaml.Media;
+using Windows.UI;
 
 namespace TimetableFH.Models
 {
-    public class Event : EventBase, INotifyPropertyChanged
+    public class Event : INotifyPropertyChanged
     {
         private bool isAdmittedClass, isCurrentGroup;
         private string shortName, shortRoom;
-        private Brush brush;
+        private Color color;
 
         public bool IsAdmittedClass
         {
@@ -19,6 +19,18 @@ namespace TimetableFH.Models
 
                 isAdmittedClass = value;
                 OnPropertyChanged(nameof(IsAdmittedClass));
+            }
+        }
+
+        public bool IsCurrentGroup
+        {
+            get => isCurrentGroup;
+            set
+            {
+                if (value == isCurrentGroup) return;
+
+                isCurrentGroup = value;
+                OnPropertyChanged(nameof(IsCurrentGroup));
             }
         }
 
@@ -46,36 +58,48 @@ namespace TimetableFH.Models
             }
         }
 
-        public bool IsCurrentGroup
+        public Color Color
         {
-            get => isCurrentGroup;
+            get => color;
             set
             {
-                if (value == isCurrentGroup) return;
+                if (value == color) return;
 
-                isCurrentGroup = value;
-                OnPropertyChanged(nameof(IsCurrentGroup));
+                color = value;
+                OnPropertyChanged(nameof(Color));
             }
         }
 
-        public Brush Brush
-        {
-            get => brush;
-            set
-            {
-                if (value == brush) return;
 
-                brush = value;
-                OnPropertyChanged(nameof(Brush));
-            }
+        public EventBase Base { get; }
+
+        public DateTime Begin => Base.Begin;
+
+        public DateTime End => Base.End;
+
+        public string Name => Base.Name;
+
+        public string Professor => Base.Professor;
+
+        public string Room => Base.Room;
+
+        public string Group => Base.Group;
+
+        public Event(EventBase @base)
+        {
+            Base = @base;
         }
 
-        public Event()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string name)
         {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public Event(Dictionary<string, string> dict) : base(dict)
+        public override string ToString()
         {
+            return $"{Name} @ {Begin}";
         }
     }
 }

@@ -16,7 +16,7 @@ namespace TimetableFH.Models
     {
         public const string BaseFhUrl = "http://stundenplan.fh-joanneum.at/";
 
-        private bool viewGroupEvents, useCustomOptions;
+        private bool hideAdmittedClasses, useCustomOptions;
         private ApplicationTheme theme;
         private DaysOfWeek daysOfWeek;
         private DateTime refTime;
@@ -24,15 +24,15 @@ namespace TimetableFH.Models
         private uint beginYear;
         private string majorShortName, customBaseUrl, customRequestUrlAddition;
 
-        public bool ViewGroupEvents
+        public bool HideAdmittedClasses
         {
-            get { return viewGroupEvents; }
+            get { return hideAdmittedClasses; }
             set
             {
-                if (value == viewGroupEvents) return;
+                if (value == hideAdmittedClasses) return;
 
-                viewGroupEvents = value;
-                OnPropertyChanged(nameof(ViewGroupEvents));
+                hideAdmittedClasses = value;
+                OnPropertyChanged(nameof(HideAdmittedClasses));
             }
         }
 

@@ -168,6 +168,8 @@
     </Compile>
     <Compile Include="Names\EventNames.cs" />
     <Compile Include="Helpers\EventRequester.cs" />
+    <Compile Include="ViewEvents\EventDay.cs" />
+    <Compile Include="ViewEvents\EventPosition.cs" />
     <Compile Include="ViewEvents\EventsView.xaml.cs">
       <DependentUpon>EventsView.xaml</DependentUpon>
     </Compile>
@@ -192,8 +194,9 @@
     <Compile Include="PostData\StringKeyValuePair.cs" />
     <Compile Include="PostData\StringKeyValuePairs.cs" />
     <Compile Include="Helpers\ThemeChecker.cs" />
-    <Compile Include="Helpers\ViewModelUtils.cs" />
+    <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Models\ViewModel.cs" />
+    <Compile Include="ViewEvents\EventsViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

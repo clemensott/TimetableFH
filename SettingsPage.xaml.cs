@@ -315,7 +315,7 @@ namespace TimetableFH
 
                 StorageFile srcFile = await picker.PickSingleFileAsync();
 
-                viewModel.Settings = await ViewModelUtils.Load(srcFile);
+                viewModel.Settings = await Utils.Load(srcFile);
             }
             catch (Exception exc)
             {

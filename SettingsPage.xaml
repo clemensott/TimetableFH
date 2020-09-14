@@ -20,6 +20,8 @@
         <con:VisibleCollapsedConverter x:Key="visIgnoreCon" CompareValue="Ignore" DecideType="Enum"/>
         <con:CollapsedVisibleConverter x:Key="colIgnoreCon" CompareValue="Ignore" DecideType="Enum"/>
 
+        <con:ColorToSolidColorBrushConverter x:Key="colorCon"/>
+
         <cpr:CompareTypeIconConverter x:Key="comIcoCon"/>
 
         <con:UIntConverter x:Key="yearCon"/>
@@ -142,7 +144,8 @@
                                VerticalAlignment="Center" Margin="3"/>
                     <Border Grid.Row="1" HorizontalAlignment="Right" Width="100" Height="30" Margin="3"
                             BorderThickness="2" BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}">
-                        <Rectangle Fill="{Binding DefaultBrush}" Tapped="RectChangeColor_Tapped"/>
+                        <Rectangle Fill="{Binding DefaultColor,Converter={StaticResource colorCon}}" 
+                                   Tapped="RectChangeColor_Tapped"/>
                     </Border>
 
                     <ListView Grid.Row="2" SelectionMode="None" ItemsSource="{Binding Collection}"
@@ -196,7 +199,7 @@
 
                                     <Border Grid.Column="2" VerticalAlignment="Stretch" Margin="3" Width="50"
                                             BorderThickness="1.5" BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}">
-                                        <Rectangle Fill="{Binding Brush}"/>
+                                        <Rectangle Fill="{Binding Color,Converter={StaticResource colorCon}}"/>
                                     </Border>
 
                                     <controls:EditListElementControl Grid.Column="3" VerticalAlignment="Center"

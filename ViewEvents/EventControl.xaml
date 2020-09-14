@@ -15,8 +15,13 @@
     PointerExited="OnPointerExited"
     PointerCaptureLost="OnPointerCaptureLost">
 
-    <Grid Background="{Binding Brush}">
-        <con:SingleInputConverter x:Name="sicForeground" Input="{Binding Brush}"
+    <UserControl.Resources>
+        <con:ColorToSolidColorBrushConverter x:Key="colorCon"/>
+    </UserControl.Resources>
+
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+          Background="{Binding Color,Converter={StaticResource colorCon}}">
+        <con:SingleInputConverter x:Name="sicForeground" Input="{Binding Color}"
                                   Convert="SicForeground_Convert"/>
 
         <Rectangle x:Name="rectChangeColor" Opacity="0"

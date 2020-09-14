@@ -102,7 +102,7 @@ namespace TimetableFH
         {
             try
             {
-                viewModel.Settings = await ViewModelUtils.Load(settingsFileName);
+                viewModel.Settings = await Utils.Load(settingsFileName);
             }
             catch
             {

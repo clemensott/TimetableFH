@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel;
-using System.Xml.Serialization;
 using Windows.UI;
-using Windows.UI.Xaml.Media;
 using TimetableFH.Controls.Compare;
 
 namespace TimetableFH.Coloring
@@ -10,7 +8,7 @@ namespace TimetableFH.Coloring
     {
         private string group, name;
         private CompareType groupCompareType, nameCompareType;
-        private Windows.UI.Color color;
+        private Color color;
 
         public string Group
         {
@@ -60,7 +58,7 @@ namespace TimetableFH.Coloring
             }
         }
 
-        public Windows.UI.Color Color
+        public Color Color
         {
             get { return color; }
             set
@@ -68,15 +66,9 @@ namespace TimetableFH.Coloring
                 if (value == color) return;
 
                 color = value;
-                Brush = new SolidColorBrush(color);
-
                 OnPropertyChanged(nameof(Color));
-                OnPropertyChanged(nameof(Brush));
             }
         }
-
-        [XmlIgnore]
-        public Brush Brush { get; private set; }
 
         public EventColor()
         {

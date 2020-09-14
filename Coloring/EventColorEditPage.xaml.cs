@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using StdOttStandard.AsyncResult;
 using TimetableFH.Helpers;
+using Windows.UI;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=234238 dokumentiert.
 
@@ -31,11 +32,11 @@ namespace TimetableFH.Coloring
 
         private async void RectColor_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            AsyncResult<Windows.UI.Color?, Windows.UI.Color> setableValue = new AsyncResult<Windows.UI.Color?, Windows.UI.Color>(viewModel.EventColor.Color);
+            AsyncResult<Color?, Color> setableValue = new AsyncResult<Color?, Color>(viewModel.EventColor.Color);
 
             Frame.Navigate(typeof(ColorPickerPage), setableValue);
 
-            Windows.UI.Color? color = await setableValue.Task;
+            Color? color = await setableValue.Task;
 
             if (color.HasValue) viewModel.EventColor.Color = color.Value;
         }

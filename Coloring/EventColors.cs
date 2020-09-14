@@ -1,16 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Xml.Serialization;
 using Windows.UI;
-using Windows.UI.Xaml.Media;
 
 namespace TimetableFH.Coloring
 {
     public class EventColors : INotifyPropertyChanged
     {
-        private Windows.UI.Color defaultColor;
+        private Color defaultColor;
 
-        public Windows.UI.Color DefaultColor
+        public Color DefaultColor
         {
             get => defaultColor;
             set
@@ -18,15 +16,9 @@ namespace TimetableFH.Coloring
                 if (value == defaultColor) return;
 
                 defaultColor = value;
-                DefaultBrush = new SolidColorBrush(defaultColor);
-
                 OnPropertyChanged(nameof(DefaultColor));
-                OnPropertyChanged(nameof(DefaultBrush));
             }
         }
-
-        [XmlIgnore]
-        public Brush DefaultBrush { get; private set; }
 
         public ObservableCollection<EventColor> Collection { get; set; }
 

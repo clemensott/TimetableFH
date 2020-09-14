@@ -24,8 +24,8 @@ namespace TimetableFH.ViewEvents
         {
             if (args.Input == null) return null;
 
-            SolidColorBrush background = (SolidColorBrush)args.Input;
-            int sum = background.Color.B + background.Color.G + background.Color.R;
+            Color background = (Color)args.Input;
+            int sum = background.B + background.G + background.R;
 
             return new SolidColorBrush(sum > 255 * 1.5 ? Colors.Black : Colors.White);
         }

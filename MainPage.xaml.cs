@@ -14,6 +14,7 @@ using TimetableFH.Helpers;
 using TimetableFH.Models;
 using TimetableFH.Names;
 using TimetableFH.Controls.Compare;
+using Windows.UI.Xaml.Media;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x407 dokumentiert.
 
@@ -36,6 +37,7 @@ namespace TimetableFH
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             DataContext = viewModel = (ViewModel)e.Parameter;
+            viewModel.ApplySettings();
 
             base.OnNavigatedTo(e);
 
@@ -67,9 +69,16 @@ namespace TimetableFH
             viewModel.AllEvents = (await CsvParser.GetEvents(file)).ToArray();
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            DataContext = null;
+
+            base.OnNavigatedFrom(e);
+        }
+
         private void AbbPreviousWeek_Click(object sender, RoutedEventArgs e)
         {
-            DaysOfWeek days = eventView.ViewDays;
+            DaysOfWeek days = viewModel.Controller.ViewDays;
             if (days.GetDaysOfWeek().Count() == 1)
             {
                 if (days.Contains(viewModel.Settings.RefTime.DayOfWeek))
@@ -80,7 +89,7 @@ namespace TimetableFH
                 if (days == DaysOfWeek.Monday) days = DaysOfWeek.Sunday;
                 else days = (DaysOfWeek)((int)days >> 1);
 
-                eventView.ViewDays = days;
+                viewModel.Controller.ViewDays = days;
             }
             else viewModel.Settings.RefTime = viewModel.Settings.RefTime.AddDays(-7);
         }
@@ -92,7 +101,7 @@ namespace TimetableFH
 
         private void AbbNextWeek_Click(object sender, RoutedEventArgs e)
         {
-            DaysOfWeek days = eventView.ViewDays;
+            DaysOfWeek days = viewModel.Controller.ViewDays;
             if (days.GetDaysOfWeek().Count() == 1)
             {
                 if (days == DaysOfWeek.Sunday) days = DaysOfWeek.Monday;
@@ -103,7 +112,7 @@ namespace TimetableFH
                     viewModel.Settings.RefTime = viewModel.Settings.RefTime.AddDays(7);
                 }
 
-                eventView.ViewDays = days;
+                viewModel.Controller.ViewDays = days;
             }
             else viewModel.Settings.RefTime = viewModel.Settings.RefTime.AddDays(7);
         }
@@ -124,7 +133,6 @@ namespace TimetableFH
 
         private async Task DownloadCsv()
         {
-
             const string urlAdditionFormat = "?new_stg={0}&new_jg={1}&new_date=1569830400&new_viewmode=matrix_vertical";
             const string postDataFormat = "user={0}&pass={0}&login=Login&spanne_start=01.08.{1}&spanne_end=01.11.{2}&write_spanne=Von-Bis-Datum";
 
@@ -218,11 +226,24 @@ namespace TimetableFH
             if (newRef.Add(duration).Date == viewModel.Settings.RefTime.Date) viewModel.Settings.RefTime = newRef;
         }
 
+        private void EventView_DayHeaderClick(object sender, DateTime e)
+        {
+            Settings settings = viewModel.Settings;
+            if (viewModel.Controller.ViewDays == settings?.DaysOfWeek)
+            {
+                viewModel.Controller.ViewDays = e.DayOfWeek.ToDaysOfWeek();
+            }
+            else if (settings != null)
+            {
+                viewModel.Controller.ViewDays = settings.DaysOfWeek;
+            }
+        }
+
         private void EventsView_SetColorClick(object sender, Event e)
         {
             foreach (EventColor eventColor in viewModel.Settings.EventColors.Collection)
             {
-                if (!ViewModelUtils.IsEvent(eventColor, e.Group, e.Name)) continue;
+                if (!Utils.IsEvent(eventColor, e.Group, e.Name)) continue;
 
                 EventColorEditPageViewModel eventColorViewModel =
                     new EventColorEditPageViewModel(eventColor, viewModel.GetAllGroups(), viewModel.GetAllNames());
@@ -247,7 +268,7 @@ namespace TimetableFH
         {
             foreach (EventName eventName in viewModel.Settings.EventNames)
             {
-                if (!ViewModelUtils.IsEvent(eventName, e.Name)) continue;
+                if (!Utils.IsEvent(eventName, e.Name)) continue;
 
                 EventNameEditPageViewModel eventNameViewModel = new EventNameEditPageViewModel(eventName, viewModel.GetAllNames());
 
@@ -272,7 +293,7 @@ namespace TimetableFH
         {
             foreach (NameCompare admittedClass in viewModel.Settings.AdmittedClasses)
             {
-                if (ViewModelUtils.Compare(admittedClass.CompareType,
+                if (Utils.Compare(admittedClass.CompareType,
                     e.Name, admittedClass.Name)) return;
             }
 
