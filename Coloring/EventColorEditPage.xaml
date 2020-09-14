@@ -1,0 +1,72 @@
+﻿<Page
+    x:Class="TimetableFH.Coloring.EventColorEditPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimetableFH.Coloring"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:cpr="using:TimetableFH.Controls.Compare"
+    xmlns:ctl="using:TimetableFH.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <cpr:CompareTypeConverter x:Key="comCon"/>
+
+        <x:Int32 x:Key="lockMillis">100</x:Int32>
+    </Page.Resources>
+
+    <ScrollViewer>
+        <Grid Margin="5,3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <ctl:FocusableControl/>
+
+            <TextBlock Grid.Row="0" Text="Group:" Margin="3,0"
+                       FontSize="20" FontWeight="SemiBold"/>
+            <ctl:AutoSuggestBoxContainer Grid.Row="1" x:Name="asbGroup" Margin="3"
+                                         Text="{Binding EventColor.Group,Mode=TwoWay}" 
+                                         ItemsSource="{Binding SuggestedGroups}"
+                                         FocusLockMillis="{StaticResource lockMillis}"/>
+            <cpr:CompareTypePicker Grid.Row="2" Margin="3"
+                                   CompareType="{Binding EventColor.GroupCompareType,Mode=TwoWay}"/>
+
+            <TextBlock Grid.Row="4" Text="Name:" Margin="3,0"
+                       FontSize="20" FontWeight="SemiBold"/>
+            <ctl:AutoSuggestBoxContainer Grid.Row="5" Margin="3"
+                                         Text="{Binding EventColor.Name,Mode=TwoWay}" 
+                                         ItemsSource="{Binding SuggestedNames}"
+                                         FocusLockMillis="{StaticResource lockMillis}"
+                                         LastLostFocusControl="{Binding ElementName=asbRef,Path=LastLostFocusControl}"
+                                         LastLostFocusTime="{Binding ElementName=asbRef,Path=LastLostFocusTime}"/>
+            <cpr:CompareTypePicker Grid.Row="6" Margin="3"
+                                   CompareType="{Binding EventColor.NameCompareType,Mode=TwoWay}"/>
+
+            <TextBlock Grid.Row="8" Text="Color:" Margin="3,0"
+                       FontSize="20" FontWeight="SemiBold"/>
+            <Rectangle Grid.Row="9" Height="50" Margin="0,3" StrokeThickness="3"
+                       Stroke="{ThemeResource ApplicationForegroundThemeBrush}"
+                       Fill="{Binding EventColor.Brush}" Tapped="RectColor_Tapped"/>
+        </Grid>
+    </ScrollViewer>
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Label="Back" Icon="Back" Tapped="AbbBack_Tapped"/>
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

@@ -125,74 +125,75 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AutoSuggestBoxContainer.xaml.cs">
+    <Compile Include="Controls\AutoSuggestBoxContainer.xaml.cs">
       <DependentUpon>AutoSuggestBoxContainer.xaml</DependentUpon>
     </Compile>
     <Compile Include="ColorPickerPage.xaml.cs">
       <DependentUpon>ColorPickerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CompareTypeComboBox.cs" />
-    <Compile Include="CompareTypeConverter.cs" />
-    <Compile Include="CompareTypeIconConverter.cs" />
-    <Compile Include="CompareTypePicker.xaml.cs">
+    <Compile Include="Controls\Compare\CompareType.cs" />
+    <Compile Include="Controls\Compare\CompareTypeComboBox.cs" />
+    <Compile Include="Controls\Compare\CompareTypeConverter.cs" />
+    <Compile Include="Controls\Compare\CompareTypeIconConverter.cs" />
+    <Compile Include="Controls\Compare\CompareTypePicker.xaml.cs">
       <DependentUpon>CompareTypePicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CsvParser.cs" />
-    <Compile Include="DaysOfWeek.cs" />
-    <Compile Include="DaysOfWeekSelector.xaml.cs">
+    <Compile Include="Helpers\CsvParser.cs" />
+    <Compile Include="Models\DaysOfWeek.cs" />
+    <Compile Include="Controls\DaysOfWeekSelector.xaml.cs">
       <DependentUpon>DaysOfWeekSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditListElementControl.xaml.cs">
+    <Compile Include="Controls\EditListElementControl.xaml.cs">
       <DependentUpon>EditListElementControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EventBase.cs" />
-    <Compile Include="Event.cs" />
-    <Compile Include="EventGroupEditPage.xaml.cs">
+    <Compile Include="Models\EventBase.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Groups\EventGroupEditPage.xaml.cs">
       <DependentUpon>EventGroupEditPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FocusableControl.cs" />
-    <Compile Include="NameCompare.cs" />
-    <Compile Include="EventClasses.cs" />
-    <Compile Include="EventColor.cs" />
-    <Compile Include="EventColorEditPage.xaml.cs">
+    <Compile Include="Controls\FocusableControl.cs" />
+    <Compile Include="AdmittedClasses\NameCompare.cs" />
+    <Compile Include="AdmittedClasses\EventClasses.cs" />
+    <Compile Include="Coloring\EventColor.cs" />
+    <Compile Include="Coloring\EventColorEditPage.xaml.cs">
       <DependentUpon>EventColorEditPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EventColors.cs" />
-    <Compile Include="EventControl.xaml.cs">
+    <Compile Include="Coloring\EventColors.cs" />
+    <Compile Include="ViewEvents\EventControl.xaml.cs">
       <DependentUpon>EventControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EventName.cs" />
-    <Compile Include="EventNameEditPage.xaml.cs">
+    <Compile Include="Names\EventName.cs" />
+    <Compile Include="Names\EventNameEditPage.xaml.cs">
       <DependentUpon>EventNameEditPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EventNames.cs" />
-    <Compile Include="EventRequester.cs" />
-    <Compile Include="EventsView.xaml.cs">
+    <Compile Include="Names\EventNames.cs" />
+    <Compile Include="Helpers\EventRequester.cs" />
+    <Compile Include="ViewEvents\EventsView.xaml.cs">
       <DependentUpon>EventsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EventGroup.cs" />
-    <Compile Include="EventGroups.cs" />
+    <Compile Include="Groups\EventGroup.cs" />
+    <Compile Include="Groups\EventGroups.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NameCompareControl.xaml.cs">
+    <Compile Include="AdmittedClasses\NameCompareControl.xaml.cs">
       <DependentUpon>NameCompareControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReplaceValue.cs" />
-    <Compile Include="ReplaceValueEditPage.xaml.cs">
+    <Compile Include="Rooms\ReplaceValue.cs" />
+    <Compile Include="Rooms\ReplaceValueEditPage.xaml.cs">
       <DependentUpon>ReplaceValueEditPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EventRooms.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Rooms\EventRooms.cs" />
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StringKeyValuePair.cs" />
-    <Compile Include="StringKeyValuePairs.cs" />
-    <Compile Include="ThemeChecker.cs" />
-    <Compile Include="ViewModelUtils.cs" />
-    <Compile Include="ViewModel.cs" />
+    <Compile Include="PostData\StringKeyValuePair.cs" />
+    <Compile Include="PostData\StringKeyValuePairs.cs" />
+    <Compile Include="Helpers\ThemeChecker.cs" />
+    <Compile Include="Helpers\ViewModelUtils.cs" />
+    <Compile Include="Models\ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -254,7 +255,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="AutoSuggestBoxContainer.xaml">
+    <Page Include="Controls\AutoSuggestBoxContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -262,35 +263,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CompareTypePicker.xaml">
+    <Page Include="Controls\Compare\CompareTypePicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DaysOfWeekSelector.xaml">
+    <Page Include="Controls\DaysOfWeekSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditListElementControl.xaml">
+    <Page Include="Controls\EditListElementControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EventColorEditPage.xaml">
+    <Page Include="Coloring\EventColorEditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EventControl.xaml">
+    <Page Include="ViewEvents\EventControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EventGroupEditPage.xaml">
+    <Page Include="Groups\EventGroupEditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EventNameEditPage.xaml">
+    <Page Include="Names\EventNameEditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EventsView.xaml">
+    <Page Include="ViewEvents\EventsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -298,11 +299,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NameCompareControl.xaml">
+    <Page Include="AdmittedClasses\NameCompareControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ReplaceValueEditPage.xaml">
+    <Page Include="Rooms\ReplaceValueEditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -326,6 +327,7 @@
       <Name>StdOttUwpLib</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

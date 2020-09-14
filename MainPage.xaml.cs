@@ -8,6 +8,12 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using TimetableFH.AdmittedClasses;
+using TimetableFH.Coloring;
+using TimetableFH.Helpers;
+using TimetableFH.Models;
+using TimetableFH.Names;
+using TimetableFH.Controls.Compare;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x407 dokumentiert.
 

@@ -6,6 +6,8 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using TimetableFH.Helpers;
+using TimetableFH.Models;
 
 namespace TimetableFH
 {

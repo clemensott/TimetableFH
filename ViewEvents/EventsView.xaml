@@ -1,0 +1,38 @@
+﻿<UserControl
+    x:Class="TimetableFH.ViewEvents.EventsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimetableFH.ViewEvents"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    SizeChanged="UserControl_SizeChanged">
+
+    <Grid x:Name="grdMain">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="1">
+            <Grid x:Name="grdEvents" />
+        </ScrollViewer>
+
+        <Grid Grid.Row="0" Grid.RowSpan="2" x:Name="grdHeaders">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Rectangle Grid.Row="0" Name="rectBack" 
+                       Fill="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                       VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            <Rectangle Grid.Row="1" Name="rectHori" Height="2"
+                       Fill="{ThemeResource ApplicationForegroundThemeBrush}"
+                       HorizontalAlignment="Stretch"/>
+        </Grid>
+    </Grid>
+</UserControl>

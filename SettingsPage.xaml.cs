@@ -14,6 +14,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using StdOttUwp;
+using TimetableFH.AdmittedClasses;
+using TimetableFH.Coloring;
+using TimetableFH.Groups;
+using TimetableFH.Helpers;
+using TimetableFH.Models;
+using TimetableFH.Names;
+using TimetableFH.PostData;
+using TimetableFH.Rooms;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=234238 dokumentiert.
 

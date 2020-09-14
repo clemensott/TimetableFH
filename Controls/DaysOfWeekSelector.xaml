@@ -1,0 +1,21 @@
+﻿<UserControl
+    x:Class="TimetableFH.Controls.DaysOfWeekSelector"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimetableFH.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="200">
+
+    <StackPanel>
+        <CheckBox Name="cbxMonday" Content="Monday" Checked="CbxMonday_Checked" Unchecked="CbxMonday_Unchecked"/>
+        <CheckBox Name="cbxTuesday" Content="Tuesday" Checked="CbxTuesday_Checked" Unchecked="CbxTuesday_Unchecked"/>
+        <CheckBox Name="cbxWednesday" Content="Wednesday" Checked="CbxWednesday_Checked" Unchecked="CbxWednesday_Unchecked"/>
+        <CheckBox Name="cbxThursday" Content="Thursday" Checked="CbxThursday_Checked" Unchecked="CbxThursday_Unchecked"/>
+        <CheckBox Name="cbxFriday" Content="Friday" Checked="CbxFriday_Checked" Unchecked="CbxFriday_Unchecked"/>
+        <CheckBox Name="cbxSaturday" Content="Saturday" Checked="CbxSaturday_Checked" Unchecked="CbxSaturday_Unchecked"/>
+        <CheckBox Name="cbxSunday" Content="Sunday" Checked="CbxSunday_Checked" Unchecked="CbxSunday_Unchecked"/>
+    </StackPanel>
+</UserControl>

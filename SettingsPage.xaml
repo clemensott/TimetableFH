@@ -7,6 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ctl="using:StdOttUwp.Controls"
     xmlns:con="using:StdOttUwp.Converters"
+    xmlns:cpr="using:TimetableFH.Controls.Compare"
+    xmlns:acs="using:TimetableFH.AdmittedClasses"
+    xmlns:controls="using:TimetableFH.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded">
@@ -17,7 +20,7 @@
         <con:VisibleCollapsedConverter x:Key="visIgnoreCon" CompareValue="Ignore" DecideType="Enum"/>
         <con:CollapsedVisibleConverter x:Key="colIgnoreCon" CompareValue="Ignore" DecideType="Enum"/>
 
-        <local:CompareTypeIconConverter x:Key="comIcoCon"/>
+        <cpr:CompareTypeIconConverter x:Key="comIcoCon"/>
 
         <con:UIntConverter x:Key="yearCon"/>
         <con:VisibleCollapsedConverter x:Key="visCon"/>
@@ -57,7 +60,7 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <local:NameCompareControl Margin="3" Value="{Binding}" 
+                                    <acs:NameCompareControl Margin="3" Value="{Binding}" 
                                                               Names="{Binding ElementName=sicNames,Path=Input}"/>
                                     <ctl:IconButton Grid.Column="1" Symbol="Cancel"
                                                     Background="Transparent" Click="IbnRemoveClass_Click"/>
@@ -106,7 +109,7 @@
 
                                     <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="3,0" Text="{Binding Name}"/>
 
-                                    <local:EditListElementControl Grid.Column="3" VerticalAlignment="Center"
+                                    <controls:EditListElementControl Grid.Column="3" VerticalAlignment="Center"
                                                                   IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
                                                                   EditClick="EleGroup_EditClick" RemoveClick="EleGroup_RemoveClick"
                                                                   UpClick="EleGroup_UpClick" DownClick="EleGroup_DownClick"/>
@@ -196,7 +199,7 @@
                                         <Rectangle Fill="{Binding Brush}"/>
                                     </Border>
 
-                                    <local:EditListElementControl Grid.Column="3" VerticalAlignment="Center"
+                                    <controls:EditListElementControl Grid.Column="3" VerticalAlignment="Center"
                                                                   IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
                                                                   EditClick="EleColor_EditClick" RemoveClick="EleColor_RemoveClick"
                                                                   UpClick="EleColor_UpClick" DownClick="EleColor_DownClick"/>
@@ -250,7 +253,7 @@
                                     <TextBlock Grid.Column="2" VerticalAlignment="Center"
                                                Margin="3" Text="{Binding Short}"/>
 
-                                    <local:EditListElementControl Grid.Column="3" VerticalAlignment="Center"
+                                    <controls:EditListElementControl Grid.Column="3" VerticalAlignment="Center"
                                                                   IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
                                                                   EditClick="EleName_EditClick" RemoveClick="EleName_RemoveClick"
                                                                   UpClick="EleName_UpClick" DownClick="EleName_DownClick"/>
@@ -300,7 +303,7 @@
                                     <TextBlock Grid.Column="1" VerticalAlignment="Center" 
                                                Margin="3" Text="{Binding Replacement}"/>
 
-                                    <local:EditListElementControl Grid.Column="2" VerticalAlignment="Center"
+                                    <controls:EditListElementControl Grid.Column="2" VerticalAlignment="Center"
                                                                   IsViewMoveIcons="{Binding ElementName=atbMove,Path=IsChecked}"
                                                                   EditClick="EleRoom_EditClick" RemoveClick="EleRoom_RemoveClick"
                                                                   UpClick="EleRoom_UpClick" DownClick="EleRoom_DownClick"/>
@@ -320,7 +323,7 @@
                         BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>
                 <TextBlock Text="Visible Days:" FontSize="18" FontWeight="Bold" Margin="5,3"
                            HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <local:DaysOfWeekSelector Margin="15,3" Value="{Binding Settings.DaysOfWeek,Mode=TwoWay}"/>
+                <controls:DaysOfWeekSelector Margin="15,3" Value="{Binding Settings.DaysOfWeek,Mode=TwoWay}"/>
 
                 <Border BorderThickness="1" VerticalAlignment="Bottom" Margin="10"
                         BorderBrush="{ThemeResource ApplicationPressedForegroundThemeBrush}"/>

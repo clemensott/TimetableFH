@@ -1,0 +1,31 @@
+﻿<UserControl
+    x:Class="TimetableFH.Controls.Compare.CompareTypePicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimetableFH.Controls.Compare"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="50"
+    d:DesignWidth="800"
+    x:Name="control">
+
+    <UserControl.Resources>
+        <local:CompareTypeConverter x:Key="comCon"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <VariableSizedWrapGrid Orientation="Horizontal">
+            <RadioButton Content="Equals" IsChecked="{Binding ElementName=control,Path=CompareType,
+                           Mode=TwoWay,Converter={StaticResource comCon},ConverterParameter=Equals}"/>
+            <RadioButton Content="StartsWith" IsChecked="{Binding ElementName=control,Path=CompareType,
+                           Mode=TwoWay,Converter={StaticResource comCon},ConverterParameter=StartsWith}"/>
+            <RadioButton Content="EndsWith" IsChecked="{Binding ElementName=control,Path=CompareType,
+                           Mode=TwoWay,Converter={StaticResource comCon},ConverterParameter=EndsWith}"/>
+            <RadioButton Content="Contains" IsChecked="{Binding ElementName=control,Path=CompareType,
+                           Mode=TwoWay,Converter={StaticResource comCon},ConverterParameter=Contains}"/>
+            <RadioButton Content="Ignore" IsChecked="{Binding ElementName=control,Path=CompareType,
+                           Mode=TwoWay,Converter={StaticResource comCon},ConverterParameter=Ignore}"/>
+        </VariableSizedWrapGrid>
+    </Grid>
+</UserControl>

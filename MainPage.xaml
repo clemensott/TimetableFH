@@ -5,18 +5,19 @@
     xmlns:local="using:TimetableFH"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewEvents="using:TimetableFH.ViewEvents"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <local:EventsView x:Name="eventView"
-                          ReferenceDate="{Binding Settings.RefTime,Mode=TwoWay}" 
-                          AllEvents="{Binding ViewEvents}" 
-                          BaseDays="{Binding Settings.DaysOfWeek,Mode=TwoWay}"
-                          ViewDuration="{Binding Settings.ViewDuration,Mode=TwoWay}"
-                          SetColorClick="EventsView_SetColorClick"
-                          SetNameClick="EventsView_SetNameClick"
-                          AddAdmittedClick="EventsView_AddAdmittedClick"/>
+        <viewEvents:EventsView x:Name="eventView"
+                               ReferenceDate="{Binding Settings.RefTime,Mode=TwoWay}" 
+                               AllEvents="{Binding ViewEvents}" 
+                               BaseDays="{Binding Settings.DaysOfWeek,Mode=TwoWay}"
+                               ViewDuration="{Binding Settings.ViewDuration,Mode=TwoWay}"
+                               SetColorClick="EventsView_SetColorClick"
+                               SetNameClick="EventsView_SetNameClick"
+                               AddAdmittedClick="EventsView_AddAdmittedClick"/>
     </Grid>
 
     <Page.BottomAppBar>
