@@ -178,7 +178,7 @@ namespace TimetableFH.Models
             SetCurrentMondayMorning(TimeSpan.FromHours(7));
             ViewDuration = TimeSpan.FromHours(8);
             DaysOfWeek = GetWeekDays();
-            UseCustomOptions = true;
+            UseCustomOptions = false;
             CustomBaseUrl = BaseFhUrl;
             CustomRequestUrlAddition = "?new_stg=MSD&new_jg=2018&new_date=1569830400&new_viewmode=matrix_vertical";
 
